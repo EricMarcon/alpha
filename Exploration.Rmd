@@ -1,0 +1,191 @@
+---
+title: "Exploration"
+output: html_notebook
+---
+
+## Forme de la SAC
+
+## Communauté lognormale
+
+```{r}
+library("tidyverse")
+library("divent")
+comm_lnorm <- rcommunity(1, size = 1E6, distribution = "lnorm")
+autoplot(comm_lnorm, fit_rac = TRUE, distribution = "lnorm")
+```
+
+
+Courbe d'accumulation
+
+```{r}
+levels <- c(1:500, 500 + (1:50) * 10, 1000 + (1:50) * 100, 6000 + (1:19) *
+            1000)
+comm_lnorm %>% 
+  accum_hill(levels = levels[levels <= sum(comm_lnorm)]) %>% 
+  autoplot() +
+  scale_x_log10()
+```
+## BCI
+
+```{r}
+library("vegan")
+data(BCI)
+BCI %>% 
+  colSums() %>% 
+  accum_hill(levels = levels[levels <= sum(.)]) %>% 
+  autoplot() +
+  scale_x_log10()
+```
+
+## Paracou 6
+
+
+```{r}
+library("divent")
+paracou_6_abd %>% 
+  metacommunity() %>% 
+  accum_hill(levels = levels[levels <= abd_sum(., as_numeric = TRUE)]) %>% 
+  autoplot() +
+  scale_x_log10()
+```
+
+## Log-séries
+
+```{r}
+rcommunity(1, size = 1E6, distribution = "lseries") -> lseries_c
+lseries_c  %>% 
+  accum_hill(levels = levels)  %>% 
+  autoplot() +
+  scale_x_log10()
+```
+
+## Sous-échantillonnage
+
+```{r}
+size <- 1E4
+rmultinom(
+  1, 
+  size = size, 
+  prob = as.numeric(as_probabilities(lseries_c))
+) %>% 
+  t() %>% 
+  as_abundances() %>% 
+  accum_hill(levels = levels[levels <= abd_sum(., as_numeric = TRUE)]) %>% 
+  autoplot() +
+  scale_x_log10()
+```
+
+
+## Régional
+
+```{r}
+k <- 1000
+z <- 1/8
+ggplot(data.frame(x = 1:1000), aes(x)) +
+  geom_function(fun = \(x) k * x^z) +
+  scale_x_log10()
+```
+
+## Guyane
+ 
+```{r}
+"data/abundances.csv" %>% 
+  read_csv2() %>% 
+  select(-1) %>% 
+  as.matrix() ->
+  gf_abd
+gf_abd %>% 
+  as_abundances(weights = rep(1, nrow(.))) %>% 
+  metacommunity() ->
+  gf_mc
+
+gf_mc %>% 
+  accum_hill(levels = levels[levels <= abd_sum(., as_numeric = TRUE)]) %>% 
+  autoplot() ->
+  gf_sar
+
+# logseries
+gf_sar + scale_x_log10()
+# alpha
+gf_mc %>% 
+  fisher.alpha() %>% 
+  print() -> 
+  gf_alpha
+# Richness
+gf_n <- 5E9
+gf_alpha * log(1 + gf_n / gf_alpha)
+```
+ 
+ Sous-échantillonnage
+ 
+```{r}
+alpha_sub <- function(sample_size, abd) {
+  the_sample <- sample(seq_len(nrow(abd)), size = sample_size) 
+  abd[the_sample, ] %>% 
+    as_abundances(weights = rep(1, nrow(.))) %>% 
+    metacommunity() %>% 
+    fisher.alpha()
+}
+
+sizes <- seq_len(nrow(gf_abd))
+alphas <- sapply(sizes, FUN = alpha_sub, abd = gf_abd)
+tibble(NbPlots = sizes, alpha = alphas) %>% 
+  ggplot(aes(x = NbPlots, y = alpha)) +
+  geom_line() +
+  scale_x_log10() +
+  geom_smooth(method = "lm")
+```
+ 
+ Un point par plot
+ 
+```{r}
+# Select one plot per location...
+"data/plots.csv" %>% 
+  read_csv2() %>% 
+  # Set a random value to each plot
+  mutate(random = runif(n())) -> 
+  plots_randomized
+plots_randomized %>% 
+  group_by(Location) %>%
+  # Select the plot with the max random value in each location
+  summarize(random_max = max(random)) %>% 
+  rename(random = random_max) %>% 
+  # Eliminate non-selected plots
+  inner_join(plots_randomized) %>% 
+  select(Plot) -> 
+  plots_selected
+"data/abundances.csv" %>% 
+  read_csv2() %>% 
+  # Selected plots only
+  inner_join(plots_selected) %>% 
+  rename(site = Plot) %>% 
+  as_abundances() %>% 
+  mutate(weight = 1) -> 
+  gf_sub_abd
+gf_sub_abd %>% 
+  metacommunity() %>% 
+  fisher.alpha()
+# Sous-échantillonnage
+sizes <- seq_len(nrow(gf_sub_abd))
+alphas <- sapply(sizes, FUN = alpha_sub, abd = gf_sub_abd)
+tibble(NbPlots = sizes, alpha = alphas) %>% 
+  ggplot(aes(x = NbPlots, y = alpha)) +
+  geom_line() +
+  scale_x_log10() +
+  geom_smooth(method = "lm") +
+  ggpubr::stat_regline_equation()
+```
+ 
+ ## SAC
+ 
+```{r}
+sample_size <- 4
+gf_sub_abd %>% 
+  filter(site %in% sample(site, size = sample_size)) %>% 
+  metacommunity() %>% 
+  accum_hill(levels = levels[levels <= abd_sum(., as_numeric = TRUE)]) %>% 
+  autoplot() +
+  scale_x_log10()
+```
+ 
+ 
