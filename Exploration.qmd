@@ -1,6 +1,22 @@
 ---
 title: "Exploration"
-output: html_notebook
+editor: visual
+bibliography: bibliography.bib
+execute:
+  # show code chunk output
+  include: true
+  # Show the code in the output
+  echo: false
+  # Show warnings
+  warning: true
+  # Cache code results
+  cache: true
+  message: false
+format: 
+  html:
+    toc: true
+    code-fold: true
+    embed-resources: true
 ---
 
 ## Forme de la SAC
@@ -18,11 +34,10 @@ autoplot(comm_lnorm, fit_rac = TRUE, distribution = "lnorm", cex = 1)
 Courbe d'accumulation
 
 ```{r}
-levels <- c(1:500, 500 + (1:50) * 10, 1000 + (1:50) * 100, 6000 + (1:19) *
-            1000)
+levels <- c(1:500, 500 + (1:50) * 10, 1000 + (1:50) * 100, 6000 + (1:19) * 1000)
 comm_lnorm %>% 
   accum_hill(levels = levels[levels <= sum(comm_lnorm)]) ->
-accum_lnorm
+  accum_lnorm
 accum_lnorm  %>% 
   autoplot() +
   scale_x_log10()
@@ -359,7 +374,7 @@ gf_sub_abd %>%
 # Surface prise en compte
 S = 4500
 alpha = 250
-(exp((S + alpha * log(alpha)) / alpha) - alpha) / 600 /1E6
+(exp((S + alpha * log(alpha)) / alpha) - alpha) / 600 / 1E6
 ```
  
  
