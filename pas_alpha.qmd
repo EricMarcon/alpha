@@ -1,0 +1,194 @@
+---
+title: "Alpha de Fisher n'est pas une métrique de diversité adaptée à BCI"
+editor: visual
+bibliography: bibliography.bib
+format: 
+  html:
+    toc: true
+    code-fold: true
+    embed-resources: true
+---
+
+## Distribution des espèces de BCI
+
+A partir des données fournies par le package vegan, les 50ha de BCI sont distribués presque selon une loi log-normale [@Hubbell2001].
+
+```{r}
+#| message: false
+# Graine aléatoire
+set.seed(0)
+library("tidyverse")
+library("vegan")
+data(BCI)
+library("divent")
+BCI %>% 
+  # Regroupement des 50 ha
+  colSums() %>% 
+  # Déclaration du type pour le graphique
+  as_abundances() %>% 
+  # Stockage
+  {. ->> BCI_abd} %>%
+  # Graphique, ajustement à une loi log-normale
+  autoplot(fit_rac = TRUE, distribution = "lnorm", cex = 1)
+```
+
+L'ajustement à une distribution en log-série est mauvais.
+
+```{r}
+BCI_abd %>% 
+  autoplot(fit_rac = TRUE, distribution = "lseries", cex = 1) %>% 
+  print() ->
+  BCI_RAD
+```
+
+On peut tenter un ajustement sur les espèces les plus abondantes, c'est-à-dire la technique de Hubbell dans son livre pour estimer $\theta$ de la métacommunauté.
+On obtient la courbe noire :
+
+```{r}
+# Résultat de Hubbell
+theta <- 50
+BCI %>% 
+  colSums() %>% 
+  # Elimination des valeurs 0
+  subset(. > 0) %>% 
+  # Tri
+  sort(decreasing = TRUE) %>% 
+  # Elimination des doublons, stockage des abondances
+  unique() -> nu
+# Calcul du rang théorique de chaque abondance
+sample_size <- sum(BCI)
+sei <- function(t) exp(-t)/t
+rank <- vapply(
+  nu, 
+  function(x) {
+    n <- x * log(1 + theta / sample_size)
+    f <- stats::integrate(sei, n, Inf)
+    fv <- f[["value"]]
+    return(theta * fv)
+  }, 
+  FUN.VALUE = 0
+)
+# Ajout de la courbe
+BCI_RAD +
+  geom_line(
+    data = tibble(rank = rank, abundance = nu),
+    aes(x = rank, y = abundance)    
+  )
+```
+
+L'ajustement n'est pas meilleur.
+
+## Estimation de $\alpha$
+
+L'ajustement est fait avec la valeur retournée par `fisher.alpha()` de vegan pour les 50ha de BCI, qui résoud numériquement l'équation
+
+$$S(n) = \alpha \ln \left( 1 + \frac{n}{\alpha} \right),$$
+
+où $S(n)$ est le nombre d'espèces observées dans un échantillon de taille $n$.
+
+```{r}
+#| output: false
+# Valeur de alpha
+BCI %>% 
+  colSums() %>% 
+  fisher.alpha() %>% 
+  print() -> 
+  BCI_alpha
+```
+
+Ici, $\alpha = `r round(BCI_alpha)`$, mais $\alpha$ n'a de sens que si sa valeur ne dépend pas de $n$.
+
+Ce n'est pas le cas à BCI.
+La simulation suivante tire 20 fois 4 à 50 des carrés de BCI et calcule la valeur moyenne de $\alpha$.
+On voit que $\alpha$ diminue avec la taille de l'échantillon, linéairement si la taille est en logarithme.
+
+```{r}
+#| message: false
+# Echantillonnage de sample_size sites dans un tableau d'abondances,
+# regroupement et calcul de alpha
+alpha_sub <- function(sample_size, abd) {
+  # Tirage des lignes à échantillonner
+  the_sample <- sample(seq_len(nrow(abd)), size = sample_size) 
+  # Echantillonnage
+  abd[the_sample, ] %>% 
+    # Transformation en objet abundances
+    as_abundances() %>% 
+    # Poids égaux
+    mutate(weight = 1) %>% 
+    # Assemblage
+    metacommunity() %>% 
+    # Calcul de alpha
+    fisher.alpha()
+}
+
+# Taille des échantillons: 4 à 50ha
+sizes <- seq_len(nrow(BCI))[-(1:3)]
+# Nombre de simulations
+simulations_n <- 20
+# Calcul de alpha
+alphas <- replicate(
+  simulations_n, 
+  expr = sapply(sizes, FUN = alpha_sub, abd = BCI)
+)
+# Valeur moyenne de alpha
+tibble(Size = sizes, alpha = rowMeans(alphas)) %>%
+  ggplot(aes(x = Size, y = alpha)) +
+  geom_line() +
+  scale_x_log10() +
+  geom_smooth(method = "lm") +
+  # Equation
+  ggpubr::stat_regline_equation(label.x.npc = "center")
+```
+
+Selon la taille de l'échantillon, on peut donc estimer $\alpha$ entre un peu plus de 40 et 35.
+
+Quand la taille de l'échantillon augmente, on recontre des espèces de plus en plus rares.
+Dans la distribution réelle, proche d'une lognormale, elles sont moins abondantes que dans la log-série, donc on en rencontre moins pour le même effort supplémentaire: l'estimation de $\alpha$, diminue.
+
+## Courbe d'accumulation
+
+La courbe d'accumulation des espèces (SAC) d'une log-série avec une échelle d'abondance logarithmique est linéaire dès que $n \gg \alpha$, où $n$ est le nombre d'individus.
+$\alpha$ est la pente de la partie rectiligne de la courbe.
+
+La SAC de BCI est différente, avec une inflexion parce que la distribution est lognormale.
+
+```{r}
+# Points d'estimation de la SAC
+levels <- c(1:500, 500 + (1:50) * 10, 1000 + (1:50) * 100, 6000 + (1:15) * 1000)
+# Calcul de SAC
+BCI %>% 
+  # Regroupement des 50 ha
+  colSums() %>% 
+  # Courbe d'accumulation
+  accum_hill(levels = levels) %>% 
+  # Stockager des valeurs
+  {. ->> BCI_accum} %>%
+  autoplot() +
+  scale_x_log10() +
+  theme(legend.position = "none") +
+  # Courbe d'accumulation d'une log-série
+  geom_function(fun = \(n) {BCI_alpha * log(1 + n / BCI_alpha)}, col = "black")
+```
+
+La figure montre la courbe d'accumulation de la logseries de la même taille et avec la même valeur de $\alpha$ que BCI (en noir) et la vraie courbe de BCI (en rouge).
+La richesse est sous-estimée par la log-série aux échelles intermédiaires.
+
+## Conclusion
+
+$\alpha$ n'est pas stable parce que la communauté n'est pas en log-série.
+Du point de vue théorique, l'utilisation de $\alpha$ n'est donc pas justifiée: c'est le paramètre d'un modèle qui ne correspond pas aux données.
+Du point de vue empirique, l'intérêt de $\alpha$ est de ne pas dépendre de $n$, ce qui n'est pas le cas.
+Quelle que soit la signification qu'on donne à $\alpha$, accumulation de nouvelles espèces, forme de la courbe d'accumulation ou de la courbe rang-abondance, elle est trompeuse.
+
+Il est donc plus utile de mesurer la diversité par le nombre d'espèces en fonction de la taille de l'échantillon, c'est-à-dire de fournir une courbe d'accumulation.
+Il n'y a pas de raison de représenter la taille en échelle logarithmique.
+La bonne représentation est la suivante (en rouge): elle contient la même information que la valeur de $\alpha$, mais est plus simple à interpréter et ne sous-entend pas que la distribution est en log-série.
+La courbe, incorrecte, de la log-série est en noir.
+
+```{r}
+BCI_accum %>% 
+  autoplot() +
+  theme(legend.position = "none") +
+  # Courbe d'accumulation d'une log-série
+  geom_function(fun = \(n) {BCI_alpha * log(1 + n / BCI_alpha)}, col = "black")
+```
