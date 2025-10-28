@@ -43,7 +43,7 @@ execute:
   # Show warnings
   warning: false
   # Cache code results
-  cache: false
+  cache: true
   # option messages is in the Option chunk for R
 # Template specific
 journalinfo: "Publication reference"
@@ -130,242 +130,75 @@ set.seed(973)
 
 # Introduction
 
-This template allows writing stylish articles in Markdown with Quarto[^1].
-It directly produces well-formatted PDF articles for self-archiving or in other formats, for example HTML.
+Tropical evergreen forests such as the Amazon host thousand of tree species that are difficult to assess.
+Even though their biodiversity does not reduce to trees, understanding their distribution is a necessary step to both understand the functioning of the ecosystem and develop conservation policies.
+The relation between diversity and area has long been questioned by ecologists.
+It must be addressed according to the considered scale.
+At the local scale, i.e. when the distribution of species can be considered as unique, species accumulation curves (SAC) are built from it with well-known statistical tools.
+At regional scales, i.e. when different communities are included and beta-diversity comes into play, species-area relationships properly speaking are derived from ecological theory with empirical support.
+Whatever the scale, the number species increases with the area or the number of individuals, making it a challenge to correctly describe biodiversity with a number: species richness (i.e. the number of species) is the simplest candidate, but its application may be ambiguous.
 
-[^1]: <https://quarto.org/>
+Fisher's log-series was derived originally from the distribution of tropical butterflies.
+It is formulated as a species-abundance relationship that links the number of species to the number of individuals with a single parameter, called $\alpha$.
+Fisher's $\alpha$ is thus an ideal candidate to measure diversity since it overcomes the previous issue: it is scale-independent, if the actual species distribution is a log-series.
+After a long period of relative obscurity, $\alpha$ made a comeback after the development of Hubbell's neutral theory since the metacommunity is distributed in log-series whose $\alpha$ equals $\theta$, the fundamental number of biodiversity.
+Although the log-series applies neither to the local or regional scale according to the neutral theory, it became popular to describe the diversity of forest trees, probably for its simplicity.
+Summarizing a species distribution by a statistics that does not apply to it is questionable.
+The aim of this paper is to show that $\alpha$ actually does not measure diversity unambiguously, neither at local nor at regional scales, and should be limited to the metacommunity scale.
+It is organised as follows: Fisher's $\alpha$ fundamentals are first recalled;its use at the different scales is then discussed before concluding about its applicability.
+
+# Fisher's $\alpha$ fundamentals
+
+$$
+  S(n) = \alpha \ln \left( 1 + \frac{n}{\alpha} \right).
+$$ {#eq-fisheralpha}
+
+For $n >> \alpha$, equation @eq-fisheralpha can be simplified to $S(n) \approx \alpha ln(\alpha) + \alpha ln(n)$, i.e. the number of observed species is linearly related to the logarithm of the sample size.
+The slope of the line is $\alpha$ and the intercept is $\alpha ln(\alpha)$.
+
+Based on @eq-fisheralpha, the species accumulation curve has two parts when it is drawn with a logarithmic X-axis: first, as $n$ is not great enough for the approximation, it is convex, then it is linear.
 
 # Local scale
 
+```{r}
+#| label: fig-BCI_accum
+#| fig-cap: Species Accumulation Curve of BCI dataset
+library("tidyverse")
+library("divent")
+library("vegan")
+data(BCI)
+BCI %>% 
+  colSums() %>% 
+  as_abundances() %>% 
+  mutate(site = "BCI") %>% 
+  accum_hill() %>% 
+  {. ->> BCI_accum} %>% 
+  autoplot() +
+  labs(y = "Richness") +
+  theme(legend.position = "none")
+```
 
+Sampling the local community results in a species accumulation curve, studied in depth by @Gotelli2001.
+The number of species increases step by step, when the next sampled individual belongs to a new one.
+This stochastic *collector's curve* is of less interest than its expectation, assuming individuals are sampled independently: only that smoothed curve is called the SAC.
+It is actually computed by rarefaction of the distribution of the whole sample.
+It is usually plotted on continuous scales.
+Between sample sizes $n$ and $n + 1$, the slope of the curve is the probability for the next individual to belong to a new species: it decreases until all species have been discovered: so, it is concave.
+
+@fig-BCI_accum shows the SAC of the Barro Colorado Island 50-ha forest plot based on the data provided by the *vegan* R package.
+The number of species increases with sample size and does not reach an asymptote despite the huge sampling effort.
+To allow comparing diversity with other sites, two strategies are possible: estimated asymptotic diversity or standardize the sampling effort.
+
+The asymptotic diversity here is the number of species that would be observed if the sample reached the necessary size to encompass all species of the community.
+In hyperdiverse ecosystems such as evergreen forests, the asymptotic community generally does not exist in the field because of environmental variations: increasing the size of the sample results in sampling in different communities.
+Thus, the asymptotic estimators of diversity correspond to theoretical asymptotic communities that do not necessarily exist: it is a feature of a model.
+This is an argument for avoiding them, but the definition of the local community is already a model, in the sense that local environmental variations imply that the distribution of species varies in turn: the heterogeneity of the community considered as negligible corresponds to necessary decisions to model the reality.
+
+An alternative consists in standardizing the sample site, in general to allow comparing different communities whose inventories are not large enough to allow a reliable estimation of asymptotic diversity.
+Exact rarefaction formulas are available to calculate the number of tree species at any sampling level smaller than the actual sample, and estimators allow extrapolating the diversity up to a limited level, around twice the actual sample size.
 
 # Regional scale
 
+# Discussion
 
-
-# Code 
-
-## Figures
-
-```{r}
-#| label: fig-pressure
-#| fig-cap: "Figure _title_ with maths : $\\pi$ and cross-reference to @tbl-kable"
-#| out-width: 80%
-#| fig-env: "figure*"
-plot(pressure)
-```
-
-Figures can be created by R code (@fig-pressure).
-A label is associated with each figure: its name is given in the `#| label:` option of the chunk that produces it.
-It must start with `fig-`.
-Cross-references are made with the command `@label`, e.g.: `@fig-pressure`.
-
-In PDF, a figure can use the full width of the page by adding the options `fig-env="figure*"` to the header of the code chunk that generates it.
-
-Existing figures are integrated into a piece of code by the `include_graphics()` function, see @fig-logo.
-
-```{r}
-#| label: fig-logo
-#| fig-cap: "Logo"
-#| out-width: 30%
-knitr::include_graphics("images/logo.png")
-```
-
-Systematically place these files in the `images` folder for the automation of GitHub pages.
-
-## Tables
-
-The horizontal `-` and vertical separators `|` allow you to draw a table according to Markdown syntax, but this is not the best method in R.
-
-Tables can also be produced by R code.
-The content of the table is in a dataframe.
-The `kbl()` function prepares the table for display and passes the result to `kable_styling()` for final formatting.
-
-```{r}
-#| label: tbl-kable
-#| tbl-cap: "Table _created_ by R, with $\\pi$. Dummy legend to demonstrate formatting capacities."
-#| echo: false
-#| tidy: false
-
-names(iris) <- c(
-  "Sepal length", 
-  "Width", 
-  "Petal length", 
-  "Width", 
-  "Species"
-)
-head(iris) %>% 
-  kableExtra::kbl(
-    # Tables can be longer than a page
-    longtable = TRUE, 
-    # Nice separators
-    booktabs = TRUE
-  ) %>%
-  kableExtra::kable_styling(
-    # Striped rows for readability
-    bootstrap_options = "striped"
-  )
-```
-
-The caption is specified by the `#| tbl-cap:` chunk option.
-
-Always use the `booktabs = TRUE` argument so that the separator lines are optimal in LaTeX.
-The `bootstrap_options = "striped"` option provides more readable tables in HTML.
-
-In LaTeX, `longtable = TRUE` selects the "longtable" package to format tables.
-Such tables are placed in the text.
-Due to limits of the "longtable" package which does not support multi-column layouts, the Stylish Article template uses a workaround that does not allow really long tables to be split into several columns or pages.
-So, `longtable = TRUE` only means that the table will be one-column wide and located in the text if possible.
-If not, it will float.
-
-To use the full width of the page, like @tbl-Paracou, `longtable` is set to `FALSE` in the arguments of `kbl()`.
-The option `full_width = TRUE` in `kable_styling()` allows adjusting the width of the table to that of the page.
-
-```{r}
-#| label: tbl-Paracou
-#| tbl-cap: "Large table with maths, on two columns"
-#| echo: false
-
-Intervention <- data.frame(
-  Treatment = c("Control", "T1", "T2", "T3"),
-  Timber = c(
-    "", 
-    "DBH $\\geq$ 50 cm, commercial species, $\\approx$ 10 trees/ha", 
-    "DBH $\\geq$ 50 cm, commercial species, $\\approx$ 10 trees/ha",
-    "DBH $\\geq$ 50 cm, commercial species, $\\approx$ 10 trees/ha"
-  ),
-  Thinning = c(
-    "", 
-    "", 
-    "DBH $\\geq$ 40 cm, non-valuable species, $\\approx$ 30 trees/ha", 
-    "DBH $\\geq$ 50 cm, non-valuable species, $\\approx$ 15 trees/ha  "
-  ),
-  Fuelwood = c(
-    "", 
-    "", 
-    "", 
-    "40 cm $\\leq$ DBH $\\leq$ 50 cm, non-valuable species, $\\approx$ 15 trees/ha"
-  ),
-  AGBLost = c(0, "$[12\\%-33\\%]$", "$[33\\%-56\\%]$", "$[35\\%-56\\%]$")
-)
-names(Intervention)[5] <- "\\%AGB lost"
-Intervention %>% 
-  kableExtra::kbl(
-    # Full width table
-    longtable = FALSE, 
-    # Nice separators
-    booktabs = TRUE, 
-    # Special characters in the table
-    escape = FALSE
-  ) %>%
-  kableExtra::kable_styling(
-    # Striped rows for readability
-    bootstrap_options = "striped", 
-    # Full width table
-    full_width = TRUE
-  )
-```
-
-This table contains mathematics: the `escape = FALSE` argument is necessary in `kable()`.
-This feature is not yet supported by Quarto in the HTML output.
-
-Finally, the `full_width = TRUE` argument in `kable_styling()` adjusts the width of the table to the available width.
-It must be set for correct formatting of two-column tables in LaTeX.
-
-Note that tables can't be shown on the first page of the PDF output of the Stylish Article template: they would conflict with the table of contents.
-
-## Lists
-
-Lists are indicated by `*`, `+` and `-` (three hierarchical levels) or numbers `1.`, `i.` and `A.` (numbered lists).
-Indentation of lists indicates their level: `*`, `+` and `-` may be replaced by `-` at all levels, but four spaces are needed to nest a list into another.
-
--   First element of a list
-    -   sub-list
--   Second element
--   Continuation of the list
-
-Leave an empty line before and after the list, but not between its items.
-
-## Math
-
-Equations in LaTeX format can be inserted inline, like $A = \pi r^2$ or isolated like $$e^{i \pi} = -1.$$
-
-They can be numbered, see @eq-disk, after adding them a label:
-
-$$
-  A = \pi r^2.
-$$ {#eq-disk}
-
-## Cross-references
-
-Figures and tables have a label declared in their code chunk option `tbl-cap` or `fig-cap`, starting with `fig-` or `tbl-`.
-
-For equations, the label is added manually by the code `{#eq-xxx}` after the end of the equation.
-
-Sections can be tagged by ending their title with `{#sec-yyy}`.
-
-In all cases, the call to the reference is made by `@`.
-
-## Bibliography
-
-Bibliographic references included in the `.bib` file declared in the document header can be called by `[@CitationKey]`, in parentheses [@Xie2018], or without square brackets, in the text, as @Xie2016.
-
-The bibliography is processed by Pandoc when producing Word or HTML documents.
-The bibliographic style can be specified, by adding the line
-
-```         
-csl: file_name.csl
-```
-
-in the document header and copying the *.csl* style file to the project folder.
-More than a thousand styles are available[^5] and their URL can be used instead of copying the file, e.g.:
-
-[^5]: <https://github.com/citation-style-language/styles>
-
-```         
-csl: https://www.zotero.org/styles/xxx
-```
-
-For PDF documents, the bibliography is managed by natbib.
-The style is declared in the header:
-
-```         
-biblio-style: chicago
-```
-
-It can be changed as long as the appropriate `.bst` file (by default: `chicago.bst`) is included in the project.
-
-## Forcing line breaks
-
-Hyphenation is handled automatically in LaTeX.
-If a word is not hyphenated correctly, add its hyphenation in the preamble of the file with the command `hyphenation` (words are separated by spaces, hyphenation locations are represented by dashes).
-
-If LaTeX can't find a solution for the line break, for example because some code is too long a non-breaking block, add the LaTeX command `\break` to the line break location.
-Do not leave a space before the command.
-The HTML document ignores LaTeX commands.
-
-
-## Text color
-
-This template includes the "color-text" filter for Quarto.
-It makes colored text possible using the `[content]{color=<name>}` syntax.
-[This is a red example]{color="red"}.
-Defined colors are blue, green and red.
-To add more colors, they must be defined in the document header in `format:`, `stylisharticle-pdf:`, `header-includes:` .
-This is the code for "grey":
-
-```         
-    \definecolor{grey}{RGB}{191, 191, 191}
-```
-
-They must also be included in a `.css` file declared in `format:`, `stylisharticle-html:`
-
-```         
-    css: colors.css
-```
-
-In this css, colors are declared by
-
-```         
-.color-grey {color: rgb(191, 191, 191);}
-```
+Rarefaction \<-\> rare species vanish.
