@@ -35,3 +35,7 @@ packages.bib
 
 # Uncomment if CI builds docs/
 docs/
+
+# Project specific
+logkda.*
+CTFSRPackage.rdata
