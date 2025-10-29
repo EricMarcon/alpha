@@ -39,12 +39,13 @@ execute:
   # show code chunk output
   include: true
   # Show the code in the output
-  echo: false
+  echo: true
+  # Show messages
+  message: true
   # Show warnings
   warning: false
   # Cache code results
   cache: true
-  # option messages is in the Option chunk for R
 # Template specific
 journalinfo: "Publication reference"
 archive: "DOI: xxx/xx"
@@ -101,8 +102,6 @@ install_packages(packages)
 
 # knitr options (https://yihui.org/knitr/options/)
 knitr::opts_chunk$set(
-  # Messages from packages
-  message = FALSE,
   # Code chunk automatic format if tidy is TRUE
   tidy = TRUE, 
   # Tidy code options: remove blank lines and cut lines after 50 characters
