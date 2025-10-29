@@ -2,6 +2,17 @@
 title: "Calcul d'Alpha de Fisher"
 editor: visual
 bibliography: bibliography.bib
+execute:
+  # show code chunk output
+  include: true
+  # Show the code in the output
+  echo: true
+  # Show messages
+  message: false
+  # Show warnings
+  warning: false
+  # Cache code results
+  cache: true
 format: 
   html:
     toc: true
@@ -9,7 +20,9 @@ format:
     embed-resources: true
 ---
 
-## Estimation ponctuelle
+## Estimation de $\alpha$
+
+### Estimation ponctuelle
 
 La plupart des implémentations du calcul de $\alpha$ se limitent à la résolution de l'équation
 
@@ -19,7 +32,6 @@ où $S(n)$ est le nombre d'espèces observées dans un échantillon de taille $n
 Les seules données nécessaires sont le nombre d'espèces total et la taille de l'échantillon.
 
 ```{r}
-#| message: false
 library("tidyverse")
 library("vegan")
 data(BCI)
@@ -33,6 +45,7 @@ C'est le cas de:
 -   `vegan::fisher.alpha()` qui s'appuie sur `vegan::fisherfit()`. La résolution numérique utilise `uniroot()`.
 
 ```{r}
+#| code-fold: false
 library("vegan")
 fisher.alpha(BCI_50ha)
 fisherfit(BCI_50ha)
@@ -41,45 +54,36 @@ fisherfit(BCI_50ha)
 -   `untb::fishers.alpha()`, identique à `vegan::fisherfit()`
 
 ```{r}
-#| message: false
+#| code-fold: false
 library("untb")
 fishers.alpha(N = sum(BCI_50ha), S = sum(BCI_50ha > 0))
 ```
 
-## Maximisation de la vraisemblance
+### Maximisation de la vraisemblance
 
 L'alternative est d'ajuster la distribution d'abondance observée à la distribution théorique d'une log-série, en maximisant sa vraisemblance en fonction de $\alpha$.
 
-C'est le cas de : - `sads::fitls()` utilse `mle2()` pour maximiser la vraisemblance de `sads::dls()` (la densité de probabilité de la log-série).
+C'est le cas de : 
+
+- `sads::fitls()` utilse `mle2()` pour maximiser la vraisemblance de `sads::dls()` (la densité de probabilité de la log-série).
 La valeur de départ est par défaut l'estimation ponctuelle.
 
 ```{r}
-#| message: false
+#| code-fold: false
 library("sads")
 fitls(BCI_50ha)
 ```
 
 Dans le cas de BCI, le résultat est le même: le calcul de la vraisemblance donne un poids énorme aux espèces les plus abondantes.
 
-## Estimation de \theta
-
-$\theta$ est le paramètre de la log-série de la métacommunauté dont la communauté locale est issue.
-
-Il n'y a pas de fonction facile d'accès dans R pour estimer $\theta$:
-
--   `untb::optimal.theta()` estime $\theta$ en assumant que $m = 1$.
-
-```{r}
-library("untb")
-optimal.theta(BCI_50ha)
-```
-
--   `untb::optimal.params()` estime $m$ et $\theta$ selon @Etienne2005. Les calculs sont extrêmement longs (et échouent avec un message d'erreur) sans utilisation d'un programme externe, pari/GP. Le code la fonction `logkda_pari_windows()` est bogué et ne permet pas d'exécuter les calculs. Une fonction corrigée est fournie ci-dessous.
-
-- @Hubbell2001 (page 293) estime la log-série correspondant aux espèces les plus fréquentes de la communauté locale.
-
 
 ### Ajustement de la RAC
+
+Je propose une méthode alternative d'ajustement : plutôt que maximiser la vraisemblance des données, ajuster la RAC.
+
+La fonction `lseries_RAC()` calcule le rang théorique de chaque espèces en fonction de son abondance. Ces rangs ne sont pas entiers.
+
+La fonction `fit_alpha()` estime $\alpha$ en minimisant la distance L1 entre les rangs théoriques (qui dépendent de $\alpha$) et les rangs observés dans la distribution.
 
 ```{r}
 # Theoretical rank of abundances
@@ -99,6 +103,7 @@ lseries_RAC <- function(abd, alpha) {
 }
 
 # Test
+cat("Rang théorique des espèces de BCI\n")
 lseries_RAC(BCI_50ha, 50)
 
 # Fit alpha by minimizing the departure of species ranks from their theoretical value in a logseries
@@ -122,9 +127,11 @@ rcommunity(1, size = 1E6, distribution = "lseries", fisher_alpha = 50) %>%
   as.numeric() ->
   lseries_abd
 # Estimate alpha
+cat("Estimation de alpha à partir d'une distribution simulée où alpha = 50")
 fit_alpha(lseries_abd)
 
 # BCI
+cat("Estimation de alpha à BCI")
 (theta <- fit_alpha(BCI_50ha))
 # Ajustement sur l'ensemble de la distribution
 BCI_50ha %>% 
@@ -136,13 +143,37 @@ BCI_50ha %>%
   )
 ```
 
-@Hubbell2001 (page 293) propose de l'estimer en ajustant la courbe rang-abondance aux espèces les plus fréquentes de la communauté en argumentant que ces espèces sont aussi les plus abondantes de la métacommunauté.
+La courbe noire est un meilleur ajustement d'une log-série à la distribution de BCI que celui obtenu par maximum de vraisemblance.
+
+
+## Estimation de $\theta$
+
+$\theta$ est le paramètre de la log-série de la métacommunauté dont la communauté locale est issue.
+
+Il n'y a pas de fonction facile d'accès dans R pour estimer $\theta$:
+
+-   `untb::optimal.theta()` estime $\theta$ en assumant que $m = 1$.
+
+```{r}
+#| code-fold: false
+library("untb")
+optimal.theta(BCI_50ha)
+```
+
+-   `untb::optimal.params()` estime $m$ et $\theta$ selon @Etienne2005. Les calculs sont extrêmement longs (et échouent avec un message d'erreur) sans utilisation d'un programme externe, pari/GP. Le code la fonction `logkda_pari_windows()` est bogué et ne permet pas d'exécuter les calculs. Une fonction corrigée est fournie ci-dessous.
+
+- @Hubbell2001 (page 293) estime la log-série correspondant aux espèces les plus fréquentes de la communauté locale.
+
+### Hubbell (2001)
+
+@Hubbell2001[page 293] propose de l'estimer en ajustant la courbe rang-abondance aux espèces les plus fréquentes de la communauté en argumentant que ces espèces sont aussi les plus abondantes de la métacommunauté.
 
 ```{r}
 BCI_50ha %>% 
   sort(decreasing = TRUE) %>% 
   subset(. > median(.)) ->> 
   BCI_dominant
+cat("Estimation de alpha pour BCI à partir des espèces abondantes")
 (theta <- fit_alpha(BCI_dominant))
 # Ajustement
 BCI_dominant %>% 
@@ -155,16 +186,18 @@ BCI_dominant %>%
 ```
 
 L'estimation par la méthode de Hubbell est `r round(theta)`.
+L'ajustement sur la figure est bon.
 
 ### Etienne (2005)
 
 La fonction `logkda_my()` remplace `logkda.pari()` sous Windows. 
 
 ```{r}
+library("untb")
 logkda_my <- function(
     a, 
     numerical = TRUE, 
-    gp_binary = "C:\\Pari64-2-17-2\\gp") {
+    gp_binary = "gp") {
 
   command <- paste(gp_binary, "--version", sep = " ")
   if ((system(command, intern = FALSE, ignore.stderr = TRUE)) != 0) {
@@ -229,7 +262,7 @@ logkda_my <- function(
   
 # Modifie 797 de https://github.com/RobinHankin/untb/blob/master/R/untb.R
 #######################
-  logkda.list <- shell(paste(gp_binary, "-q", file.path(getwd(), "logkda.gp")), intern = TRUE)
+  logkda.list <- shell(paste(gp_binary, "-q", "logkda.gp"), intern = TRUE)
   # Eliminate the last item of the list that contains a prompt
   if (is.list(logkda.list)) {
     # pari/gp returned a list
@@ -247,23 +280,29 @@ logkda_my <- function(
   # shell("del logkda.gp")
   return(logkda.list)
 }
+```
 
-# Vérification par les exemples du package
+Vérification du fonctionnement de la fonction (seulement en mode interactif).
+
+```{r}
+#| include: false
+# Vérification par les exemples du package untb
 zoo <- untb::count(c(pigs = 1, dogs = 1, cats = 2, frogs = 3, bats = 5, slugs = 8))
 # Calcul de log(K(D, A)) par R
-l <- logkda.R(zoo, use.brob = TRUE)
+(l <- logkda.R(zoo, use.brob = TRUE))
 # Equivalent par pari/gp
-l_gp <- logkda_my(zoo)
+(l_gp <- logkda_my(zoo, gp_binary = "C:\\Pari64-2-17-2\\gp"))
 # Calcul de theta et m
-optimal.params(zoo, log.kda = l_gp)  #compare his answer of 7.047958 and 0.22635923.
+optimal.params(zoo, log.kda = l)  #compare his answer of 7.047958 and 0.22635923.
 ```
+
 Application à BCI
 
 ```{r}
 BCI_50ha %>% 
   untb::count() %>% 
   {. ->> BCI_count} %>% 
-  logkda_my() ->
+  logkda_my(gp_binary = "C:\\Pari64-2-17-2\\gp") ->
   BCI_logkda
 BCI_count %>% 
   optimal.params(log.kda = BCI_logkda) %>% 
@@ -272,3 +311,44 @@ BCI_count %>%
 ```
 
 L'estimation selon Etienne est `r round(BCI_params[1])`.
+
+Les valeurs retournées par [Tetame](https://jeromechave.github.io/projects/tetame.htm) sont 47.67 et 0.0934, identiques aux erreurs d'arrondis près.
+
+
+## Simulation complète
+
+L'objectif est de boucler : à partir des paramètres obtenus avec les données de BCI, simuler une métacommunauté puis une communauté de même taille que BCI.
+Si tout va bien, la distribution simulée doit être similaire à la distribution réelle.
+
+Simulation d'une métacommunauté : $J_m = 10^6$ (arbitraire, testé de $10^5$ à $10^7$), $\theta$ obtenu à partir de BCI.
+
+```{r}
+J_m <- 1E6
+theta <- BCI_params[1]
+library("divent")
+the_metacommunity <- rcommunity(1, size = J_m , distribution = "lseries", fisher_alpha = theta)
+```
+
+Distribution de la communauté locale : $J$ de BCI et $m$ estimé précédemment.
+
+```{r}
+J <- sum(BCI)
+m <- BCI_params[2]
+library("sads")
+the_community <- rvolkov(round(Svolkov(theta, m, J)), theta, m, J)
+# Number of species in the local community
+Svolkov(theta, m, J) %>% 
+  round() %>% 
+  # Draw the species abundances
+  rvolkov(theta, m, J) %>% 
+  as_abundances() %>% 
+  autoplot() +
+  # BCI real distribution
+  geom_line(
+    data = tibble(abundance = sort(BCI_50ha, decreasing = TRUE)) %>% 
+      mutate(rank = seq_len(n())),
+    aes(x = rank, y = abundance)
+  )
+```
+
+La communauté simulée (points rouges) correspond assez bien à la distribution réelle de BCI (ligne noire).
