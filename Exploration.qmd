@@ -1,7 +1,7 @@
 ---
 title: "Exploration"
 editor: visual
-bibliography: bibliography.bib
+bibliography: references.bib
 execute:
   # show code chunk output
   include: true
@@ -19,194 +19,71 @@ format:
     embed-resources: true
 ---
 
-## Forme de la SAC
+## Paracou 6
 
-## Communauté lognormale
+Fonctions pour l'ajustement de la RAC en logsérie, copié de `calcul_alpha.qmd`, tests retirés.
+
+```{r}
+#| label: fit-alpha
+# Theoretical rank of abundances
+lseries_RAC <- function(abd, alpha) {
+  rank <- vapply(
+    abd, 
+    function(x) {
+      n <- x * log(1 + alpha / sum(abd))
+      f <- stats::integrate(function(t) {exp(-t) / t}, lower = n, upper = Inf)
+      fv <- f[["value"]]
+      return(alpha * fv)
+    }, 
+    FUN.VALUE = 0
+  )
+  tibble(rank, abundance = abd) |>
+    arrange(rank)
+}
+
+# Fit alpha by minimizing the departure of species ranks from their theoretical value in a logseries
+fit_alpha <- function(abd) {
+  abd_decr <- sort(abd[abd > 0], decreasing = TRUE)
+  optimized <- optim(
+    par = vegan::fisher.alpha(abd),
+    fn = function(alpha) {
+      sum(abs(seq_along(abd_decr) - lseries_RAC(abd_decr, alpha)$rank))
+    }, 
+    method = "L-BFGS-B",
+    lower = 0
+  )
+  optimized$par
+}
+```
+
+Estimation d'alpha à Paracou.
 
 ```{r}
 library("tidyverse")
-library("divent")
-comm_lnorm <- rcommunity(1, size = 1E6, distribution = "lnorm")
-autoplot(comm_lnorm, fit_rac = TRUE, distribution = "lnorm", cex = 1)
-```
-
-
-Courbe d'accumulation
-
-```{r}
-levels <- c(1:500, 500 + (1:50) * 10, 1000 + (1:50) * 100, 6000 + (1:19) * 1000)
-comm_lnorm %>% 
-  accum_hill(levels = levels[levels <= sum(comm_lnorm)]) ->
-  accum_lnorm
-accum_lnorm  %>% 
-  autoplot() +
-  scale_x_log10()
-```
-
-Pente
-
-```{r}
-accum_lnorm %>% 
-  mutate(
-    ln_n = log(level), 
-    dy = lead(diversity) - lag(diversity), 
-    dx = lead(ln_n) - lag(ln_n),
-    alpha = dy / dx
-  ) %>% 
-  ggplot(aes(x = level, y = alpha)) +
-  geom_line() +
-  scale_x_log10()
-```
-
-
-## BCI
-
-```{r}
 library("vegan")
-data(BCI)
-BCI %>% 
-  colSums() %>% 
-  accum_hill(levels = levels[levels <= sum(.)]) ->
-accum_BCI
-accum_BCI  %>% 
-  autoplot() +
-  scale_x_log10()
-```
-
-Pente
-
-```{r}
-accum_BCI %>% 
-  mutate(
-    ln_n = log(level), 
-    dy = lead(diversity) - lag(diversity), 
-    dx = lead(ln_n) - lag(ln_n),
-    alpha = dy / dx
-  ) %>% 
-  ggplot(aes(x = level, y = alpha)) +
-  geom_line() +
-  scale_x_log10()
-```
-
-Sous-échantillonnage des carrés
-
-```{r}
-alpha_sub <- function(sample_size, abd) {
-  the_sample <- sample(seq_len(nrow(abd)), size = sample_size) 
-  abd[the_sample, ] %>% 
-    as_abundances() %>% 
-    mutate(weight = 1) %>% 
-    metacommunity() %>% 
-    fisher.alpha()
-}
-
-sizes <- seq_len(nrow(BCI))[-1]
-alphas <- sapply(sizes, FUN = alpha_sub, abd = BCI)
-tibble(NbPlots = sizes, alpha = alphas) %>% 
-  ggplot(aes(x = NbPlots, y = alpha)) +
-  geom_line() +
-  scale_x_log10() +
-  geom_smooth(method = "lm")
-```
-
-Ajustement d'une loi log-séries
-
-```{r}
-BCI %>% 
-  colSums() %>% 
-  as_abundances() %>% 
-  fit_rac(distribution = "lseries")
-```
-```{r}
-BCI %>% 
-  colSums() %>% 
-  as_abundances() %>% 
-  autoplot(fit_rac = TRUE, distribution = "lseries", cex = 1)
-```
-
-Ajustement d'une lognormale
-
-```{r}
-BCI %>% 
-  colSums() %>% 
-  as_abundances() %>% 
-  {. ->> BCI_abd} %>% 
-  autoplot(fit_rac = TRUE, distribution = "lnorm", cex = 1)
-```
-
-Ajustement d'une log-série
-
-```{r}
-BCI %>% 
-  colSums() %>% 
-  as_abundances() %>% 
-  autoplot(fit_rac = TRUE, distribution = "lseries", cex = 1) %>% 
-  print() ->
-  BCI_RAD
-```
-
-Ajustement d'une logserie avec alpha=50
-
-```{r}
-alpha <- 50
-BCI %>% 
-  colSums() %>% 
-  subset(. > 0) %>% 
-  sort(decreasing = TRUE) %>% 
-  unique() -> nu
-sample_size <- sum(BCI)
-sei <- function(t) exp(-t)/t
-rank <- vapply(nu, function(x) {
-    n <- x * log(1 + alpha / sample_size)
-    f <- stats::integrate(sei, n, Inf)
-    fv <- f[["value"]]
-    return(alpha * fv)
-}, FUN.VALUE = 0)
-BCI_RAD +
-  geom_line(
-    data = tibble(rank = rank, abundance = nu),
-    aes(x = rank, y = abundance)    
-  )
-```
-
-
-
-Comparaison des SAC
-
-```{r}
-rcommunity(
-  1, 
-  size = sum(BCI), 
-  distribution = "lseries", 
-  fisher_alpha = fisher.alpha(colSums(BCI))
-) -> lseries_BCI
-lseries_BCI  %>% 
-  accum_hill(levels = levels[levels <= abd_sum(., as_numeric = TRUE)]) ->
-accum_lseries_BCI
-accum_lseries_BCI %>% 
-  autoplot() +
-  scale_x_log10() +
-  geom_line(
-    data = accum_BCI,
-    mapping = aes(x = level, y = diversity),
-    color = "black"
-  )
-```
-
-
-
-## Paracou 6
-
-
-```{r}
 library("divent")
 paracou_6_abd %>% 
   metacommunity() %>% 
-  accum_hill(levels = levels[levels <= abd_sum(., as_numeric = TRUE)]) %>% 
-  autoplot() +
-  scale_x_log10()
+  {. ->> paracou_6_mc} %>% 
+  as.numeric() %>% 
+  fit_alpha() %>% 
+  print() ->
+  paracou_6_alpha
 ```
 
+Distribution de Paracou
+
+```{r}
+# Points d'estimation de la SAC
+levels <- c(1:500, 500 + (1:50) * 10, 1000 + (1:50) * 100, 6000 + (1:15) * 1000)
+# SAC
+paracou_6_mc %>% 
+  accum_hill(levels = levels[levels <= abd_sum(., as_numeric = TRUE)]) %>% 
+  autoplot() +
+  scale_x_log10() +
+  # Courbe d'accumulation d'une log-série
+  geom_function(fun = \(n) {paracou_6_alpha * log(1 + n / paracou_6_alpha)}, col = "black")
+```
 
 ## Log-séries
 
@@ -217,21 +94,6 @@ lseries_c  %>%
 accum_lseries
 accum_lseries %>% 
   autoplot() +
-  scale_x_log10()
-```
-
-Pente
-
-```{r}
-accum_lseries %>% 
-  mutate(
-    ln_n = log(level), 
-    dy = lead(diversity) - lag(diversity), 
-    dx = lead(ln_n) - lag(ln_n),
-    alpha = dy / dx
-  ) %>% 
-  ggplot(aes(x = level, y = alpha)) +
-  geom_line() +
   scale_x_log10()
 ```
 
@@ -251,7 +113,6 @@ rmultinom(
   scale_x_log10()
 ```
 
-
 ## Régional
 
 ```{r}
@@ -263,7 +124,7 @@ ggplot(data.frame(x = 1:1000), aes(x)) +
 ```
 
 ## Guyane
- 
+
 ```{r}
 "data/abundances.csv" %>% 
   read_csv2() %>% 
@@ -292,9 +153,9 @@ gf_mc %>%
 gf_n <- 5E9
 gf_alpha * log(1 + gf_n / gf_alpha)
 ```
- 
+
 Sous-échantillonnage
- 
+
 ```{r}
 alpha_sub <- function(sample_size, abd) {
   the_sample <- sample(seq_len(nrow(abd)), size = sample_size) 
@@ -313,9 +174,9 @@ tibble(NbPlots = sizes, alpha = alphas) %>%
   scale_x_log10() +
   geom_smooth(method = "lm")
 ```
- 
- Un point par plot
- 
+
+Un point par plot
+
 ```{r}
 # Select one plot per location...
 "data/plots.csv" %>% 
@@ -353,9 +214,9 @@ tibble(NbPlots = sizes, alpha = alphas) %>%
   geom_smooth(method = "lm") +
   ggpubr::stat_regline_equation()
 ```
- 
- ## SAC
- 
+
+\## SAC
+
 ```{r}
 sample_size <- 4
 gf_sub_abd %>% 
@@ -365,16 +226,14 @@ gf_sub_abd %>%
   autoplot() +
   scale_x_log10()
 ```
- 
- Portée de l'échantillon
- 
- L'estimation de la richesse à partir de la log-série de GuyaDiv:
- 
+
+Portée de l'échantillon
+
+L'estimation de la richesse à partir de la log-série de GuyaDiv:
+
 ```{r}
 # Surface prise en compte
 S = 4500
 alpha = 250
 (exp((S + alpha * log(alpha)) / alpha) - alpha) / 600 / 1E6
 ```
- 
- 
