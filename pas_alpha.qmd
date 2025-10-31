@@ -161,7 +161,7 @@ BCI %>%
   colSums() %>% 
   # Courbe d'accumulation
   accum_hill(levels = levels) %>% 
-  # Stockager des valeurs
+  # Stockage des valeurs
   {. ->> BCI_accum} %>%
   autoplot() +
   scale_x_log10() +
