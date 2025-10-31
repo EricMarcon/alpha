@@ -86,6 +86,7 @@ La fonction `lseries_RAC()` calcule le rang théorique de chaque espèces en fon
 La fonction `fit_alpha()` estime $\alpha$ en minimisant la distance L1 entre les rangs théoriques (qui dépendent de $\alpha$) et les rangs observés dans la distribution.
 
 ```{r}
+#| label: fit-alpha
 # Theoretical rank of abundances
 lseries_RAC <- function(abd, alpha) {
   rank <- vapply(
