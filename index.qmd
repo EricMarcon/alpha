@@ -140,7 +140,7 @@ Whatever the scale, the number species increases with the area or the number of 
 Fisher's log-series [@Fisher1943] was derived originally from the distribution of tropical butterflies.
 It is formulated as a species-abundance relationship that links the number of species to the number of individuals with a single parameter, called $\alpha$.
 Fisher's $\alpha$ is thus an ideal candidate to measure diversity since it overcomes the previous issue: it is scale-independent if the actual species distribution is a log-series.
-After a long period of relative obscurity, $\alpha$ made a comeback folowing the development of Hubbell's neutral theory since the metacommunity is distributed in log-series whose $\alpha$ equals $\theta$, the fundamental number of biodiversity.
+After a long period of relative obscurity, $\alpha$ made a comeback following the development of Hubbell's neutral theory since the metacommunity is distributed in log-series whose $\alpha$ equals $\theta$, the fundamental number of biodiversity.
 Although the log-series applies neither to the local or regional scale according to the neutral theory, it became popular to describe the diversity of forest trees, probably for its simplicity.
 Summarizing a species distribution by a statistics that does not apply to it is questionable.
 The aim of this paper is to show that $\alpha$ actually does not measure diversity unambiguously, neither at local nor at regional scales, and should be limited to the largest metacommunity.
@@ -150,9 +150,9 @@ It is organised as follows: Fisher's $\alpha$ fundamentals are first recalled; i
 
 ## Fisher's $\alpha$ fundamentals
 
-Figures: 
+Figures:
 
-- accumulation de BCI avec log-series (nolog_nolog) : @fig-BCI_accum_logx
+-   accumulation de BCI avec log-series (nolog_nolog) : @fig-BCI_accum_logx
 
 Fisher derived the log-series distribution from a set of assumptions.
 In his model, all species are distributed completely randomly and independently from each other, i.e. their abundance in a fixed area follows a Poisson distribution.
@@ -205,11 +205,10 @@ It contains 68 one-hectare plots located in 21 sites scattered over the territor
 
 # Local scale
 
-Figures: 
+Figures:
 
-- accumulation de BCI (nolog_nolog) : @fig-BCI_accum
-- relation alpha~nb plots de BCI : @fig-BCI_size
-
+-   accumulation de BCI (nolog_nolog) : @fig-BCI_accum
+-   relation alpha\~nb plots de BCI : @fig-BCI_size
 
 ```{r}
 #| label: fig-BCI_accum
@@ -314,7 +313,7 @@ At this stage, there is no real argument to decide whether BCI's $\alpha$ is 35 
 
 A solution to this problem is to return to the neutral model theory and assume that the local community is not a log-series because of dispersal limitation, i.e. its immigration parameter $m$ is not 1.
 Then, the parameter to estimate is $\theta$, the fundamental number of biodiversity in the metacommunity BCI belongs to: the metacommunity is distributed as a log-series whose parameter is $\theta$.
-This is an elegant solution both theoretically (all asumptions are valid) and empirically (the estimation of $\alpha$ is robust).
+This is an elegant solution both theoretically (all assumptions are valid) and empirically (the estimation of $\alpha$ is robust).
 
 @Hubbell2001 [page 293] proposed estimating it by adjusting the rank-abundance curve to the most frequent species in the community, arguing that these species are also the most abundant in the metacommunity.
 He found $\theta = 50$.
@@ -327,16 +326,16 @@ ppendix: $\theta$ and $m$ are estimated from the BCI distribution, then a commun
 
 This faces two limits.
 First, as far as we know, it is not applied in the literature.
-Then, it does not exactly desxcribe the diversity of the local community but that of the metacommunity: summarizing BCI by $\theta = 48$ ignores the migration parameter.
+Then, it does not exactly describe the diversity of the local community but that of the metacommunity: summarizing BCI by $\theta = 48$ ignores the migration parameter.
 Modifying $m$ yields very different distribution, from geometric to log-series.
 In other words, $\theta$ only gives a very partial knowledge of the diversity of the local community.
 
 # Regional scale
 
-Figures: 
+Figures:
 
-- Arrhenius logx : @fig-arrhenius_logx
-- relation alpha~nb plots de Guyadiv : @fig-BCI_size
+-   Arrhenius logx : @fig-arrhenius_logx
+-   relation alpha\~nb plots de Guyadiv : @fig-BCI_size
 
 The regional scale is that of Arrhenius's model.
 Its fundamental difference with the local scale is that several communities are taken into account, involving $\beta$ diversity that can't be addressed directly.
@@ -363,7 +362,7 @@ Sampling the metacommunity by a large enough number of plots results in a log-se
 This property allowed estimating the number of species of the Amazon forest [@TerSteege2013] and of all tropical forests of the world [@Slik2015].
 Discussing the sampling issues due to the spatial structure of species [@TerSteege2020] or the discrepancies between the empirical and theoretical distributions [@Milton2025] is not the scope of this paper: even ignoring them, the theory is very well supported empirically.
 
-@Gleason1922 refuted Arrhenius' model, arguing that the richness would be far too high for large areas, and proposed a competing model in which the number of species, rather than its logarithm, increased with the logarithm of the area.
+@Gleason1922 refuted Arrhenius's model, arguing that the richness would be far too high for large areas, and proposed a competing model in which the number of species, rather than its logarithm, increased with the logarithm of the area.
 Assuming saturation, i.e. $n = \rho A$ where $\rho$ is the number of trees per unit area, and $\ln n \gg \ln \rho$ , it can be rewritten as
 
 $$
@@ -478,7 +477,7 @@ tibble(NbPlots = sizes, alpha = alphas) %>%
 # Conclusion
 
 Despite its popularity as an index of diversity, Fisher's $\alpha$ should not be applied to tropical forest communities because it is the parameter of a model that does not fit the data.
-According to the neutral theory, log-series communities would result from migration parameter 1, i.e. in the absence of dispersal limitation of the species of the metacommnunity, which never occurs.
+According to the neutral theory, log-series communities would result from migration parameter 1, i.e. in the absence of dispersal limitation of the species of the metacomnunity, which never occurs.
 Forcing the estimation of $\alpha$ in non-log-series distributions results in highly scale-dependent values that seriously questions the comparisons between communities based on their $\alpha$ index.
 
 At the regional scale, metacommunities do follow log-series distributions so $\alpha$ can be estimated from a set of scattered forest plots, even though the spatial structure of species may introduce estimation biases.
@@ -490,5 +489,5 @@ In this context, it allowed among other results to estimate the number of tree s
 
 Grenier :
 
-- 3 représentations selon les logs, valeur de la pente
-- Rarefaction \<-\> rare species vanish.
+-   3 représentations selon les logs, valeur de la pente
+-   Rarefaction \<-\> rare species vanish.
