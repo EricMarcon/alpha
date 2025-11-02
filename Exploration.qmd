@@ -215,7 +215,7 @@ tibble(NbPlots = sizes, alpha = alphas) %>%
   ggpubr::stat_regline_equation()
 ```
 
-\## SAC
+## SAC
 
 ```{r}
 sample_size <- 4
