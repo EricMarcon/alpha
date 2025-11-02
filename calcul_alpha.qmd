@@ -63,10 +63,9 @@ fishers.alpha(N = sum(BCI_50ha), S = sum(BCI_50ha > 0))
 
 L'alternative est d'ajuster la distribution d'abondance observée à la distribution théorique d'une log-série, en maximisant sa vraisemblance en fonction de $\alpha$.
 
-C'est le cas de : 
+C'est le cas de :
 
-- `sads::fitls()` utilse `mle2()` pour maximiser la vraisemblance de `sads::dls()` (la densité de probabilité de la log-série).
-La valeur de départ est par défaut l'estimation ponctuelle.
+-   `sads::fitls()` utilse `mle2()` pour maximiser la vraisemblance de `sads::dls()` (la densité de probabilité de la log-série). La valeur de départ est par défaut l'estimation ponctuelle.
 
 ```{r}
 #| code-fold: false
@@ -76,12 +75,12 @@ fitls(BCI_50ha)
 
 Dans le cas de BCI, le résultat est le même: le calcul de la vraisemblance donne un poids énorme aux espèces les plus abondantes.
 
-
 ### Ajustement de la RAC
 
 Je propose une méthode alternative d'ajustement : plutôt que maximiser la vraisemblance des données, ajuster la RAC.
 
-La fonction `lseries_RAC()` calcule le rang théorique de chaque espèces en fonction de son abondance. Ces rangs ne sont pas entiers.
+La fonction `lseries_RAC()` calcule le rang théorique de chaque espèces en fonction de son abondance.
+Ces rangs ne sont pas entiers.
 
 La fonction `fit_alpha()` estime $\alpha$ en minimisant la distance L1 entre les rangs théoriques (qui dépendent de $\alpha$) et les rangs observés dans la distribution.
 
@@ -146,7 +145,6 @@ BCI_50ha %>%
 
 La courbe noire est un meilleur ajustement d'une log-série à la distribution de BCI que celui obtenu par maximum de vraisemblance.
 
-
 ## Estimation de $\theta$
 
 $\theta$ est le paramètre de la log-série de la métacommunauté dont la communauté locale est issue.
@@ -161,13 +159,16 @@ library("untb")
 optimal.theta(BCI_50ha)
 ```
 
--   `untb::optimal.params()` estime $m$ et $\theta$ selon @Etienne2005. Les calculs sont extrêmement longs (et échouent avec un message d'erreur) sans utilisation d'un programme externe, pari/GP. Le code la fonction `logkda_pari_windows()` est bogué et ne permet pas d'exécuter les calculs. Une fonction corrigée est fournie ci-dessous.
+-   `untb::optimal.params()` estime $m$ et $\theta$ selon @Etienne2005.
+    Les calculs sont extrêmement longs (et échouent avec un message d'erreur) sans utilisation d'un programme externe, pari/GP.
+    Le code la fonction `logkda_pari_windows()` est bogué et ne permet pas d'exécuter les calculs.
+    Une fonction corrigée est fournie ci-dessous.
 
-- @Hubbell2001 (page 293) estime la log-série correspondant aux espèces les plus fréquentes de la communauté locale.
+-   @Hubbell2001 (page 293) estime la log-série correspondant aux espèces les plus fréquentes de la communauté locale.
 
 ### Hubbell (2001)
 
-@Hubbell2001[page 293] propose de l'estimer en ajustant la courbe rang-abondance aux espèces les plus fréquentes de la communauté en argumentant que ces espèces sont aussi les plus abondantes de la métacommunauté.
+@Hubbell2001 [page 293] propose de l'estimer en ajustant la courbe rang-abondance aux espèces les plus fréquentes de la communauté en argumentant que ces espèces sont aussi les plus abondantes de la métacommunauté.
 
 ```{r}
 BCI_50ha %>% 
@@ -191,7 +192,7 @@ L'ajustement sur la figure est bon.
 
 ### Etienne (2005)
 
-La fonction `logkda_my()` remplace `logkda.pari()` sous Windows. 
+La fonction `logkda_my()` remplace `logkda.pari()` sous Windows.
 
 ```{r}
 library("untb")
@@ -314,7 +315,6 @@ BCI_count %>%
 L'estimation selon Etienne est `r round(BCI_params[1])`.
 
 Les valeurs retournées par [Tetame](https://jeromechave.github.io/projects/tetame.htm) sont 47.67 et 0.0934, identiques aux erreurs d'arrondis près.
-
 
 ## Simulation complète
 
