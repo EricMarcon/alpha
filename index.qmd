@@ -19,7 +19,6 @@ author:
         city: Montpellier
         country: France
         postal-code: 34000
-      - Demo Journal
     orcid: 0000-0002-5249-321X
     email: eric.marcon@agroparistech.fr
     url: https://ericmarcon.github.io/
@@ -39,9 +38,9 @@ execute:
   # show code chunk output
   include: true
   # Show the code in the output
-  echo: true
+  echo: false
   # Show messages
-  message: true
+  message: false
   # Show warnings
   warning: false
   # Cache code results
@@ -131,37 +130,47 @@ set.seed(973)
 
 Tropical evergreen forests such as the Amazon host thousand of tree species that are difficult to assess.
 Even though their biodiversity does not reduce to trees, understanding their distribution is a necessary step to both understand the functioning of the ecosystem and develop conservation policies.
+
 The relation between diversity and area has long been questioned by ecologists.
 It must be addressed according to the considered scale.
 At the local scale, i.e. when the distribution of species can be considered as unique, species accumulation curves (SAC) are built from it with well-known statistical tools.
-At regional scales, i.e. when different communities are included and beta-diversity comes into play, species-area relationships properly speaking are derived from ecological theory with empirical support.
+At regional scales, i.e. when different communities are included and beta-diversity comes into play, species-area relationships (SAR) properly speaking are derived from ecological theory with empirical support.
 Whatever the scale, the number species increases with the area or the number of individuals, making it a challenge to correctly describe biodiversity with a number: species richness (i.e. the number of species) is the simplest candidate, but its application may be ambiguous.
 
-Fisher's log-series was derived originally from the distribution of tropical butterflies.
+Fisher's log-series [@Fisher1943] was derived originally from the distribution of tropical butterflies.
 It is formulated as a species-abundance relationship that links the number of species to the number of individuals with a single parameter, called $\alpha$.
-Fisher's $\alpha$ is thus an ideal candidate to measure diversity since it overcomes the previous issue: it is scale-independent, if the actual species distribution is a log-series.
-After a long period of relative obscurity, $\alpha$ made a comeback after the development of Hubbell's neutral theory since the metacommunity is distributed in log-series whose $\alpha$ equals $\theta$, the fundamental number of biodiversity.
+Fisher's $\alpha$ is thus an ideal candidate to measure diversity since it overcomes the previous issue: it is scale-independent if the actual species distribution is a log-series.
+After a long period of relative obscurity, $\alpha$ made a comeback folowing the development of Hubbell's neutral theory since the metacommunity is distributed in log-series whose $\alpha$ equals $\theta$, the fundamental number of biodiversity.
 Although the log-series applies neither to the local or regional scale according to the neutral theory, it became popular to describe the diversity of forest trees, probably for its simplicity.
 Summarizing a species distribution by a statistics that does not apply to it is questionable.
-The aim of this paper is to show that $\alpha$ actually does not measure diversity unambiguously, neither at local nor at regional scales, and should be limited to the metacommunity scale.
-It is organised as follows: Fisher's $\alpha$ fundamentals are first recalled;its use at the different scales is then discussed before concluding about its applicability.
+The aim of this paper is to show that $\alpha$ actually does not measure diversity unambiguously, neither at local nor at regional scales, and should be limited to the largest metacommunity.
+It is organised as follows: Fisher's $\alpha$ fundamentals are first recalled; its use at the different scales is then discussed before concluding about its applicability.
 
+# Material and methods
 
-# Fisher's $\alpha$ fundamentals
+## Fisher's $\alpha$ fundamentals
+
+Figures: 
+
+- accumulation de BCI avec log-series (nolog_nolog) : @fig-BCI_accum_logx
+
+Fisher derived the log-series distribution from a set of assumptions.
+In his model, all species are distributed completely randomly and independently from each other, i.e. their abundance in a fixed area follows a Poisson distribution.
+The intensities of the Poisson distributions of all species follow in turn a gamma distribution with shape parameter (tending to) zero.
+Last, the number of species is infinite.
+Then, the number of species with non-zero abundance $S(n)$ is linked to the size of the community $n$ through equation @eq-fisheralpha by a parameter named $\alpha$.
+It is called log-series because the number of species is derived as the sum of the number of species with 1 to an infinite number of individuals: this infinite sum appears to be the Taylor series of the logarithm function.
 
 $$
   S(n) = \alpha \ln \left( 1 + \frac{n}{\alpha} \right).
 $$ {#eq-fisheralpha}
 
-For $n >> \alpha$, equation @eq-fisheralpha can be simplified to $S(n) \approx \alpha ln(\alpha) + \alpha ln(n)$, i.e. the number of observed species is linearly related to the logarithm of the sample size.
-The slope of the line is $\alpha$ and the intercept is $\alpha ln(\alpha)$.
-
-Based on @eq-fisheralpha, the species accumulation curve has two parts when it is drawn with a logarithmic X-axis: first, as $n$ is not great enough for the approximation, it is convex, then it is linear.
-
-# Local scale
+For $n >> \alpha$, equation @eq-fisheralpha can be simplified to $S(n) \approx -\alpha ln(\alpha) + \alpha ln(n)$, i.e. the number of observed species is linearly related to the logarithm of the sample size.
+The slope of the line is $\alpha$ and the intercept is $-\alpha ln(\alpha)$.
 
 ```{r}
 #| label: fig-BCI_accum_logx
+#| fig-cap: nolog_nolog
 library("tidyverse")
 library("divent")
 library("vegan")
@@ -177,9 +186,29 @@ BCI %>%
   scale_x_log10() +
   theme(legend.position = "none") +
   # Accumulmation curve of a log-series
-  geom_function(fun = \(n) {BCI_alpha * log(1 + n / BCI_alpha)}, col = "black") ->
-  plot_log_nolog
+  geom_function(fun = \(n) {BCI_alpha * log(1 + n / BCI_alpha)}, col = "black")
 ```
+
+Based on @eq-fisheralpha, the species accumulation curve has two parts when it is drawn with a logarithmic X-axis: first, as $n$ is not great enough for the approximation, it is convex, then it is linear (figure @fig-BCI_accum_logx).
+
+## Example data
+
+To illustrate the estimation of Fisher's $\alpha$ at the local scale, the BCI data set available in the R package vegan will be used.
+It was published by @Condit2002.
+The data consist of 50 one-hectare plots of tropical evergreen forest where all tree above 10 cm DBH (diameter at breast height) were recorded.
+The forest is located on Barro Colorado Island in the canal of Panama.
+It has been studied by many authors, allowing to compare the results of this paper to a large literature, even though the metrics of diversity may vary somehow since the forest was inventoried at different dates, including trees above 1 cm DBH.
+The BCI dataset used here contains `r sum(BCI)` trees above 10 cm DBH in `r ncol(BCI)` species.
+
+The regional dataset is a part of the GuyaDiv network [@Engel2015] located in French Guiana, published in @Marcon2024.
+It contains 68 one-hectare plots located in 21 sites scattered over the territory.
+
+# Local scale
+
+Figures: 
+
+- accumulation de BCI (nolog_nolog) : @fig-BCI_accum
+- relation alpha~nb plots de BCI : @fig-BCI_size
 
 
 ```{r}
@@ -193,8 +222,7 @@ BCI_accum %>%
   geom_hline(
     yintercept = div_richness(BCI_50ha, as_numeric = TRUE), 
     color = "black"
-  ) -> 
-  plot_nolog_nolog
+  )
 ```
 
 Sampling the local community results in a species accumulation curve, studied in depth by @Gotelli2001.
@@ -204,7 +232,7 @@ It is actually computed by rarefaction of the distribution of the whole sample.
 It is usually plotted on continuous scales.
 Between sample sizes $n$ and $n + 1$, the slope of the curve is the probability for the next individual to belong to a new species: it decreases until all species have been discovered: so, it is concave.
 
-`!!@fig-BCI_accum` shows the SAC of the Barro Colorado Island 50-ha forest plot based on the data provided by the *vegan* R package.
+Figure @fig-BCI_accum shows the SAC of the Barro Colorado Island 50-ha forest plot based on the data provided by the *vegan* R package.
 The number of species increases with sample size and does not reach an asymptote despite the huge sampling effort.
 To allow comparing diversity with other sites, two strategies are possible: estimated asymptotic diversity or standardize the sampling effort.
 
@@ -230,13 +258,13 @@ Applying an appropriate model to describe the distribution of species is similar
 
 The empirical question deserves further elaboration, based on the BCI dataset for clarity.
 The basic argument is that the actual distribution is not so different from a log-series that the advantages of summarizing it by $\alpha$ are not worth it.
-Several R packages allow estimating $\alpha$ from a vector of abundances (see !!Appendix 1 for details). 
+Several R packages allow estimating $\alpha$ from a vector of abundances (see !!Appendix 1 for details).
 Most of them (such as `vegan::fisher.alpha`) just solve @eq-fisheralpha, i.e. they only rely on the total abundance and number of species, ignoring the distribution.
 More elaborate ones (such as `sads::fitls`) find the value of $\alpha$ that maximizes the likelihood of the distribution assuming it is a log-series.
-When applied to the BCI dataset, both return the same estimation: `r round(fisher.alpha(BCI_50ha))`. 
+When applied to the BCI dataset, both return the same estimation: `r round(fisher.alpha(BCI_50ha))`.
 
 Yet, in contrast with the assumed advantage of $\alpha$, this estimation heavily relies on the sample size.
-!!Figure shows the average estimation of $\alpha$ based on random subsamples of BCI, from 4 to 50ha, repeated `r `simulations_n` times.
+!!Figure shows the average estimation of $\alpha$ based on random subsamples of BCI, from 4 to 50ha, repeated `r`simulations_n\` times.
 
 ```{r}
 #| label: fig-BCI_size
@@ -275,10 +303,12 @@ tibble(Size = sizes, alpha = rowMeans(alphas)) %>%
   # Equation
   ggpubr::stat_regline_equation(label.x.npc = "center")
 ```
+
 The estimated value of $\alpha$ decreases from over 40 to approximately 35, with a quite good linear relation between $\alpha$ and the logarithm of the sample size.
-Several examples can be found in the literature, e.g. !!Condit, Duque, where the dependence of $\alpha$ to sample size is explored either with a statistical or an ecological approach. 
+Several examples can be found in the literature, e.g. !!C
+ondit, Duque, where the dependence of $\alpha$ to sample size is explored either with a statistical or an ecological approach.
 The fundamental reason is simply that the distributions are not log-series.
-Visually, in @fig-BCI_accum_logx, increasing $\alpha$ moves the log-series distribution to the right and increases its slope. 
+Visually, in @fig-BCI_accum_logx, increasing $\alpha$ moves the log-series distribution to the right and increases its slope.
 Changing the sample size means changing the intersection point between the accumulation curve and the log-series curve, thus necessarily modifying $\alpha$.
 At this stage, there is no real argument to decide whether BCI's $\alpha$ is 35 or 40.
 
@@ -286,42 +316,179 @@ A solution to this problem is to return to the neutral model theory and assume t
 Then, the parameter to estimate is $\theta$, the fundamental number of biodiversity in the metacommunity BCI belongs to: the metacommunity is distributed as a log-series whose parameter is $\theta$.
 This is an elegant solution both theoretically (all asumptions are valid) and empirically (the estimation of $\alpha$ is robust).
 
-@Hubbell2001[page 293] proposed estimating it by adjusting the rank-abundance curve to the most frequent species in the community, arguing that these species are also the most abundant in the metacommunity.
+@Hubbell2001 [page 293] proposed estimating it by adjusting the rank-abundance curve to the most frequent species in the community, arguing that these species are also the most abundant in the metacommunity.
 He found $\theta = 50$.
-The same algorithm is applied to the current BCI dataset in !!appendix: its result is $\theta = 45$.
+The same algorithm is applied to the current BCI dataset in !!a
+ppendix: its result is $\theta = 45$.
 Both $\theta$ and $m$ can be estimated by likelihood maximization of the local distribution.
 The retained value of $\theta$ is 48.
-The consistency of this approach is shown in !!appendix: $\theta$ and $\m$ are estimated from the BCI distribution, then a community of the same size is drawn with these parameters: it is very close to the actual distribution.
+The consistency of this approach is shown in !!a
+ppendix: $\theta$ and $m$ are estimated from the BCI distribution, then a community of the same size is drawn with these parameters: it is very close to the actual distribution.
 
 This faces two limits.
 First, as far as we know, it is not applied in the literature.
 Then, it does not exactly desxcribe the diversity of the local community but that of the metacommunity: summarizing BCI by $\theta = 48$ ignores the migration parameter.
 Modifying $m$ yields very different distribution, from geometric to log-series.
-In other words, $\theta$ only gives a very partial knowledge of the diversity of the local community. 
-
+In other words, $\theta$ only gives a very partial knowledge of the diversity of the local community.
 
 # Regional scale
 
-Arrhenius:
+Figures: 
+
+- Arrhenius logx : @fig-arrhenius_logx
+- relation alpha~nb plots de Guyadiv : @fig-BCI_size
+
+The regional scale is that of Arrhenius's model.
+Its fundamental difference with the local scale is that several communities are taken into account, involving $\beta$ diversity that can't be addressed directly.
+Whereas the computation of the local species accumulation curve (!!figure) was non-parametric, based solely on statistical techniques, the regional species-area relationship follows a power model with parameters c and z,
+
+$$
+  S(A) =c A^z,
+$$ {#eq-arrhenius}
+
+where $A$ is the surface area, $c$ a constant that depends on the organisms taken into account and the regional diversity, and $z$ the parameter that relates richness to area.
+Assuming that forest communities are saturated, the number of individuals is proportional to the area, and the model can be rewritten in a linear form:
+
+$$
+  \ln\left(S\left(n\right)\right) = k_A + z \ln\left(n\right)
+$$ {#eq-arrhenius_log}
+
+where $k_A$ is another constant.
+
+The regional scale is also that of the metacommunity in the neutral model.
+The actual size $J_M$ of the metacommunity a local community results from is difficult to address (!!reference Hubbell) and of little interest in the theory since the important parameter is $\theta$, that combines both $J_m$ and the speciation rate $\nu$.
+The important fact here is that, according to the neutral model, metacommunities are distributed in log-series whose $\alpha$ parameter asymptotically tends to $\theta$ when their size increases.
+
+Sampling the metacommunity by a large enough number of plots results in a log-series distribution.
+This property allowed estimating the number of species of the Amazon forest [@TerSteege2013] and of all tropical forests of the world [@Slik2015].
+Discussing the sampling issues due to the spatial structure of species [@TerSteege2020] or the discrepancies between the empirical and theoretical distributions [@Milton2025] is not the scope of this paper: even ignoring them, the theory is very well supported empirically.
+
+@Gleason1922 refuted Arrhenius' model, arguing that the richness would be far too high for large areas, and proposed a competing model in which the number of species, rather than its logarithm, increased with the logarithm of the area.
+Assuming saturation, i.e. $n = \rho A$ where $\rho$ is the number of trees per unit area, and $\ln n \gg \ln \rho$ , it can be rewritten as
+
+$$
+   S\left(n\right) = k_G + \alpha \ln\left(n\right),
+$$ {#eq-gleason_log}
+
+where $k_G$ is another constant and $\alpha$ the slope of the relation.
+This model is actually identical to Fisher's.
+
+!!Support théorique et empirique pour Arrhenius.
+
+A simple argument against Gleason's model is contained in the neutral theory.
+Consider a large metacommunity and assume it is distributed as a log-series.
+A smaller metacommunity inside it would just be a sample of it in absence of dispersal limitation.
+Then both distributions would be identical, i.e. the same log-series with the same parameter $\alpha$: the same Fisher's model would be valid for all subsamples of the largest metacommunity, validating Gleason's model.
+Yet, dispersal is limited, i.e. not all species of the largest metacommunity are present in the smaller ones: their diversity is reduced.
+Although they are distributed in log-series, their parameter $\alpha$ is smaller.
+Thus, the number of species decreases faster with the area than predicted by Gleason's model.
+
+At this stage, we face an apparent paradox: the regional species area relationship follows a power model but a metacommunity is distributed in log-series.
+It is solved considering that the metacommunity's $\alpha$ parameter depends on its size.
+Again, a smaller metacommunity embedded in the first one does not contain all species because of dispersal limitation.
+When the SAR is plotted on a log-log scale (!!figure), it is linear.
+If the Y-axis is not in logarithmic scale, it becomes concave.
+In this representation (!!fig), the parameter $\alpha$ of log-series increases with area (!! pas limpide exprimé de cette façon).
 
 ```{r}
+#| label: fig-arrhenius_logx
+#| fig-cap: Arrhenius
 k <- 1000
 z <- 1/8
 ggplot(data.frame(x = 1:1000), aes(x)) +
   geom_function(fun = \(x) k * x^z) +
-  scale_x_log10() ->
-  plot_nolog_log
+  scale_x_log10() 
 ```
 
-# Discussion
-
-Global plot
+This theoretical result can be verified empirically with the GuyaDiv network plots in French Guiana.
+In figure @fig-guyadiv_alpha, an increasing number of plots (one per site) is randomly selected to sample the metacommunity.
+The estimated $\alpha$ are plotted against the number of plots.
+Clearly, $\alpha$ increases linearly with the logarithm of the number of plots that is a proxy of the size of the sampled metacommunity.
 
 ```{r}
-#| label: fig-scales
-#| fig-cap: Three scales.
-library(gridExtra)
-grid.arrange(plot_nolog_nolog, plot_nolog_log, plot_log_nolog, ncol = 1)
+#| label: fig-guyadiv_alpha
+#| fig-cap: Guyadiv alpha
+# Read the data
+# Plots
+"data/plots.csv" %>% 
+  read_csv2() ->
+  guyadiv_plots
+# Abundances
+"data/abundances.csv" %>% 
+  read_csv2() ->
+  guyadiv_abd
+
+# Function to randomly select a plot in each of a
+# chosen number of sites (sample_size), merge the plots and return alpha.
+guyadiv_sub_alpha <- function(sample_size) {
+  # Select one plot per location...
+  guyadiv_plots %>% 
+    # Set a random value to each plot
+    mutate(random = runif(n())) %>% 
+    {. ->> plots_randomized} %>% 
+    group_by(Location) %>%
+    # Select the plot with the max random value in each location
+    summarize(random_max = max(random)) %>% 
+    rename(random = random_max) %>% 
+    # Eliminate non-selected plots
+    inner_join(plots_randomized) %>% 
+    # Keep the plot number and the random number
+    select(Plot, random) %>% 
+    # Get the abundances
+    inner_join(guyadiv_abd) %>% 
+    # Sort by random number
+    arrange(random) %>% 
+    # Keep the first rows
+    head(sample_size) %>% 
+    # Delete the random numbers
+    select(-random) %>% 
+    # Make the table an adundance object (package divent)
+    rename(site = Plot) %>% 
+    as_abundances() %>% 
+    # Give all plots equal weight
+    mutate(weight = 1) %>% 
+    # Merge the inventories
+    metacommunity() %>% 
+    # Extract a numeric vector
+    as.numeric() %>% 
+    # Compute alpha
+    fisher.alpha()
+}
+
+# Count the number of sites
+guyadiv_plots %>% 
+  group_by(Location) %>% 
+  summarize() %>% 
+  nrow() ->
+  sites_n
+# Choose sized between 1 and the number of sites
+sizes <- seq_len(sites_n)[-(1:2)]
+# Calculate alpha of each sample
+alphas <- sapply(sizes, FUN = guyadiv_sub_alpha)
+tibble(NbPlots = sizes, alpha = alphas) %>% 
+  ggplot(aes(x = NbPlots, y = alpha)) +
+  geom_line() +
+  scale_x_log10() +
+  geom_smooth(method = "lm") +
+  ggpubr::stat_regline_equation()
 ```
 
-Rarefaction \<-\> rare species vanish.
+!!Fin de l'argumentation: on ne peut pas utiliser alpha pour comparer des régions parce qu'on ne maîtrise pas l'étendue
+
+# Conclusion
+
+Despite its popularity as an index of diversity, Fisher's $\alpha$ should not be applied to tropical forest communities because it is the parameter of a model that does not fit the data.
+According to the neutral theory, log-series communities would result from migration parameter 1, i.e. in the absence of dispersal limitation of the species of the metacommnunity, which never occurs.
+Forcing the estimation of $\alpha$ in non-log-series distributions results in highly scale-dependent values that seriously questions the comparisons between communities based on their $\alpha$ index.
+
+At the regional scale, metacommunities do follow log-series distributions so $\alpha$ can be estimated from a set of scattered forest plots, even though the spatial structure of species may introduce estimation biases.
+Even ignoring this issue, $\alpha$ can't be interpreted simply because it is not possible to characterize the area of the sampled metacommunity.
+At this scale, the measure is correct, but the measured object is unclear.
+
+Finally, the empirical interest of Fisher's $\alpha$ is limited to the distribution of clearly delimited metacommunities, such as the Amazon forest as a whole.
+In this context, it allowed among other results to estimate the number of tree species.
+
+Grenier :
+
+- 3 représentations selon les logs, valeur de la pente
+- Rarefaction \<-\> rare species vanish.
