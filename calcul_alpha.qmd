@@ -1,7 +1,7 @@
 ---
 title: "Calcul d'Alpha de Fisher"
 editor: visual
-bibliography: bibliography.bib
+bibliography: references.bib
 execute:
   # show code chunk output
   include: true
