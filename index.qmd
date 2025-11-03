@@ -54,7 +54,6 @@ corrauthorlabel: Corresponding Author
 
 ```{r}
 #| label: DoNotModify
-#| include: false
 ### Utilities for R. 
 # Do not modify unless you don't use R: then, delete this chunk.
 # Installation of R packages if necessary
@@ -91,7 +90,6 @@ knitr::knit_hooks$set(
 
 ```{r}
 #| label: Options
-#| include: false
 ### Customized R options for this document
 # Delete this chunk if you don't use R
 
@@ -150,10 +148,6 @@ It is organised as follows: Fisher's $\alpha$ fundamentals are first recalled; i
 # Material and methods
 
 ## Fisher's $\alpha$ fundamentals
-
-Figures:
-
--   accumulation de BCI avec log-series (nolog_nolog) : @fig-BCI_accum_logx
 
 Fisher derived the log-series distribution from a set of assumptions [@Fisher1943].
 In his model, all species are distributed completely randomly and independently from each other, i.e. their abundance in a fixed area follows a Poisson distribution.
@@ -218,11 +212,6 @@ It contains 68 one-hectare plots located in 21 sites scattered over the territor
 
 # Local scale
 
-Figures:
-
--   accumulation de BCI (nolog_nolog) : @fig-BCI_accum
--   relation alpha\~nb plots de BCI : @fig-BCI_size
-
 ```{r}
 #| label: fig-BCI_accum
 #| fig-cap: Species Accumulation Curve of BCI extrapolated up to twice the sample size. The dotted lines correspond to the 50-ha inventory. The horizontal, solid line, is the estimated asymptotic number of species.
@@ -242,16 +231,16 @@ The number of species increases step by step, when the next sampled individual b
 This stochastic *collector's curve* is of less interest than its expectation, assuming individuals are sampled independently: only that smoothed curve is called the SAC.
 It is actually computed by rarefaction of the distribution of the whole sample [@Chao2014].
 It is usually plotted on continuous scales.
-Between sample sizes $n$ and $n + 1$, the slope of the curve is the probability for the next individual to belong to a new species [@Grabchak2016]: it decreases until all species have been discovered: so, it is concave.
+Between sample sizes $n$ and $n + 1$, the slope of the curve is the probability for the next individual to belong to a new species [@Grabchak2016]: it decreases until all species have been discovered, so it is concave.
 
-@fig-BCI_accum shows the SAC of the Barro Colorado Island 50-ha forest plot based on the data provided by the *vegan* R package.
+@fig-BCI_accum shows the SAC of the Barro Colorado Island 50-ha forest plot.
 The number of species increases with sample size and does not reach an asymptote despite the huge sampling effort.
-To allow comparing diversity with other sites, two strategies are possible: estimate asymptotic diversity or standardize the sampling effort.
+To allow comparing diversity with other sites, two strategies are possible: estimate asymptotic diversity or standardize the sampling effort [@Chao2012b].
 
 The asymptotic diversity here is the number of species that would be observed if the sample reached the necessary size to encompass all species of the community.
 In hyperdiverse ecosystems such as evergreen forests, the asymptotic community generally does not exist in the field because of environmental variations: increasing the size of the sample results in sampling in different communities.
 Thus, the asymptotic estimators of diversity correspond to theoretical asymptotic communities that do not necessarily exist: it is a feature of a model.
-This is an argument for avoiding them, but the definition of the local community is already a model, in the sense that local environmental variations imply that the distribution of species varies in turn: the heterogeneity of the community considered as negligible corresponds to necessary decisions to model the reality.
+This is an argument for avoiding them, but the definition of the local community is already a model [@Stroud2015], in the sense that local environmental variations imply that the distribution of species varies in turn: the heterogeneity of the community considered as negligible corresponds to necessary decisions to model the reality.
 
 An alternative consists in standardizing the sample site, in general to allow comparing different communities whose inventories are not large enough to allow a reliable estimation of asymptotic diversity.
 Exact rarefaction formulas are available to calculate the number of tree species at any sampling level smaller than the actual sample, and estimators allow extrapolating the diversity up to a limited level, around twice the actual sample size.
@@ -268,7 +257,7 @@ The basic argument is that the actual distribution is not so different from a lo
 Several R packages allow estimating $\alpha$ from a vector of abundances (see !!Appendix 1 for details).
 Most of them (such as `vegan::fisher.alpha`) just solve @eq-fisheralpha, i.e. they only rely on the total abundance and number of species, ignoring the distribution.
 More elaborate ones (such as `sads::fitls`) find the value of $\alpha$ that maximizes the likelihood of the distribution assuming it is a log-series.
-When applied to the BCI dataset, both return the same estimation: `r round(fisher.alpha(BCI_50ha))`.
+When applied to the BCI dataset, both return the same estimation: `r round(vegan::fisher.alpha(BCI_50ha))`.
 
 ```{r}
 #| label: fig-BCI_size
@@ -347,11 +336,6 @@ In other words, $\theta$ only gives a very partial knowledge of the diversity of
 
 # Regional scale
 
-Figures:
-
--   Arrhenius logx : @fig-arrhenius_logx
--   relation alpha\~nb plots de Guyadiv : @fig-BCI_size
-
 The regional scale is that of Arrhenius's model.
 Its fundamental difference with the local scale is that several communities are taken into account, involving $\beta$ diversity that can't be addressed directly.
 Whereas the computation of the local species accumulation curve (!!figure) was non-parametric, based solely on statistical techniques, the regional species-area relationship follows a power model with parameters c and z,
@@ -406,7 +390,7 @@ In this representation (@fig-arrhenius_logx), a log-series species accumulation 
 
 ```{r}
 #| label: fig-arrhenius_logx
-#| fig-cap: "Number of tree species depending on the area (in square km, with density 627 trees/ha) in French Guiana, according to the Arrhenius's power model estimated by @Marcon2024. The Y-axis is not in logarithm, so the relation is a convex curve instead of a straight line. The black dotted lines show the valid estimation of richness in the whole territory: around 2200 species for 80,000 km^2^. The red dotted lines correspond to the number of species (around 4300) estimated by the extrapolation of the log-series sampled by the GuyaDiv network. The corresponding area, obtained by extrapolating the power model, is !!greater the whole Amazon forest. The green line is the species accumulation curve of the log-series estimated from the GuyaDiv metacommunity assuming its area is that of French Guiana. It overestimates the regional biodiversity at all scales. The red curve is the SAC of the actual metacommunity of French Guiana, whose Fisher's $\\alpha$ is twice smaller."
+#| fig-cap: "Number of tree species depending on the area (in square km, with density 627 trees/ha) in French Guiana, according to the Arrhenius's power model estimated by @Marcon2024. The Y-axis is not in logarithm, so the relation is a convex curve instead of a straight line. The black dotted lines show the valid estimation of richness in the whole territory: around 2200 species for 80,000 km^2^. The green line is the species accumulation curve of the log-series estimated from the GuyaDiv metacommunity assuming its area is that of French Guiana. It overestimates the regional biodiversity at all scales. The red curve is the SAC of the actual metacommunity of French Guiana, whose Fisher's $\\alpha$ is twice smaller."
 # Read the data
 # Plots
 "data/plots.csv" %>% 
