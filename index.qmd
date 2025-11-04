@@ -196,32 +196,41 @@ BCI %>%
   geom_function(fun = \(n) {BCI_alpha * log(1 + n / BCI_alpha)}, col = "black")
 ```
 
-Based on @eq-fisheralpha, the species accumulation curve has two parts when it is drawn with a logarithmic X-axis: first, as $n$ is not great enough for the approximation, it is convex, then it is linear (@fig-BCI_accum_logx).
+Based on @eq-fisheralpha, the species accumulation curve has two parts when plotted on a logarithmic x-axis: first, as $n$ is not great enough for the approximation, it is convex, then it is linear (@fig-BCI_accum_logx).
 
 ## Example data
 
 To illustrate the estimation of Fisher's $\alpha$ at the local scale, the BCI data set available in the R [@R] package vegan [@vegan] will be used.
 It was published by @Condit2002.
-The data consist of 50 one-hectare plots of tropical evergreen forest where all tree above 10 cm DBH (diameter at breast height) were recorded.
+The data consist of 50 one-hectare plots of tropical evergreen forest where all trees above 10 cm DBH (diameter at breast height) were recorded.
 The forest is located on Barro Colorado Island in the canal of Panama.
-It has been studied by many authors, allowing to compare the results of this paper to a large literature, even though the metrics of diversity may vary somehow since the forest was inventoried at different dates, including trees above 1 cm DBH.
+It has been studied by many authors [@Muller-Landau2024], allowing to compare the results of this paper to a large literature, even though the metrics of diversity may vary somehow since the forest was inventoried at different dates, including trees above 1 cm DBH.
 The BCI dataset used here contains `r sum(BCI)` trees above 10 cm DBH in `r ncol(BCI)` species.
 
 The regional dataset is a part of the GuyaDiv network [@Engel2015] located in French Guiana, published in @Marcon2024.
 It contains 68 one-hectare plots located in 21 sites scattered over the territory.
+They were used to estimate the number of tree species in French Guiana: around 2200 in 80,000 km^2^ of continuous, tropical evergreen forest on the north-eastern edge of the Amazon.
 
 # Local scale
 
 ```{r}
 #| label: fig-BCI_accum
-#| fig-cap: Species Accumulation Curve of BCI extrapolated up to twice the sample size. The dotted lines correspond to the 50-ha inventory. The horizontal, solid line, is the estimated asymptotic number of species.
+#| fig-cap: Species Accumulation Curve of BCI extrapolated up to twice the sample size. The dotted lines correspond to the 50-ha inventory. The horizontal, solid line, is the estimated asymptotic number of species, calculated with the jackknife estimator of order 1 [@Burnham1978].
+BCI_S_estimate <- div_richness(BCI_50ha, as_numeric = TRUE)
+BCI_S_1ha <- round(
+  div_richness(
+    BCI_50ha, 
+    level = round(sum(BCI) / 50), 
+    as_numeric = TRUE
+  )
+)
 BCI_accum %>%
   autoplot() +
   labs(y = "Richness") +
   theme(legend.position = "none") +
   # Asymptotic estimator
   geom_hline(
-    yintercept = div_richness(BCI_50ha, as_numeric = TRUE), 
+    yintercept = BCI_S_estimate, 
     color = "black"
   )
 ```
@@ -241,9 +250,11 @@ The asymptotic diversity here is the number of species that would be observed if
 In hyperdiverse ecosystems such as evergreen forests, the asymptotic community generally does not exist in the field because of environmental variations: increasing the size of the sample results in sampling in different communities.
 Thus, the asymptotic estimators of diversity correspond to theoretical asymptotic communities that do not necessarily exist: it is a feature of a model.
 This is an argument for avoiding them, but the definition of the local community is already a model [@Stroud2015], in the sense that local environmental variations imply that the distribution of species varies in turn: the heterogeneity of the community considered as negligible corresponds to necessary decisions to model the reality.
+The estimated number of species is `r BCI_S_estimate`.
 
 An alternative consists in standardizing the sample site, in general to allow comparing different communities whose inventories are not large enough to allow a reliable estimation of asymptotic diversity.
-Exact rarefaction formulas are available to calculate the number of tree species at any sampling level smaller than the actual sample, and estimators allow extrapolating the diversity up to a limited level, around twice the actual sample size.
+Exact rarefaction formulas are available to calculate the number of tree species at any sampling level smaller than the actual sample, and estimators allow extrapolating the diversity up to a limited level, around twice the actual sample size [@Chao2014].
+The expected number of species in one hectare of BCI, actually based on the average number of trees per hectare, is `r BCI_S_1ha`.
 
 In contrast, Fisher's $\alpha$ does not depend on the sample size as soon as $n \gg \alpha$, which is always true in forest inventories.
 Thus, it appears to be an ideal, universal metric of biodiversity, allowing to compare it accross sites of different sizes.
@@ -308,8 +319,7 @@ Yet, in contrast with the assumed advantage of $\alpha$, this estimation heavily
 @fig-BCI_size shows the average estimation of $\alpha$ based on random subsamples of BCI, from 4 to 50ha, repeated `r simulations_n` times.
 
 The estimated value of $\alpha$ decreases from over 40 to approximately 35, with a quite good linear relation between $\alpha$ and the logarithm of the sample size.
-Several examples can be found in the literature, e.g. !!C
-ondit, Duque, where the dependence of $\alpha$ to sample size is explored either with a statistical or an ecological approach.
+Several examples can be found in the literature, e.g. @Duque2017; @Schulte2005, where the dependence of $\alpha$ to sample size is explored either with a statistical or an ecological approach.
 The fundamental reason is simply that the distributions are not log-series.
 Visually, in @fig-BCI_accum_logx, increasing $\alpha$ moves the log-series distribution to the right and increases its slope.
 Changing the sample size means changing the intersection point between the accumulation curve and the log-series curve, thus necessarily modifying $\alpha$.
@@ -321,31 +331,31 @@ This is an elegant solution both theoretically (all assumptions are valid) and e
 
 @Hubbell2001 [page 293] proposed estimating it by adjusting the rank-abundance curve to the most frequent species in the community, arguing that these species are also the most abundant in the metacommunity.
 He found $\theta = 50$.
-The same algorithm is applied to the current BCI dataset in !!a
-ppendix: its result is $\theta = 45$.
-Both $\theta$ and $m$ can be estimated by likelihood maximization of the local distribution.
+The same algorithm is applied to the current BCI dataset in !!!
+appendix: its result is $\theta = 45$.
+Both $\theta$ and $m$ can be estimated by likelihood maximization of the local distribution [@Etienne2005] with the untb package [@Hankin2007].
 The retained value of $\theta$ is 48.
-The consistency of this approach is shown in !!a
-ppendix: $\theta$ and $m$ are estimated from the BCI distribution, then a community of the same size is drawn with these parameters: it is very close to the actual distribution.
+The consistency of this approach is shown in !!!
+appendix: $\theta$ and $m$ are estimated from the BCI distribution, then a community of the same size is drawn with these parameters: it is very close to the actual distribution.
 
 This faces two limits.
 First, as far as we know, it is not applied in the literature.
 Then, it does not exactly describe the diversity of the local community but that of the metacommunity: summarizing BCI by $\theta = 48$ ignores the migration parameter.
-Modifying $m$ yields very different distribution, from geometric to log-series.
+Modifying $m$ yields very different distribution, from geometric to log-series [@Hubbell2001].
 In other words, $\theta$ only gives a very partial knowledge of the diversity of the local community.
 
 # Regional scale
 
-The regional scale is that of Arrhenius's model.
+The regional scale is that of Arrhenius's model [@Arrhenius1921].
 Its fundamental difference with the local scale is that several communities are taken into account, involving $\beta$ diversity that can't be addressed directly.
-Whereas the computation of the local species accumulation curve (!!figure) was non-parametric, based solely on statistical techniques, the regional species-area relationship follows a power model with parameters c and z,
+Whereas the computation of the local species accumulation curve was non-parametric, based solely on statistical techniques, the regional species-area relationship follows a power model with parameters $c$ and $z$ ,
 
 $$
   S(A) =c A^z,
 $$ {#eq-arrhenius}
 
 where $A$ is the surface area, $c$ a constant that depends on the organisms taken into account and the regional diversity, and $z$ the parameter that relates richness to area.
-Assuming that forest communities are saturated, the number of individuals is proportional to the area, and the model can be rewritten in a linear form:
+Assuming that forest communities are saturated, i.e. $n = \rho A$ where $\rho$ is the number of trees per unit area,the number of individuals is proportional to the area, and, since $\ln n \gg \ln \rho$, the model can be rewritten in a linear form:
 
 $$
   \ln\left(S\left(n\right)\right) = k_A + z \ln\left(n\right)
@@ -354,10 +364,10 @@ $$ {#eq-arrhenius_log}
 where $k_A$ is another constant.
 
 The regional scale is also that of the metacommunity in the neutral model.
-The actual size $J_M$ of the metacommunity a local community results from is difficult to address (!!reference Hubbell) and of little interest in the theory since the important parameter is $\theta$, that combines both $J_m$ and the speciation rate $\nu$.
-The important fact here is that, according to the neutral model, metacommunities are distributed in log-series whose $\alpha$ parameter asymptotically tends to $\theta$ when their size increases.
+The actual size $J_M$ of the metacommunity a local community results from is difficult to address and of little interest in the theory since the important parameter is $\theta$, that combines both $J_m$ and the speciation rate $\nu$.
+The important fact here is that, according to the neutral model, metacommunities are distributed in log-series whose $\alpha$ parameter asymptotically tends to $\theta$ when their size increases [@Hubbell2001].
 
-Sampling the metacommunity by a large enough number of plots results in a log-series distribution.
+Sampling the metacommunity by a large enough number of plots results in a log-series distribution .
 This property allowed estimating the number of species of the Amazon forest [@TerSteege2013] and of all tropical forests of the world [@Slik2015].
 Discussing the sampling issues due to the spatial structure of species [@TerSteege2020] or the discrepancies between the empirical and theoretical distributions [@Milton2025] is not the scope of this paper: even ignoring them, the theory is very well supported empirically.
 
@@ -369,7 +379,7 @@ $$
 $$ {#eq-gleason_log}
 
 where $k_G$ is another constant and $\alpha$ the slope of the relation.
-This model is actually identical to Fisher's.
+This model is actually identical to Fisher's [@Engen1977].
 
 !!Support théorique et empirique pour Arrhenius.
 
