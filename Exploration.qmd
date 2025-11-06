@@ -19,6 +19,341 @@ format:
     embed-resources: true
 ---
 
+## Estimation de $\alpha$
+
+### Estimation ponctuelle
+
+La plupart des implémentations du calcul de $\alpha$ se limitent à la résolution de l'équation
+
+$$S(n) = \alpha \ln \left( 1 + \frac{n}{\alpha} \right),$$
+
+où $S(n)$ est le nombre d'espèces observées dans un échantillon de taille $n$.
+Les seules données nécessaires sont le nombre d'espèces total et la taille de l'échantillon.
+
+```{r}
+library("tidyverse")
+library("vegan")
+data(BCI)
+BCI %>% 
+  colSums() ->
+  BCI_50ha
+```
+
+C'est le cas de:
+
+-   `vegan::fisher.alpha()` qui s'appuie sur `vegan::fisherfit()`. La résolution numérique utilise `uniroot()`.
+
+```{r}
+#| code-fold: false
+library("vegan")
+fisher.alpha(BCI_50ha)
+fisherfit(BCI_50ha)
+```
+
+-   `untb::fishers.alpha()`, identique à `vegan::fisherfit()`
+
+```{r}
+#| code-fold: false
+library("untb")
+fishers.alpha(N = sum(BCI_50ha), S = sum(BCI_50ha > 0))
+```
+
+### Maximisation de la vraisemblance
+
+L'alternative est d'ajuster la distribution d'abondance observée à la distribution théorique d'une log-série, en maximisant sa vraisemblance en fonction de $\alpha$.
+
+C'est le cas de :
+
+-   `sads::fitls()` utilse `mle2()` pour maximiser la vraisemblance de `sads::dls()` (la densité de probabilité de la log-série). La valeur de départ est par défaut l'estimation ponctuelle.
+
+```{r}
+#| code-fold: false
+library("sads")
+fitls(BCI_50ha)
+```
+
+Dans le cas de BCI, le résultat est le même: le calcul de la vraisemblance donne un poids énorme aux espèces les plus abondantes.
+
+### Ajustement de la RAC
+
+Je propose une méthode alternative d'ajustement : plutôt que maximiser la vraisemblance des données, ajuster la RAC.
+
+La fonction `lseries_RAC()` calcule le rang théorique de chaque espèces en fonction de son abondance.
+Ces rangs ne sont pas entiers.
+
+La fonction `fit_alpha()` estime $\alpha$ en minimisant la distance L1 entre les rangs théoriques (qui dépendent de $\alpha$) et les rangs observés dans la distribution.
+
+```{r}
+#| label: fit-alpha
+# Theoretical rank of abundances
+lseries_RAC <- function(abd, alpha) {
+  rank <- vapply(
+    abd, 
+    function(x) {
+      n <- x * log(1 + alpha / sum(abd))
+      f <- stats::integrate(function(t) {exp(-t) / t}, lower = n, upper = Inf)
+      fv <- f[["value"]]
+      return(alpha * fv)
+    }, 
+    FUN.VALUE = 0
+  )
+  tibble(rank, abundance = abd) |>
+    arrange(rank)
+}
+
+# Test
+cat("Rang théorique des espèces de BCI\n")
+lseries_RAC(BCI_50ha, 50)
+
+# Fit alpha by minimizing the departure of species ranks from their theoretical value in a logseries
+fit_alpha <- function(abd) {
+  abd_decr <- sort(abd[abd > 0], decreasing = TRUE)
+  optimized <- optim(
+    par = vegan::fisher.alpha(abd),
+    fn = function(alpha) {
+      sum(abs(seq_along(abd_decr) - lseries_RAC(abd_decr, alpha)$rank))
+    }, 
+    method = "L-BFGS-B",
+    lower = 0
+  )
+  optimized$par
+}
+
+# Test
+# Simulate a logseries with alpha = 50
+library("divent")
+rcommunity(1, size = 1E6, distribution = "lseries", fisher_alpha = 50) %>% 
+  as.numeric() ->
+  lseries_abd
+# Estimate alpha
+cat("Estimation de alpha à partir d'une distribution simulée où alpha = 50")
+fit_alpha(lseries_abd)
+
+# BCI
+cat("Estimation de alpha à BCI")
+(theta <- fit_alpha(BCI_50ha))
+# Ajustement sur l'ensemble de la distribution
+BCI_50ha %>% 
+  as_abundances() %>% 
+  autoplot() +
+  geom_line(
+    data = lseries_RAC(BCI_50ha, alpha = theta),
+    aes(x = rank, y = abundance)    
+  )
+```
+
+La courbe noire est un meilleur ajustement d'une log-série à la distribution de BCI que celui obtenu par maximum de vraisemblance.
+
+## Estimation de $\theta$
+
+$\theta$ est le paramètre de la log-série de la métacommunauté dont la communauté locale est issue.
+
+Il n'y a pas de fonction facile d'accès dans R pour estimer $\theta$:
+
+-   `untb::optimal.theta()` estime $\theta$ en assumant que $m = 1$.
+
+```{r}
+#| code-fold: false
+library("untb")
+optimal.theta(BCI_50ha)
+```
+
+-   `untb::optimal.params()` estime $m$ et $\theta$ selon @Etienne2005.
+    Les calculs sont extrêmement longs (et échouent avec un message d'erreur) sans utilisation d'un programme externe, pari/GP.
+    Le code la fonction `logkda_pari_windows()` est bogué et ne permet pas d'exécuter les calculs.
+    Une fonction corrigée est fournie ci-dessous.
+
+-   @Hubbell2001 (page 293) estime la log-série correspondant aux espèces les plus fréquentes de la communauté locale.
+
+### Hubbell (2001)
+
+@Hubbell2001 [page 293] propose de l'estimer en ajustant la courbe rang-abondance aux espèces les plus fréquentes de la communauté en argumentant que ces espèces sont aussi les plus abondantes de la métacommunauté.
+
+```{r}
+BCI_50ha %>% 
+  sort(decreasing = TRUE) %>% 
+  subset(. > median(.)) ->> 
+  BCI_dominant
+cat("Estimation de alpha pour BCI à partir des espèces abondantes")
+(theta <- fit_alpha(BCI_dominant))
+# Ajustement
+BCI_dominant %>% 
+  as_abundances() %>% 
+  autoplot() +
+  geom_line(
+    data = lseries_RAC(BCI_50ha, alpha = theta),
+    aes(x = rank, y = abundance)    
+  )
+```
+
+L'estimation par la méthode de Hubbell est `r round(theta)`.
+L'ajustement sur la figure est bon.
+
+### Etienne (2005)
+
+La fonction `logkda_my()` remplace `logkda.pari()` sous Windows.
+
+```{r}
+library("untb")
+logkda_my <- function(
+    a, 
+    numerical = TRUE, 
+    gp_binary = "gp") {
+
+  command <- paste(gp_binary, "--version", sep = " ")
+  if ((system(command, intern = FALSE, ignore.stderr = TRUE)) != 0) {
+    stop("pari/gp not installed: try gp_binary='/usr/local/bin/gp' or similar")
+  }
+  
+  pari_string <- "
+  logKDAvec(abund) =
+   {
+     local(S,J,n,m,k,k0,k1,k2,Told,Tnew,specabund,i,j,Sdiff,cnt1,cnt2);
+     abund = vecsort(abund);
+     S = length(abund);
+     J = sum(k = 1,S,abund[k]);
+     maxabund = abund[S];
+     Sdiff = 1; for(i = 2,S,if(abund[i] != abund[i - 1],Sdiff++));
+     specabund = matrix(2,Sdiff,i,j,0); specabund[1,1] = abund[1]; specabund[2,1] = 1;
+     cnt1 = 1; cnt2 = 1;
+     for(i = 2,S,
+         if(abund[i] != abund[i - 1],
+            cnt1++;
+            cnt2 = 1;
+            specabund[1,cnt1] = abund[i];
+            specabund[2,cnt1] = cnt2
+            ,
+            cnt2++;
+            specabund[2,cnt1] = cnt2
+         )
+     );
+     
+     polyn = vector(1,i,1);
+     i = 1;
+     if(specabund[1,i] == 1,i++);
+     Told = vector(1,i,1);
+     for(n = 2,maxabund,
+         Tnew = vector(n,m,(n > m) * Told[min(n-1,m)] + Told[max(1,m - 1)] * (m - 1)/(n - 1) + 0. );
+         if(n == specabund[1,i],
+            for(k0 = 1,specabund[2,i],
+                lenpolyn2 = length(polyn) + length(Tnew) - 1;
+                polyn = vector(lenpolyn2,k1,sum(k2 = max(1,k1 + 1 - length(Tnew)),min(length(polyn),k1),polyn[k2] * Tnew[k1 + 1 - k2]));
+                
+            );
+            i++;
+         );
+         Told = vector(n,m,Tnew[m]);
+     );
+     logKDA = log(polyn);
+     
+     logKDA
+   }
+  "
+  
+#######################
+# Fin de logkda.pari() : pas de modification
+  
+# logkda_pari_windows
+#######################
+
+  a <- untb::extant(as.count(a))
+  count.string <- paste(as.vector(a), collapse = ",")
+  pari_string <- paste(pari_string, "print(logKDAvec([", count.string, "]))")
+  cat(pari_string, file = "logkda.gp")
+  
+# Modifie 797 de https://github.com/RobinHankin/untb/blob/master/R/untb.R
+#######################
+  logkda.list <- shell(paste(gp_binary, "-q", "logkda.gp"), intern = TRUE)
+  # Eliminate the last item of the list that contains a prompt
+  if (is.list(logkda.list)) {
+    # pari/gp returned a list
+    logkda.list <- paste(logkda.list[[-length(logkda.list)]], sep = "", collapse = "")
+  } else {
+    # pari/gp returned a character vector
+    logkda.list <- paste(logkda.list[-length(logkda.list)], sep = "", collapse = "")
+  }
+########################
+# Fin des modifications
+  if (numerical) {
+    logkda.list <- (as.numeric(unlist(strsplit(gsub("\\[|\\]", "", logkda.list), ","))))
+  }
+  
+  # shell("del logkda.gp")
+  return(logkda.list)
+}
+```
+
+Vérification du fonctionnement de la fonction (seulement en mode interactif).
+
+```{r}
+#| include: false
+# Vérification par les exemples du package untb
+zoo <- untb::count(c(pigs = 1, dogs = 1, cats = 2, frogs = 3, bats = 5, slugs = 8))
+# Calcul de log(K(D, A)) par R
+(l <- logkda.R(zoo, use.brob = TRUE))
+# Equivalent par pari/gp
+(l_gp <- logkda_my(zoo, gp_binary = "C:\\Pari64-2-17-2\\gp"))
+# Calcul de theta et m
+optimal.params(zoo, log.kda = l)  #compare his answer of 7.047958 and 0.22635923.
+```
+
+Application à BCI
+
+```{r}
+BCI_50ha %>% 
+  untb::count() %>% 
+  {. ->> BCI_count} %>% 
+  logkda_my(gp_binary = "C:\\Pari64-2-17-2\\gp") ->
+  BCI_logkda
+BCI_count %>% 
+  optimal.params(log.kda = BCI_logkda) %>% 
+  print() ->
+  BCI_params
+```
+
+L'estimation selon Etienne est `r round(BCI_params[1])`.
+
+Les valeurs retournées par [Tetame](https://jeromechave.github.io/projects/tetame.htm) sont 47.67 et 0.0934, identiques aux erreurs d'arrondis près.
+
+## Simulation complète
+
+L'objectif est de boucler : à partir des paramètres obtenus avec les données de BCI, simuler une métacommunauté puis une communauté de même taille que BCI.
+Si tout va bien, la distribution simulée doit être similaire à la distribution réelle.
+
+Simulation d'une métacommunauté : $J_m = 10^6$ (arbitraire, testé de $10^5$ à $10^7$), $\theta$ obtenu à partir de BCI.
+
+```{r}
+J_m <- 1E6
+theta <- BCI_params[1]
+library("divent")
+the_metacommunity <- rcommunity(1, size = J_m , distribution = "lseries", fisher_alpha = theta)
+```
+
+Distribution de la communauté locale : $J$ de BCI et $m$ estimé précédemment.
+
+```{r}
+J <- sum(BCI)
+m <- BCI_params[2]
+library("sads")
+the_community <- rvolkov(round(Svolkov(theta, m, J)), theta, m, J)
+# Number of species in the local community
+Svolkov(theta, m, J) %>% 
+  round() %>% 
+  # Draw the species abundances
+  rvolkov(theta, m, J) %>% 
+  as_abundances() %>% 
+  autoplot() +
+  # BCI real distribution
+  geom_line(
+    data = tibble(abundance = sort(BCI_50ha, decreasing = TRUE)) %>% 
+      mutate(rank = seq_len(n())),
+    aes(x = rank, y = abundance)
+  )
+```
+
+La communauté simulée (points rouges) correspond assez bien à la distribution réelle de BCI (ligne noire).
+
+
 ## Paracou 6
 
 Fonctions pour l'ajustement de la RAC en logsérie, copié de `calcul_alpha.qmd`, tests retirés.
@@ -83,157 +418,4 @@ paracou_6_mc %>%
   scale_x_log10() +
   # Courbe d'accumulation d'une log-série
   geom_function(fun = \(n) {paracou_6_alpha * log(1 + n / paracou_6_alpha)}, col = "black")
-```
-
-## Log-séries
-
-```{r}
-rcommunity(1, size = 1E6, distribution = "lseries") -> lseries_c
-lseries_c  %>% 
-  accum_hill(levels = levels) ->
-accum_lseries
-accum_lseries %>% 
-  autoplot() +
-  scale_x_log10()
-```
-
-## Sous-échantillonnage
-
-```{r}
-size <- 1E4
-rmultinom(
-  1, 
-  size = size, 
-  prob = as.numeric(as_probabilities(lseries_c))
-) %>% 
-  t() %>% 
-  as_abundances() %>% 
-  accum_hill(levels = levels[levels <= abd_sum(., as_numeric = TRUE)]) %>% 
-  autoplot() +
-  scale_x_log10()
-```
-
-## Régional
-
-```{r}
-k <- 1000
-z <- 1/8
-ggplot(data.frame(x = 1:1000), aes(x)) +
-  geom_function(fun = \(x) k * x^z) +
-  scale_x_log10()
-```
-
-## Guyane
-
-```{r}
-"data/abundances.csv" %>% 
-  read_csv2() %>% 
-  select(-1) %>% 
-  as.matrix() ->
-  gf_abd
-gf_abd %>% 
-  as_abundances() %>% 
-  mutate(weight = 1) %>% 
-  metacommunity() ->
-  gf_mc
-
-gf_mc %>% 
-  accum_hill(levels = levels[levels <= abd_sum(., as_numeric = TRUE)]) %>% 
-  autoplot() ->
-  gf_sar
-
-# logseries
-gf_sar + scale_x_log10()
-# alpha
-gf_mc %>% 
-  fisher.alpha() %>% 
-  print() -> 
-  gf_alpha
-# Richness
-gf_n <- 5E9
-gf_alpha * log(1 + gf_n / gf_alpha)
-```
-
-Sous-échantillonnage
-
-```{r}
-alpha_sub <- function(sample_size, abd) {
-  the_sample <- sample(seq_len(nrow(abd)), size = sample_size) 
-  abd[the_sample, ] %>% 
-    as_abundances() %>% 
-    mutate(weight = 1) %>% 
-    metacommunity() %>% 
-    fisher.alpha()
-}
-
-sizes <- seq_len(nrow(gf_abd))
-alphas <- sapply(sizes, FUN = alpha_sub, abd = gf_abd)
-tibble(NbPlots = sizes, alpha = alphas) %>% 
-  ggplot(aes(x = NbPlots, y = alpha)) +
-  geom_line() +
-  scale_x_log10() +
-  geom_smooth(method = "lm")
-```
-
-Un point par plot
-
-```{r}
-# Select one plot per location...
-"data/plots.csv" %>% 
-  read_csv2() %>% 
-  # Set a random value to each plot
-  mutate(random = runif(n())) -> 
-  plots_randomized
-plots_randomized %>% 
-  group_by(Location) %>%
-  # Select the plot with the max random value in each location
-  summarize(random_max = max(random)) %>% 
-  rename(random = random_max) %>% 
-  # Eliminate non-selected plots
-  inner_join(plots_randomized) %>% 
-  select(Plot) -> 
-  plots_selected
-"data/abundances.csv" %>% 
-  read_csv2() %>% 
-  # Selected plots only
-  inner_join(plots_selected) %>% 
-  rename(site = Plot) %>% 
-  as_abundances() %>% 
-  mutate(weight = 1) -> 
-  gf_sub_abd
-gf_sub_abd %>% 
-  metacommunity() %>% 
-  fisher.alpha()
-# Sous-échantillonnage
-sizes <- seq_len(nrow(gf_sub_abd))
-alphas <- sapply(sizes, FUN = alpha_sub, abd = gf_sub_abd)
-tibble(NbPlots = sizes, alpha = alphas) %>% 
-  ggplot(aes(x = NbPlots, y = alpha)) +
-  geom_line() +
-  scale_x_log10() +
-  geom_smooth(method = "lm") +
-  ggpubr::stat_regline_equation()
-```
-
-## SAC
-
-```{r}
-sample_size <- 4
-gf_sub_abd %>% 
-  filter(site %in% sample(site, size = sample_size)) %>% 
-  metacommunity() %>% 
-  accum_hill(levels = levels[levels <= abd_sum(., as_numeric = TRUE)]) %>% 
-  autoplot() +
-  scale_x_log10()
-```
-
-Portée de l'échantillon
-
-L'estimation de la richesse à partir de la log-série de GuyaDiv:
-
-```{r}
-# Surface prise en compte
-S = 4500
-alpha = 250
-(exp((S + alpha * log(alpha)) / alpha) - alpha) / 600 / 1E6
 ```
