@@ -165,7 +165,7 @@ The slope of the line is $\alpha$ and the intercept is $-\alpha ln(\alpha)$.
 
 ```{r}
 #| label: fig-BCI_accum_logx
-#| fig-cap: Accumulation curve of a log-series distribution (black) and of BCI (red). The intersection of the dotted lines corresponds to the number of trees and of species of BCI 50-ha inventory.
+#| fig-cap: Accumulation curve of a log-series distribution (black) with Fisher's $\alpha$ equal to `r round(BCI_alpha)` and of BCI (red). The intersection of the dotted lines corresponds to the number of trees and of species of BCI 50-ha inventory the value of $\alpha$ is derived from.
 library("tidyverse")
 library("divent")
 library("vegan")
@@ -198,11 +198,12 @@ BCI %>%
 
 Based on @eq-fisheralpha, the species accumulation curve has two parts when plotted on a logarithmic x-axis: first, as $n$ is not great enough for the approximation, it is convex, then it is linear (@fig-BCI_accum_logx).
 
-The distribution can also be represented as a rank-abundance curve (@fig-BCI_RAC). A characteristic fetaure of the log-series is that the abundance of species decreases linearly with their rank, except for the most abundant ones.
+The distribution can also be represented as a rank-abundance curve (@fig-BCI_RAC).
+A characteristic fetaure of the log-series is that the abundance of species decreases linearly with their rank, except for the most abundant ones.
 
 ```{r}
 #| label: fig-BCI_RAC
-#| fig-cap: Rank-abundance curve of a log-series distribution (black) and of BCI (red dots). Species are ordered by decreasing abundance. The log-series is the best fit to BCI data.
+#| fig-cap: Rank-abundance curve of a log-series distribution (black) and of BCI (red dots). Species are ordered by decreasing abundance. The log-series is the best fit to BCI data ($\alpha =$ `r round(BCI_alpha)`).
 #| BCI_50ha %>%
   fit_rac(distribution = "lseries") %>% 
   pluck("rac") ->
@@ -216,7 +217,6 @@ BCI_50ha %>%
     aes(x = rank, y = abundance)
   )
 ```
-
 
 ## Example data
 
@@ -235,7 +235,7 @@ They were used to estimate the number of tree species in French Guiana: around 2
 
 ```{r}
 #| label: fig-BCI_accum
-#| fig-cap: Species Accumulation Curve of BCI extrapolated up to twice the sample size. The dotted lines correspond to the 50-ha inventory. The horizontal, solid line, is the estimated asymptotic number of species, calculated with the jackknife estimator of order 1 [@Burnham1978].
+#| fig-cap: Species Accumulation Curve of BCI extrapolated up to twice the sample size. The dotted lines correspond to the 50-ha inventory. The horizontal, dotred line, is the estimated asymptotic number of species, calculated with the jackknife estimator of order 1 [@Burnham1978]. The black curve is the SAC of the log-series with $\alpha$ equal to `r round(BCI_alpha)`.
 BCI_S_estimate <- div_richness(BCI_50ha, as_numeric = TRUE)
 BCI_S_1ha <- round(
   div_richness(
@@ -251,8 +251,10 @@ BCI_accum %>%
   # Asymptotic estimator
   geom_hline(
     yintercept = BCI_S_estimate, 
-    color = "black"
-  )
+    linetype = 3
+  ) +
+  # Accumulation curve of a log-series
+  geom_function(fun = \(n) {BCI_alpha * log(1 + n / BCI_alpha)}, col = "black")
 ```
 
 Sampling the local community results in a species accumulation curve, studied in depth by @Gotelli2001.
@@ -278,7 +280,11 @@ The expected number of species in one hectare of BCI, actually based on the aver
 
 In contrast, Fisher's $\alpha$ does not depend on the sample size as soon as $n \gg \alpha$, which is always true in forest inventories.
 Thus, it appears to be an ideal, universal metric of biodiversity, allowing to compare it across sites of different sizes.
-The issue is that tropical forest tree communities are not distributed in log-series, with two consequences: from a theoretical point of view, $\alpha$ is the parameter of a distribution that is not observed; from an empirical point of view, its estimation is inconsistent.
+The issue is that the distribution of tropical forest tree communities is not a log-series.
+@Hubbell2001 named it the zero-sum multinomial distribution; its mathematical derivation is due to @Volkov2003.
+It is close to a log-normal distribution [@McGill2003], but differs from by a greater abundance of the rarest species.
+
+This discrepancy has two consequences: from a theoretical point of view, $\alpha$ is the parameter of a distribution that is not observed; from an empirical point of view, its estimation is inconsistent.
 
 The theoretical issue does not require much more argumentation.
 Applying an appropriate model to describe the distribution of species is similar to trying to describe the size of a rectangle by the single length of its side, assuming it is a square.
@@ -288,7 +294,8 @@ The basic argument is that the actual distribution is not so different from a lo
 Several R packages allow estimating $\alpha$ from a vector of abundances (see !!Appendix 1 for details).
 Most of them (such as `vegan::fisher.alpha`) just solve @eq-fisheralpha, i.e. they only rely on the total abundance and number of species, ignoring the distribution.
 More elaborate ones (such as `sads::fitls`) find the value of $\alpha$ that maximizes the likelihood of the distribution assuming it is a log-series.
-When applied to the BCI dataset, both return the same estimation: `r round(vegan::fisher.alpha(BCI_50ha))`.
+When applied to the BCI dataset, both return the same estimation: `r round(BCI_alpha)`.
+Its poor empirical fit is illustrated by @fig-BCI_accum and @fig-BCI_accum_logx.
 
 ```{r}
 #| label: fig-BCI_size
@@ -335,19 +342,17 @@ tibble(Size = sizes) %>%
   ggpubr::stat_regline_equation(label.x.npc = "center")
 ```
 
-Yet, in contrast with the assumed advantage of $\alpha$, this estimation heavily relies on the sample size.
+In contrast with the assumed advantage of $\alpha$, its estimation heavily relies on the sample size.
 @fig-BCI_size shows the average estimation of $\alpha$ based on random subsamples of BCI, from 4 to 50ha, repeated `r simulations_n` times.
 
 The estimated value of $\alpha$ decreases from over 40 to approximately 35, with a quite good linear relation between $\alpha$ and the logarithm of the sample size.
 Several examples can be found in the literature, e.g. @Duque2017; @Schulte2005, where the dependence of $\alpha$ to sample size is explored either with a statistical or an ecological approach.
-The fundamental reason is simply that the distributions are not log-series: @Hubbell2001 named it the zero-sum multinomial distribution; its mathematical derivation is due to @Volkov2003.
-It is close to a log-normal distribution [@Preston1948], but differs from by a greater abundance of the rarest species.
 
 Visually, in @fig-BCI_accum_logx, increasing $\alpha$ moves the log-series distribution to the right and increases its slope.
 Changing the sample size means changing the intersection point between the accumulation curve and the log-series curve, thus necessarily modifying $\alpha$.
 At this stage, there is no real argument to decide whether BCI's $\alpha$ is 35 or 40.
 
-A solution to this problem is to return to the neutral model theory and assume that the local community is not a log-series because of dispersal limitation, i.e. its immigration parameter $m$ is not 1.
+A solution to this problem is to return to the neutral model theory and assume that the local community is not a log-series because of dispersal limitation, i.e. its migration parameter $m$ is not 1.
 Then, the parameter to estimate is $\theta$, the fundamental number of biodiversity in the metacommunity BCI belongs to: the metacommunity is distributed as a log-series whose parameter is $\theta$.
 This is an elegant solution both theoretically (all assumptions are valid) and empirically (the estimation of $\alpha$ is robust).
 
@@ -552,12 +557,15 @@ tibble(NbPlots = sizes) %>%
 ```
 
 The metacommunity GuyaDiv is a sample of largely exceeds the borders of French Guiana.
-Its estimated $\alpha$ equals `r round(gf_alpha_guyadiv)`, implying more than 4000 tree species in the territory based on the number of trees:  627 per hectare on average multiplied by 8 million hectares.
+Its estimated $\alpha$ equals `r round(gf_alpha_guyadiv)`, implying more than 4000 tree species in the territory based on the number of trees: 627 per hectare on average multiplied by 8 million hectares.
 Its SAC is shown on @fig-arrhenius_logx .
-The actual number of species in French Guiana was obtained by the estimation of the power model [@Marcon2024]: it is close to 2200. The correct estimate of $\alpha$ is thus only `r round(gf_alpha_arrhenius)`.
+The actual number of species in French Guiana was obtained by the estimation of the power model [@Marcon2024]: it is close to 2200.
+The correct estimate of $\alpha$ is thus only `r round(gf_alpha_arrhenius)`.
 
-This example illustrates the impossibility to estimate $\alpha$ at a regional scale from sample plots, e.g. to compare the  diversity of adjacent regions. Log-series can be sampled, but the size of the metacommunities can't be controlled.
-Of course, this issue vanishes when the metacommunity under study is bounded, e.g. the Amazon sampled by @TerSteege2013 to estimate its total number of species. In this case, adding samples necessarily leads to an asymptotic estimation of $\alpha$.
+This example illustrates the impossibility to estimate $\alpha$ at a regional scale from sample plots, e.g. to compare the diversity of adjacent regions.
+Log-series can be sampled, but the size of the metacommunities can't be controlled.
+Of course, this issue vanishes when the metacommunity under study is bounded, e.g. the Amazon sampled by @TerSteege2013 to estimate its total number of species.
+In this case, adding samples necessarily leads to an asymptotic estimation of $\alpha$.
 
 # Conclusion
 
