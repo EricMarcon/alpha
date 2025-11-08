@@ -140,7 +140,7 @@ Fisher's log-series [@Fisher1943] was derived originally from the distribution o
 It is formulated as a species-abundance relationship that links the number of species to the number of individuals with a single parameter, called $\alpha$.
 Fisher's $\alpha$ is thus an ideal candidate to measure diversity since it overcomes the previous issue: it is scale-independent if the actual species distribution is a log-series.
 After a long period of relative obscurity, $\alpha$ made a comeback following the development of Hubbell's neutral theory [@Hubbell2001] since the metacommunity is distributed in log-series whose $\alpha$ equals $\theta$, the fundamental number of biodiversity.
-Although the log-series applies neither to the local or regional scale according to the neutral theory, it became popular to describe the diversity of forest trees, probably for its simplicity (!! references).
+Although the log-series applies neither to the local scale according to the neutral theory, it became popular [@Duque2017] to describe the diversity of forest trees, probably for its simplicity.
 Summarizing a species distribution by a statistics that does not apply to it is questionable.
 The aim of this paper is to show that $\alpha$ actually does not measure diversity unambiguously, neither at local nor at regional scales, and should be limited to the largest metacommunity.
 It is organised as follows: Fisher's $\alpha$ fundamentals are first recalled; its use at the different scales is then discussed before concluding about its applicability.
@@ -291,7 +291,7 @@ Applying an appropriate model to describe the distribution of species is similar
 
 The empirical question deserves further elaboration, based on the BCI dataset for clarity.
 The basic argument is that the actual distribution is not so different from a log-series that the advantages of summarizing it by $\alpha$ are not worth it.
-Several R packages allow estimating $\alpha$ from a vector of abundances (see !!Appendix 1 for details).
+Several R packages allow estimating $\alpha$ from a vector of abundances (see Appendix 1 for details).
 Most of them (such as `vegan::fisher.alpha`) just solve @eq-fisheralpha, i.e. they only rely on the total abundance and number of species, ignoring the distribution.
 More elaborate ones (such as `sads::fitls`) find the value of $\alpha$ that maximizes the likelihood of the distribution assuming it is a log-series.
 When applied to the BCI dataset, both return the same estimation: `r round(BCI_alpha)`.
@@ -358,12 +358,10 @@ This is an elegant solution both theoretically (all assumptions are valid) and e
 
 @Hubbell2001 [page 293] proposed estimating it by adjusting the rank-abundance curve to the most frequent species in the community, arguing that these species are also the most abundant in the metacommunity.
 He found $\theta = 50$.
-The same algorithm is applied to the current BCI dataset in !!!
-appendix: its result is $\theta = 45$.
+The same algorithm is applied to the current BCI dataset in Appendix 2: its result is $\theta = 45$.
 Both $\theta$ and $m$ can be estimated by likelihood maximization of the local distribution [@Etienne2005] with the untb package [@Hankin2007].
 The retained value of $\theta$ is 48.
-The consistency of this approach is shown in !!!
-appendix: $\theta$ and $m$ are estimated from the BCI distribution, then a community of the same size is drawn with these parameters: it is very close to the actual distribution.
+The consistency of this approach is shown in Appendix 3: $\theta$ and $m$ are estimated from the BCI distribution, then a community of the same size is drawn with these parameters: it is very close to the actual distribution.
 
 This faces two limits.
 First, as far as we know, it is not applied in the literature.
