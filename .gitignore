@@ -39,3 +39,4 @@ docs/
 # Project specific
 logkda.*
 CTFSRPackage.rdata
+bin/*
