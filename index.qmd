@@ -204,7 +204,7 @@ A characteristic fetaure of the log-series is that the abundance of species decr
 ```{r}
 #| label: fig-BCI_RAC
 #| fig-cap: Rank-abundance curve of a log-series distribution (black) and of BCI (red dots). Species are ordered by decreasing abundance. The log-series is the best fit to BCI data ($\alpha =$ `r round(BCI_alpha)`).
-#| BCI_50ha %>%
+BCI_50ha %>%
   fit_rac(distribution = "lseries") %>% 
   pluck("rac") ->
   BCI_ls_RAC
