@@ -7,6 +7,8 @@ name: Render and Publish
 jobs:
   build-deploy:
     runs-on: macOS-latest
+    permissions:
+      contents: write
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -29,5 +31,3 @@ jobs:
         with:
           path: index.qmd
           target: gh-pages
-        permissions:
-          contents: write
