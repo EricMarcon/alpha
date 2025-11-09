@@ -167,9 +167,9 @@ $$ {#eq-fisheralpha}
 For $n >> \alpha$, @eq-fisheralpha can be simplified to $S(n) \approx -\alpha ln(\alpha) + \alpha ln(n)$, i.e. the number of observed species is linearly related to the logarithm of the sample size.
 The slope of the line is $\alpha$ and the intercept is $-\alpha ln(\alpha)$.
 
+::: {#fig-BCI_accum_logx}
 ```{r}
-#| label: fig-BCI_accum_logx
-#| fig-cap: Accumulation curve of a log-series distribution (black) with Fisher's $\alpha$ equal to `r round(BCI_alpha)` and of BCI (red). The intersection of the dotted lines corresponds to the number of trees and of species of BCI 50-ha inventory the value of $\alpha$ is derived from.
+#| label: BCI_accum_logx
 library("tidyverse")
 library("divent")
 library("vegan")
@@ -200,14 +200,18 @@ BCI %>%
   geom_function(fun = \(n) {BCI_alpha * log(1 + n / BCI_alpha)}, col = "black")
 ```
 
+Accumulation curve of a log-series distribution (black) with Fisher's $\alpha$ equal to `r round(BCI_alpha)` and of BCI (red).
+The intersection of the dotted lines corresponds to the number of trees and of species of BCI 50-ha inventory the value of $\alpha$ is derived from.
+:::
+
 Based on @eq-fisheralpha, the species accumulation curve has two parts when plotted on a logarithmic x-axis: first, as $n$ is not great enough for the approximation, it is convex, then it is linear (@fig-BCI_accum_logx).
 
 The distribution can also be represented as a rank-abundance curve (@fig-BCI_RAC).
 A characteristic feature of the log-series is that the abundance of species decreases linearly with their rank, except for the most abundant ones.
 
+::: {#fig-BCI_RAC}
 ```{r}
-#| label: fig-BCI_RAC
-#| fig-cap: Rank-abundance curve of a log-series distribution (black) and of BCI (red dots). Species are ordered by decreasing abundance. The log-series is the best fit to BCI data ($\alpha =$ `r round(BCI_alpha)`).
+#| label: BCI_RAC
 BCI_50ha %>%
   fit_rac(distribution = "lseries") %>% 
   pluck("rac") ->
@@ -221,6 +225,11 @@ BCI_50ha %>%
     aes(x = rank, y = abundance)
   )
 ```
+
+Rank-abundance curve of a log-series distribution (black) and of BCI (red dots).
+Species are ordered by decreasing abundance.
+The log-series is the best fit to BCI data ($\alpha =$ `r round(BCI_alpha)`).
+:::
 
 ## Example data
 
@@ -237,9 +246,9 @@ They were used to estimate the number of tree species in French Guiana: around 2
 
 # Local scale
 
+::: {#fig-BCI_accum}
 ```{r}
-#| label: fig-BCI_accum
-#| fig-cap: Species Accumulation Curve of BCI extrapolated up to twice the sample size. The dotted lines correspond to the 50-ha inventory. The horizontal, dotred line, is the estimated asymptotic number of species, calculated with the jackknife estimator of order 1 [@Burnham1978]. The black curve is the SAC of the log-series with $\alpha$ equal to `r round(BCI_alpha)`.
+#| label: BCI_accum
 BCI_S_estimate <- div_richness(BCI_50ha, as_numeric = TRUE)
 BCI_S_1ha <- round(
   div_richness(
@@ -260,6 +269,12 @@ BCI_accum %>%
   # Accumulation curve of a log-series
   geom_function(fun = \(n) {BCI_alpha * log(1 + n / BCI_alpha)}, col = "black")
 ```
+
+Species Accumulation Curve of BCI extrapolated up to twice the sample size.
+The dotted lines correspond to the 50-ha inventory.
+The horizontal, dotred line, is the estimated asymptotic number of species, calculated with the jackknife estimator of order 1 [@Burnham1978].
+The black curve is the SAC of the log-series with $\alpha$ equal to `r round(BCI_alpha)`.
+:::
 
 Sampling the local community results in a species accumulation curve, studied in depth by @Gotelli2001.
 The number of species increases step by step, when the next sampled individual belongs to a new one.
@@ -301,9 +316,9 @@ More elaborate ones (such as `sads::fitls`) find the value of $\alpha$ that maxi
 When applied to the BCI dataset, both return the same estimation: `r round(BCI_alpha)`.
 Its poor empirical fit is illustrated by @fig-BCI_accum and @fig-BCI_accum_logx.
 
+::: {#fig-BCI_size}
 ```{r}
-#| label: fig-BCI_size
-#| fig-cap: Estimation of Fisher's $\alpha$ depending on the number of 1-ha plots of BCI. The dots are random draws of plot assemblages. The line is the fit of a linear model relating $\alpha$ to the logarithm of the number of plots.
+#| label: BCI_size
 # Sample `sample_size` sites in an abundance table, group them and compute alpha
 alpha_sub <- function(sample_size, abd) {
   # Draw the rows of to sample in the table
@@ -322,14 +337,14 @@ alpha_sub <- function(sample_size, abd) {
     fisher.alpha()
 }
 
-# Sample friom 4 to 50ha
+# Sample from 4 to 50ha
 sizes <- seq_len(nrow(BCI))[-(1:3)]
 # Number of simulations
 simulations_n <- 20
 # Compute alpha
 alphas <- replicate(
   simulations_n, 
-  # Calulate alpha at all sample sizes
+  # Caclulate alpha at all sample sizes
   expr = sapply(sizes, FUN = alpha_sub, abd = BCI)
 )
 # alpha values
@@ -345,6 +360,11 @@ tibble(Size = sizes) %>%
   # Equation
   ggpubr::stat_regline_equation(label.x.npc = "center")
 ```
+
+Estimation of Fisher's $\alpha$ depending on the number of 1-ha plots of BCI.
+The dots are random draws of plot assemblages.
+The line is the fit of a linear model relating $\alpha$ to the logarithm of the number of plots.
+:::
 
 In contrast with the assumed advantage of $\alpha$, its estimation heavily relies on the sample size.
 @fig-BCI_size shows the average estimation of $\alpha$ based on random subsamples of BCI, from 4 to 50ha, repeated `r simulations_n` times.
@@ -427,9 +447,9 @@ When the SAR is plotted on a log-log scale, it is linear.
 If the y-axis is not in logarithmic scale, it becomes concave.
 In this representation (@fig-arrhenius_logx), a log-series species accumulation curve is a straight line (the number of individuals is much greater than $\alpha$) so $\alpha$ increases with area.
 
+::: {#fig-arrhenius_logx}
 ```{r}
-#| label: fig-arrhenius_logx
-#| fig-cap: "Number of tree species depending on the area (in square km, with density 627 trees/ha) in French Guiana, according to the Arrhenius's power model estimated by @Marcon2024. The Y-axis is not in logarithm, so the relation is a convex curve instead of a straight line. The black dotted lines show the valid estimation of richness in the whole territory: around 2200 species for 80,000 km^2^. The green line is the species accumulation curve of the log-series estimated from the GuyaDiv metacommunity assuming its area is that of French Guiana. It overestimates the regional biodiversity at all scales. The red curve is the SAC of the actual metacommunity of French Guiana, whose Fisher's $\\alpha$ is twice smaller."
+#| label: arrhenius_logx
 # Read the data
 # Plots
 "data/plots.csv" %>% 
@@ -489,14 +509,22 @@ ggplot(data.frame(x = 10^(1:6)), aes(x)) +
   labs(x = "Area", y = "Number of species")
 ```
 
+Number of tree species depending on the area (in square km, with density 627 trees/ha) in French Guiana, according to the Arrhenius's power model estimated by @Marcon2024.
+The Y-axis is not in logarithm, so the relation is a convex curve instead of a straight line.
+The black dotted lines show the valid estimation of richness in the whole territory: around 2200 species for 80,000 km^2^.
+The green line is the species accumulation curve of the log-series estimated from the GuyaDiv metacommunity assuming its area is that of French Guiana.
+It overestimates the regional biodiversity at all scales.
+The red curve is the SAC of the actual metacommunity of French Guiana, whose Fisher's $\\alpha$ is twice smaller.
+:::
+
 This theoretical result can be verified empirically with the GuyaDiv network plots in French Guiana.
 In @fig-guyadiv_alpha, an increasing number of plots (one per site) is randomly selected to sample the metacommunity.
 The estimated $\alpha$ are plotted against the number of plots.
 Clearly, $\alpha$ increases linearly with the logarithm of the number of plots that is a proxy of the size of the sampled metacommunity.
 
+::: {#fig-guyadiv_alpha}
 ```{r}
-#| label: fig-guyadiv_alpha
-#| fig-cap: Estimation of the metacommunity's $\alpha$ as a function of the number of GuyaDiv plots used to sample it. The line is the fit of the linear model relating $\alpha$ to the logarithm of the number of plots.
+#| label: guyadiv_alpha
 # Function to randomly select a plot in each of a
 # chosen number of sites (sample_size), merge the plots and return alpha.
 guyadiv_sub_alpha <- function(sample_size) {
@@ -557,6 +585,10 @@ tibble(NbPlots = sizes) %>%
   geom_smooth(method = "lm") +
   ggpubr::stat_regline_equation()
 ```
+
+Estimation of the metacommunity's $\alpha$ as a function of the number of GuyaDiv plots used to sample it.
+The line is the fit of the linear model relating $\alpha$ to the logarithm of the number of plots.
+:::
 
 The metacommunity GuyaDiv is a sample of largely exceeds the borders of French Guiana.
 Its estimated $\alpha$ equals `r round(gf_alpha_guyadiv)`, implying more than 4000 tree species in the territory based on the number of trees: 627 per hectare on average multiplied by 8 million hectares.
