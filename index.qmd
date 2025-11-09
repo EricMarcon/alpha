@@ -94,7 +94,7 @@ knitr::knit_hooks$set(
 # Delete this chunk if you don't use R
 
 # Add necessary packages here
-packages <- c("tidyverse", "divent", "vegan", "untb")
+packages <- c("tidyverse", "divent", "vegan", "untb", "ggpubr")
 # Install them
 install_packages(packages)
 
