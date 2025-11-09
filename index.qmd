@@ -199,7 +199,7 @@ BCI %>%
 Based on @eq-fisheralpha, the species accumulation curve has two parts when plotted on a logarithmic x-axis: first, as $n$ is not great enough for the approximation, it is convex, then it is linear (@fig-BCI_accum_logx).
 
 The distribution can also be represented as a rank-abundance curve (@fig-BCI_RAC).
-A characteristic fetaure of the log-series is that the abundance of species decreases linearly with their rank, except for the most abundant ones.
+A characteristic feature of the log-series is that the abundance of species decreases linearly with their rank, except for the most abundant ones.
 
 ```{r}
 #| label: fig-BCI_RAC
