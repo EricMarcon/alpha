@@ -313,7 +313,8 @@ logkda_my <- function(
 }
 ```
 
-Vérification du fonctionnement de la fonction (seulement en mode interactif).
+
+Vérification du fonctionnement de la fonction.
 
 ```{r}
 #| include: false
@@ -322,7 +323,7 @@ zoo <- untb::count(c(pigs = 1, dogs = 1, cats = 2, frogs = 3, bats = 5, slugs = 
 # Calcul de log(K(D, A)) par R
 (l <- logkda.R(zoo, use.brob = TRUE))
 # Equivalent par pari/gp
-(l_gp <- logkda_my(zoo, gp_binary = "bin\\gp"))
+(l_gp <- logkda(zoo, gp_binary = "bin\\gp"))
 # Calcul de theta et m
 optimal.params(zoo, log.kda = l)  #compare his answer of 7.047958 and 0.22635923.
 ```
@@ -334,7 +335,7 @@ BCI_50ha %>%
   untb::count() %>% 
   {. ->> BCI_count} %>% 
   # Windows only. gp.exe must be in bin subfolder.
-  logkda_my(gp_binary = "bin\\gp") ->
+  logkda(gp_binary = "bin\\gp") ->
   BCI_logkda
 BCI_count %>% 
   optimal.params(log.kda = BCI_logkda) %>% 
