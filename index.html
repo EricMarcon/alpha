@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Eric Marcon">
+<meta name="keywords" content="Fisher’s alpha, biodiversity, tropical forests">
+
+<title>Fisher’s alpha is not a valid metric of biodiversity in tropical forests</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="index_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="index_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap-b9aa03ad5355050647b5a7a5fe5b738e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="colors.css">
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
+  <li><a href="#material-and-methods" id="toc-material-and-methods" class="nav-link" data-scroll-target="#material-and-methods"><span class="header-section-number">2</span> Material and methods</a>
+  <ul class="collapse">
+  <li><a href="#fishers-alpha-fundamentals" id="toc-fishers-alpha-fundamentals" class="nav-link" data-scroll-target="#fishers-alpha-fundamentals"><span class="header-section-number">2.1</span> Fisher’s <span class="math inline">\(\alpha\)</span> fundamentals</a></li>
+  <li><a href="#example-data" id="toc-example-data" class="nav-link" data-scroll-target="#example-data"><span class="header-section-number">2.2</span> Example data</a></li>
+  </ul></li>
+  <li><a href="#local-scale" id="toc-local-scale" class="nav-link" data-scroll-target="#local-scale"><span class="header-section-number">3</span> Local scale</a></li>
+  <li><a href="#regional-scale" id="toc-regional-scale" class="nav-link" data-scroll-target="#regional-scale"><span class="header-section-number">4</span> Regional scale</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">5</span> Conclusion</a></li>
+  <li><a href="#bibliography" id="toc-bibliography" class="nav-link" data-scroll-target="#bibliography">References</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF (stylisharticle)</a></li></ul></div></nav>
+</div>
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Fisher’s alpha is not a valid metric of biodiversity in tropical forests</h1>
+</div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author"><a href="https://ericmarcon.github.io/">Eric Marcon</a> <a href="mailto:eric.marcon@agroparistech.fr" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> <a href="https://orcid.org/0000-0002-5249-321X" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            AgroParisTech
+          </p>
+      </div>
+  </div>
+
+<div class="quarto-title-meta">
+
+      
+  
+    
+  </div>
+  
+<div>
+  <div class="abstract">
+    <div class="block-title">Abstract</div>
+    <p>Fisher’s alpha should not be used to assess the diversity of tropical forest tree species at the local and regional scales.</p>
+  </div>
+</div>
+
+<div>
+  <div class="keywords">
+    <div class="block-title">Keywords</div>
+    <p>Fisher’s alpha, biodiversity, tropical forests</p>
+  </div>
+</div>
+
+</header>
+
+
+<section id="introduction" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
+<p>Tropical evergreen forests such as the Amazon host thousand of tree species that are difficult to assess <span class="citation" data-cites="TerSteege2013">(<a href="#ref-TerSteege2013" role="doc-biblioref">Steege et al. 2013</a>)</span>. Even though their biodiversity does not reduce to trees, understanding their distribution is a necessary step to both understand the functioning of the ecosystem <span class="citation" data-cites="Liang2016">(<a href="#ref-Liang2016" role="doc-biblioref">Liang et al. 2016</a>)</span> and develop conservation policies <span class="citation" data-cites="Strange2024">(<a href="#ref-Strange2024" role="doc-biblioref">Strange et al. 2024</a>)</span>.</p>
+<p>The relation between diversity and area has long been questioned by ecologists <span class="citation" data-cites="MacArthur1967 Plotkin2000a">(<a href="#ref-MacArthur1967" role="doc-biblioref">MacArthur and Wilson 1967</a>; <a href="#ref-Plotkin2000a" role="doc-biblioref">Plotkin et al. 2000</a>)</span>. It must be addressed according to the considered scale <span class="citation" data-cites="Grilli2012">(<a href="#ref-Grilli2012" role="doc-biblioref">Grilli et al. 2012</a>)</span>. At the local scale, i.e.&nbsp;when the distribution of species can be considered as unique, species accumulation curves (SAC) are built from it with well-known statistical tools <span class="citation" data-cites="Gotelli2001 Chao2014">(<a href="#ref-Gotelli2001" role="doc-biblioref">Gotelli and Colwell 2001</a>; <a href="#ref-Chao2014" role="doc-biblioref">Chao et al. 2014</a>)</span>. At regional scales, i.e.&nbsp;when different communities are included and beta-diversity comes into play, species-area relationships (SAR) properly speaking are derived from ecological theory <span class="citation" data-cites="Harte1999">(<a href="#ref-Harte1999" role="doc-biblioref">Harte et al. 1999</a>)</span> with empirical support <span class="citation" data-cites="Arrhenius1921">(<a href="#ref-Arrhenius1921" role="doc-biblioref">Arrhenius 1921</a>)</span>. Whatever the scale, the number species increases with the area or the number of individuals, making it a challenge to correctly describe biodiversity with a number: species richness (i.e.&nbsp;the number of species) is the simplest candidate, but its application may be ambiguous.</p>
+<p>Fisher’s log-series <span class="citation" data-cites="Fisher1943">(<a href="#ref-Fisher1943" role="doc-biblioref">Fisher et al. 1943</a>)</span> was derived originally from the distribution of tropical butterflies. It is formulated as a species-abundance relationship that links the number of species to the number of individuals with a single parameter, called <span class="math inline">\(\alpha\)</span>. Fisher’s <span class="math inline">\(\alpha\)</span> is thus an ideal candidate to measure diversity since it overcomes the previous issue: it is scale-independent if the actual species distribution is a log-series. After a long period of relative obscurity, <span class="math inline">\(\alpha\)</span> made a comeback following the development of Hubbell’s neutral theory <span class="citation" data-cites="Hubbell2001">(<a href="#ref-Hubbell2001" role="doc-biblioref">Hubbell 2001</a>)</span> since the metacommunity is distributed in log-series whose <span class="math inline">\(\alpha\)</span> equals <span class="math inline">\(\theta\)</span>, the fundamental number of biodiversity. Although the log-series applies neither to the local scale according to the neutral theory, it became popular <span class="citation" data-cites="Duque2017">(<a href="#ref-Duque2017" role="doc-biblioref">Duque et al. 2017</a>)</span> to describe the diversity of forest trees, probably for its simplicity. Summarizing a species distribution by a statistics that does not apply to it is questionable. The aim of this paper is to show that <span class="math inline">\(\alpha\)</span> actually does not measure diversity unambiguously, neither at local nor at regional scales, and should be limited to the largest metacommunity. It is organised as follows: Fisher’s <span class="math inline">\(\alpha\)</span> fundamentals are first recalled; its use at the different scales is then discussed before concluding about its applicability.</p>
+</section>
+<section id="material-and-methods" class="level1 page-columns page-full" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Material and methods</h1>
+<section id="fishers-alpha-fundamentals" class="level2 page-columns page-full" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="fishers-alpha-fundamentals"><span class="header-section-number">2.1</span> Fisher’s <span class="math inline">\(\alpha\)</span> fundamentals</h2>
+<p>Fisher derived the log-series distribution from a set of assumptions <span class="citation" data-cites="Fisher1943">(<a href="#ref-Fisher1943" role="doc-biblioref">Fisher et al. 1943</a>)</span>. In his model, all species are distributed completely randomly and independently from each other, i.e.&nbsp;their abundance in a fixed area follows a Poisson distribution. The intensities of the Poisson distributions of all species follow in turn a gamma distribution with shape parameter (tending to) zero. Last, the number of species is infinite. Then, the number of species with non-zero abundance <span class="math inline">\(S(n)\)</span> is linked to the size of the community <span class="math inline">\(n\)</span> through <a href="#eq-fisheralpha" class="quarto-xref">Equation&nbsp;1</a> by a parameter named <span class="math inline">\(\alpha\)</span>. It is called log-series because the number of species is derived as the sum of the number of species with 1 to an infinite number of individuals: this infinite sum appears to be the Taylor series of the logarithm function.</p>
+<p><span id="eq-fisheralpha"><span class="math display">\[
+  S(n) = \alpha \ln \left( 1 + \frac{n}{\alpha} \right).
+\tag{1}\]</span></span></p>
+<p>For <span class="math inline">\(n &gt;&gt; \alpha\)</span>, <a href="#eq-fisheralpha" class="quarto-xref">Equation&nbsp;1</a> can be simplified to <span class="math inline">\(S(n) \approx -\alpha ln(\alpha) + \alpha ln(n)\)</span>, i.e.&nbsp;the number of observed species is linearly related to the logarithm of the sample size. The slope of the line is <span class="math inline">\(\alpha\)</span> and the intercept is <span class="math inline">\(-\alpha ln(\alpha)\)</span>.</p>
+<p></p>
+<div class="cell page-columns page-full">
+<div class="cell-output-display page-columns page-full">
+<div id="fig-BCI_accum_logx" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-BCI_accum_logx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-BCI_accum_logx-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-BCI_accum_logx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Accumulation curve of a log-series distribution (black) with Fisher’s <span class="math inline">\(\alpha\)</span> equal to <code>r round(BCI_alpha)</code> and of BCI (red). The intersection of the dotted lines corresponds to the number of trees and of species of BCI 50-ha inventory the value of <span class="math inline">\(\alpha\)</span> is derived from.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
+<p>Based on <a href="#eq-fisheralpha" class="quarto-xref">Equation&nbsp;1</a>, the species accumulation curve has two parts when plotted on a logarithmic x-axis: first, as <span class="math inline">\(n\)</span> is not great enough for the approximation, it is convex, then it is linear (<a href="#fig-BCI_accum_logx" class="quarto-xref">Figure&nbsp;1</a>).</p>
+<p>The distribution can also be represented as a rank-abundance curve (<a href="#fig-BCI_RAC" class="quarto-xref">Figure&nbsp;2</a>). A characteristic feature of the log-series is that the abundance of species decreases linearly with their rank, except for the most abundant ones.</p>
+<p></p>
+<div class="cell page-columns page-full">
+<div class="cell-output-display page-columns page-full">
+<div id="fig-BCI_RAC" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-BCI_RAC-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-BCI_RAC-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-BCI_RAC-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Rank-abundance curve of a log-series distribution (black) and of BCI (red dots). Species are ordered by decreasing abundance. The log-series is the best fit to BCI data (<span class="math inline">\(\alpha =\)</span> <code>r round(BCI_alpha)</code>).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
+</section>
+<section id="example-data" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="example-data"><span class="header-section-number">2.2</span> Example data</h2>
+<p>To illustrate the estimation of Fisher’s <span class="math inline">\(\alpha\)</span> at the local scale, the BCI data set available in the R <span class="citation" data-cites="R">(<a href="#ref-R" role="doc-biblioref">R Core Team 2025</a>)</span> package vegan <span class="citation" data-cites="vegan">(<a href="#ref-vegan" role="doc-biblioref">Oksanen et al. 2025</a>)</span> will be used. It was published by <span class="citation" data-cites="Condit2002">Condit et al. (<a href="#ref-Condit2002" role="doc-biblioref">2002</a>)</span>. The data consist of 50 one-hectare plots of tropical evergreen forest where all trees above 10 cm DBH (diameter at breast height) were recorded. The forest is located on Barro Colorado Island in the canal of Panama. It has been studied by many authors <span class="citation" data-cites="Muller-Landau2024">(<a href="#ref-Muller-Landau2024" role="doc-biblioref">Muller-Landau and Wright 2024</a>)</span>, allowing to compare the results of this paper to a large literature, even though the metrics of diversity may vary somehow since the forest was inventoried at different dates, including trees above 1 cm DBH. The BCI dataset used here contains 21457 trees above 10 cm DBH in 225 species.</p>
+<p>The regional dataset is a part of the GuyaDiv network <span class="citation" data-cites="Engel2015">(<a href="#ref-Engel2015" role="doc-biblioref">Engel 2015</a>)</span> located in French Guiana, published in <span class="citation" data-cites="Marcon2024">Marcon et al. (<a href="#ref-Marcon2024" role="doc-biblioref">2024</a>)</span>. It contains 68 one-hectare plots located in 21 sites scattered over the territory. They were used to estimate the number of tree species in French Guiana: around 2200 in 80,000 km<sup>2</sup> of continuous, tropical evergreen forest on the north-eastern edge of the Amazon.</p>
+</section>
+</section>
+<section id="local-scale" class="level1 page-columns page-full" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Local scale</h1>
+<p></p>
+<div class="cell page-columns page-full">
+<div class="cell-output-display page-columns page-full">
+<div id="fig-BCI_accum" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-BCI_accum-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-BCI_accum-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-BCI_accum-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Species Accumulation Curve of BCI extrapolated up to twice the sample size. The dotted lines correspond to the 50-ha inventory. The horizontal, dotred line, is the estimated asymptotic number of species, calculated with the jackknife estimator of order 1 <span class="citation" data-cites="Burnham1978">(<a href="#ref-Burnham1978" role="doc-biblioref">Burnham and Overton 1978</a>)</span>. The black curve is the SAC of the log-series with <span class="math inline">\(\alpha\)</span> equal to <code>r round(BCI_alpha)</code>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
+<p>Sampling the local community results in a species accumulation curve, studied in depth by <span class="citation" data-cites="Gotelli2001">Gotelli and Colwell (<a href="#ref-Gotelli2001" role="doc-biblioref">2001</a>)</span>. The number of species increases step by step, when the next sampled individual belongs to a new one. This stochastic <em>collector’s curve</em> is of less interest than its expectation, assuming individuals are sampled independently: only that smoothed curve is called the SAC. It is actually computed by rarefaction of the distribution of the whole sample <span class="citation" data-cites="Chao2014">(<a href="#ref-Chao2014" role="doc-biblioref">Chao et al. 2014</a>)</span>. It is usually plotted on continuous scales. Between sample sizes <span class="math inline">\(n\)</span> and <span class="math inline">\(n + 1\)</span>, the slope of the curve is the probability for the next individual to belong to a new species <span class="citation" data-cites="Grabchak2016">(<a href="#ref-Grabchak2016" role="doc-biblioref">Grabchak et al. 2017</a>)</span>: it decreases until all species have been discovered, so it is concave.</p>
+<p><a href="#fig-BCI_accum" class="quarto-xref">Figure&nbsp;3</a> shows the SAC of the Barro Colorado Island 50-ha forest plot. The number of species increases with sample size and does not reach an asymptote despite the huge sampling effort. To allow comparing diversity with other sites, two strategies are possible: estimate asymptotic diversity or standardize the sampling effort <span class="citation" data-cites="Chao2012b">(<a href="#ref-Chao2012b" role="doc-biblioref">Chao and Jost 2012</a>)</span>.</p>
+<p>The asymptotic diversity here is the number of species that would be observed if the sample reached the necessary size to encompass all species of the community. In hyperdiverse ecosystems such as evergreen forests, the asymptotic community generally does not exist in the field because of environmental variations: increasing the size of the sample results in sampling in different communities. Thus, the asymptotic estimators of diversity correspond to theoretical asymptotic communities that do not necessarily exist: it is a feature of a model. This is an argument for avoiding them, but the definition of the local community is already a model <span class="citation" data-cites="Stroud2015">(<a href="#ref-Stroud2015" role="doc-biblioref">Stroud et al. 2015</a>)</span>, in the sense that local environmental variations imply that the distribution of species varies in turn: the heterogeneity of the community considered as negligible corresponds to necessary decisions to model the reality. The estimated number of species is 244.</p>
+<p>An alternative consists in standardizing the sample site, in general to allow comparing different communities whose inventories are not large enough to allow a reliable estimation of asymptotic diversity. Exact rarefaction formulas are available to calculate the number of tree species at any sampling level smaller than the actual sample, and estimators allow extrapolating the diversity up to a limited level, around twice the actual sample size <span class="citation" data-cites="Chao2014">(<a href="#ref-Chao2014" role="doc-biblioref">Chao et al. 2014</a>)</span>. The expected number of species in one hectare of BCI, actually based on the average number of trees per hectare, is 103.</p>
+<p>In contrast, Fisher’s <span class="math inline">\(\alpha\)</span> does not depend on the sample size as soon as <span class="math inline">\(n \gg \alpha\)</span>, which is always true in forest inventories. Thus, it appears to be an ideal, universal metric of biodiversity, allowing to compare it across sites of different sizes. The issue is that the distribution of tropical forest tree communities is not a log-series. <span class="citation" data-cites="Hubbell2001">Hubbell (<a href="#ref-Hubbell2001" role="doc-biblioref">2001</a>)</span> named it the zero-sum multinomial distribution; its mathematical derivation is due to <span class="citation" data-cites="Volkov2003">Volkov et al. (<a href="#ref-Volkov2003" role="doc-biblioref">2003</a>)</span>. It is close to a log-normal distribution <span class="citation" data-cites="McGill2003">(<a href="#ref-McGill2003" role="doc-biblioref">McGill 2003</a>)</span>, but differs from by a greater abundance of the rarest species.</p>
+<p>This discrepancy has two consequences: from a theoretical point of view, <span class="math inline">\(\alpha\)</span> is the parameter of a distribution that is not observed; from an empirical point of view, its estimation is inconsistent.</p>
+<p>The theoretical issue does not require much more argumentation. Applying an appropriate model to describe the distribution of species is similar to trying to describe the size of a rectangle by the single length of its side, assuming it is a square.</p>
+<p>The empirical question deserves further elaboration, based on the BCI dataset for clarity. The basic argument is that the actual distribution is not so different from a log-series that the advantages of summarizing it by <span class="math inline">\(\alpha\)</span> are not worth it. Several R packages allow estimating <span class="math inline">\(\alpha\)</span> from a vector of abundances (see Appendix 1 for details). Most of them (such as <code>vegan::fisher.alpha</code>) just solve <a href="#eq-fisheralpha" class="quarto-xref">Equation&nbsp;1</a>, i.e.&nbsp;they only rely on the total abundance and number of species, ignoring the distribution. More elaborate ones (such as <code>sads::fitls</code>) find the value of <span class="math inline">\(\alpha\)</span> that maximizes the likelihood of the distribution assuming it is a log-series. When applied to the BCI dataset, both return the same estimation: 35. Its poor empirical fit is illustrated by <a href="#fig-BCI_accum" class="quarto-xref">Figure&nbsp;3</a> and <a href="#fig-BCI_accum_logx" class="quarto-xref">Figure&nbsp;1</a>.</p>
+<p></p>
+<div class="cell page-columns page-full">
+<div class="cell-output-display page-columns page-full">
+<div id="fig-BCI_size" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-BCI_size-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-BCI_size-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-BCI_size-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Estimation of Fisher’s <span class="math inline">\(\alpha\)</span> depending on the number of 1-ha plots of BCI. The dots are random draws of plot assemblages. The line is the fit of a linear model relating <span class="math inline">\(\alpha\)</span> to the logarithm of the number of plots.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
+<p>In contrast with the assumed advantage of <span class="math inline">\(\alpha\)</span>, its estimation heavily relies on the sample size. <a href="#fig-BCI_size" class="quarto-xref">Figure&nbsp;4</a> shows the average estimation of <span class="math inline">\(\alpha\)</span> based on random subsamples of BCI, from 4 to 50ha, repeated 20 times.</p>
+<p>The estimated value of <span class="math inline">\(\alpha\)</span> decreases from over 40 to approximately 35, with a quite good linear relation between <span class="math inline">\(\alpha\)</span> and the logarithm of the sample size. Several examples can be found in the literature, e.g. <span class="citation" data-cites="Duque2017">Duque et al. (<a href="#ref-Duque2017" role="doc-biblioref">2017</a>)</span>; <span class="citation" data-cites="Schulte2005">Schulte et al. (<a href="#ref-Schulte2005" role="doc-biblioref">2005</a>)</span>, where the dependence of <span class="math inline">\(\alpha\)</span> to sample size is explored either with a statistical or an ecological approach.</p>
+<p>Visually, in <a href="#fig-BCI_accum_logx" class="quarto-xref">Figure&nbsp;1</a>, increasing <span class="math inline">\(\alpha\)</span> moves the log-series distribution to the right and increases its slope. Changing the sample size means changing the intersection point between the accumulation curve and the log-series curve, thus necessarily modifying <span class="math inline">\(\alpha\)</span>. At this stage, there is no real argument to decide whether BCI’s <span class="math inline">\(\alpha\)</span> is 35 or 40.</p>
+<p>A solution to this problem is to return to the neutral model theory and assume that the local community is not a log-series because of dispersal limitation, i.e.&nbsp;its migration parameter <span class="math inline">\(m\)</span> is not 1. Then, the parameter to estimate is <span class="math inline">\(\theta\)</span>, the fundamental number of biodiversity in the metacommunity BCI belongs to: the metacommunity is distributed as a log-series whose parameter is <span class="math inline">\(\theta\)</span>. This is an elegant solution both theoretically (all assumptions are valid) and empirically (the estimation of <span class="math inline">\(\alpha\)</span> is robust).</p>
+<p><span class="citation" data-cites="Hubbell2001">Hubbell (<a href="#ref-Hubbell2001" role="doc-biblioref">2001, 293</a>)</span> proposed estimating it by adjusting the rank-abundance curve to the most frequent species in the community, arguing that these species are also the most abundant in the metacommunity. He found <span class="math inline">\(\theta = 50\)</span>. The same algorithm is applied to the current BCI dataset in Appendix 2: its result is <span class="math inline">\(\theta = 45\)</span>. Both <span class="math inline">\(\theta\)</span> and <span class="math inline">\(m\)</span> can be estimated by likelihood maximization of the local distribution <span class="citation" data-cites="Etienne2005">(<a href="#ref-Etienne2005" role="doc-biblioref">Etienne 2005</a>)</span> with the untb package <span class="citation" data-cites="Hankin2007">(<a href="#ref-Hankin2007" role="doc-biblioref">Hankin 2007</a>)</span>. The retained value of <span class="math inline">\(\theta\)</span> is 48. The consistency of this approach is shown in Appendix 3: <span class="math inline">\(\theta\)</span> and <span class="math inline">\(m\)</span> are estimated from the BCI distribution, then a community of the same size is drawn with these parameters: it is very close to the actual distribution.</p>
+<p>This faces two limits. First, as far as we know, it is not applied in the literature. Then, it does not exactly describe the diversity of the local community but that of the metacommunity: summarizing BCI by <span class="math inline">\(\theta = 48\)</span> ignores the migration parameter. Modifying <span class="math inline">\(m\)</span> yields very different distribution, from geometric to log-series <span class="citation" data-cites="Hubbell2001">(<a href="#ref-Hubbell2001" role="doc-biblioref">Hubbell 2001</a>)</span>. In other words, <span class="math inline">\(\theta\)</span> only gives a very partial knowledge of the diversity of the local community.</p>
+</section>
+<section id="regional-scale" class="level1 page-columns page-full" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Regional scale</h1>
+<p>The regional scale is that of Arrhenius’s model <span class="citation" data-cites="Arrhenius1921">(<a href="#ref-Arrhenius1921" role="doc-biblioref">Arrhenius 1921</a>)</span>. Its fundamental difference with the local scale is that several communities are taken into account, involving <span class="math inline">\(\beta\)</span> diversity that can’t be addressed directly. Whereas the computation of the local species accumulation curve was non-parametric, based solely on statistical techniques, the regional species-area relationship follows a power model with parameters <span class="math inline">\(c\)</span> and <span class="math inline">\(z\)</span> ,</p>
+<p><span id="eq-arrhenius"><span class="math display">\[
+  S(A) =c A^z,
+\tag{2}\]</span></span></p>
+<p>where <span class="math inline">\(A\)</span> is the surface area, <span class="math inline">\(c\)</span> a constant that depends on the organisms taken into account and the regional diversity, and <span class="math inline">\(z\)</span> the parameter that relates richness to area. Assuming that forest communities are saturated, i.e.&nbsp;<span class="math inline">\(n = \rho A\)</span> where <span class="math inline">\(\rho\)</span> is the number of trees per unit area,the number of individuals is proportional to the area, and, since <span class="math inline">\(\ln n \gg \ln \rho\)</span>, the model can be rewritten in a linear form:</p>
+<p><span id="eq-arrhenius_log"><span class="math display">\[
+  \ln\left(S\left(n\right)\right) = k_A + z \ln\left(n\right)
+\tag{3}\]</span></span></p>
+<p>where <span class="math inline">\(k_A\)</span> is another constant.</p>
+<p>The regional scale is also that of the metacommunity in the neutral model. The actual size <span class="math inline">\(J_M\)</span> of the metacommunity a local community results from is difficult to address and of little interest in the theory since the important parameter is <span class="math inline">\(\theta\)</span>, that combines both <span class="math inline">\(J_m\)</span> and the speciation rate <span class="math inline">\(\nu\)</span>. The important fact here is that, according to the neutral model, metacommunities are distributed in log-series whose <span class="math inline">\(\alpha\)</span> parameter asymptotically tends to <span class="math inline">\(\theta\)</span> when their size increases <span class="citation" data-cites="Hubbell2001">(<a href="#ref-Hubbell2001" role="doc-biblioref">Hubbell 2001</a>)</span>.</p>
+<p>Sampling the metacommunity by a large enough number of plots results in a log-series distribution. This property allowed estimating the number of species of the Amazon forest <span class="citation" data-cites="TerSteege2013">(<a href="#ref-TerSteege2013" role="doc-biblioref">Steege et al. 2013</a>)</span> and of all tropical forests of the world <span class="citation" data-cites="Slik2015">(<a href="#ref-Slik2015" role="doc-biblioref">Slik et al. 2015</a>)</span>. Discussing the sampling issues due to the spatial structure of species <span class="citation" data-cites="TerSteege2020">(<a href="#ref-TerSteege2020" role="doc-biblioref">Steege et al. 2020</a>)</span> or the discrepancies between the empirical and theoretical distributions <span class="citation" data-cites="Milton2025">(<a href="#ref-Milton2025" role="doc-biblioref">Milton and Ostling 2025</a>)</span> is not the scope of this paper: even ignoring them, the theory is very well supported empirically.</p>
+<p><span class="citation" data-cites="Gleason1922">Gleason (<a href="#ref-Gleason1922" role="doc-biblioref">1922</a>)</span> refuted Arrhenius’s model, arguing that the richness would be far too high for large areas, and proposed a competing model in which the number of species, rather than its logarithm, increased with the logarithm of the area. Assuming saturation, i.e.&nbsp;<span class="math inline">\(n = \rho A\)</span> where <span class="math inline">\(\rho\)</span> is the number of trees per unit area, and <span class="math inline">\(\ln n \gg \ln \rho\)</span> , it can be rewritten as</p>
+<p><span id="eq-gleason_log"><span class="math display">\[
+   S\left(n\right) = k_G + \alpha \ln\left(n\right),
+\tag{4}\]</span></span></p>
+<p>where <span class="math inline">\(k_G\)</span> is another constant and <span class="math inline">\(\alpha\)</span> the slope of the relation. This model is actually identical to Fisher’s <span class="citation" data-cites="Engen1977">(<a href="#ref-Engen1977" role="doc-biblioref">Engen 1977</a>)</span>.</p>
+<p>Arrhenius’s model benefits from a long theoretical <span class="citation" data-cites="Williamson2001 Harte1999 Preston1962">(<a href="#ref-Williamson2001" role="doc-biblioref">Williamson et al. 2001</a>; <a href="#ref-Harte1999" role="doc-biblioref">Harte et al. 1999</a>; <a href="#ref-Preston1962" role="doc-biblioref">Preston 1962</a>)</span> and empirical <span class="citation" data-cites="Dengler2009 Triantis2012">(<a href="#ref-Dengler2009" role="doc-biblioref">Dengler 2009</a>; <a href="#ref-Triantis2012" role="doc-biblioref">Triantis et al. 2012</a>)</span> support.</p>
+<p>A simple argument against Gleason’s model is contained in the neutral theory. Consider a large metacommunity and assume it is distributed as a log-series. A smaller metacommunity inside it would just be a sample of it in absence of dispersal limitation. Then both distributions would be identical, i.e.&nbsp;the same log-series with the same parameter <span class="math inline">\(\alpha\)</span>: the same Fisher’s model would be valid for all subsamples of the largest metacommunity, validating Gleason’s model. Yet, dispersal is limited, i.e.&nbsp;not all species of the largest metacommunity are present in the smaller ones: their diversity is reduced. Although they are distributed in log-series, their parameter <span class="math inline">\(\alpha\)</span> is smaller. Thus, the number of species decreases faster with the area than predicted by Gleason’s model.</p>
+<p>At this stage, we face an apparent paradox: the regional species area relationship follows a power model but a metacommunity is distributed in log-series. It is solved considering that the metacommunity’s <span class="math inline">\(\alpha\)</span> parameter depends on its size. Again, a smaller metacommunity embedded in the first one does not contain all species because of dispersal limitation. When the SAR is plotted on a log-log scale, it is linear. If the y-axis is not in logarithmic scale, it becomes concave. In this representation (<a href="#fig-arrhenius_logx" class="quarto-xref">Figure&nbsp;5</a>), a log-series species accumulation curve is a straight line (the number of individuals is much greater than <span class="math inline">\(\alpha\)</span>) so <span class="math inline">\(\alpha\)</span> increases with area.</p>
+<p></p>
+<div class="cell page-columns page-full">
+<div class="cell-output-display page-columns page-full">
+<div id="fig-arrhenius_logx" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-arrhenius_logx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-arrhenius_logx-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-arrhenius_logx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Number of tree species depending on the area (in square km, with density 627 trees/ha) in French Guiana, according to the Arrhenius’s power model estimated by <span class="citation" data-cites="Marcon2024">Marcon et al. (<a href="#ref-Marcon2024" role="doc-biblioref">2024</a>)</span>. The Y-axis is not in logarithm, so the relation is a convex curve instead of a straight line. The black dotted lines show the valid estimation of richness in the whole territory: around 2200 species for 80,000 km<sup>2</sup>. The green line is the species accumulation curve of the log-series estimated from the GuyaDiv metacommunity assuming its area is that of French Guiana. It overestimates the regional biodiversity at all scales. The red curve is the SAC of the actual metacommunity of French Guiana, whose Fisher’s <span class="math inline">\(\alpha\)</span> is twice smaller.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
+<p>This theoretical result can be verified empirically with the GuyaDiv network plots in French Guiana. In <a href="#fig-guyadiv_alpha" class="quarto-xref">Figure&nbsp;6</a>, an increasing number of plots (one per site) is randomly selected to sample the metacommunity. The estimated <span class="math inline">\(\alpha\)</span> are plotted against the number of plots. Clearly, <span class="math inline">\(\alpha\)</span> increases linearly with the logarithm of the number of plots that is a proxy of the size of the sampled metacommunity.</p>
+<p></p>
+<div class="cell page-columns page-full">
+<div class="cell-output-display page-columns page-full">
+<div id="fig-guyadiv_alpha" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-guyadiv_alpha-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-guyadiv_alpha-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-guyadiv_alpha-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Estimation of the metacommunity’s <span class="math inline">\(\alpha\)</span> as a function of the number of GuyaDiv plots used to sample it. The line is the fit of the linear model relating <span class="math inline">\(\alpha\)</span> to the logarithm of the number of plots.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
+<p>The metacommunity GuyaDiv is a sample of largely exceeds the borders of French Guiana. Its estimated <span class="math inline">\(\alpha\)</span> equals 257, implying more than 4000 tree species in the territory based on the number of trees: 627 per hectare on average multiplied by 8 million hectares. Its SAC is shown on <a href="#fig-arrhenius_logx" class="quarto-xref">Figure&nbsp;5</a> . The actual number of species in French Guiana was obtained by the estimation of the power model <span class="citation" data-cites="Marcon2024">(<a href="#ref-Marcon2024" role="doc-biblioref">Marcon et al. 2024</a>)</span>: it is close to 2200. The correct estimate of <span class="math inline">\(\alpha\)</span> is thus only 128.</p>
+<p>This example illustrates the impossibility to estimate <span class="math inline">\(\alpha\)</span> at a regional scale from sample plots, e.g.&nbsp;to compare the diversity of adjacent regions. Log-series can be sampled, but the size of the metacommunities can’t be controlled. Of course, this issue vanishes when the metacommunity under study is bounded, e.g.&nbsp;the Amazon sampled by <span class="citation" data-cites="TerSteege2013">Steege et al. (<a href="#ref-TerSteege2013" role="doc-biblioref">2013</a>)</span> to estimate its total number of species. In this case, adding samples necessarily leads to an asymptotic estimation of <span class="math inline">\(\alpha\)</span>.</p>
+</section>
+<section id="conclusion" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Conclusion</h1>
+<p>Despite its popularity as an index of diversity, Fisher’s <span class="math inline">\(\alpha\)</span> should not be applied to tropical forest communities because it is the parameter of a model that does not fit the data. According to the neutral theory, log-series communities would result from migration parameter 1, i.e.&nbsp;in the absence of dispersal limitation of the species of the metacommunity, which never occurs. Forcing the estimation of <span class="math inline">\(\alpha\)</span> in non-log-series distributions results in highly scale-dependent values that seriously question the comparisons between communities based on their <span class="math inline">\(\alpha\)</span> index.</p>
+<p>At the regional scale, metacommunities do follow log-series distributions so <span class="math inline">\(\alpha\)</span> can be estimated from a set of scattered forest plots, even though the spatial structure of species may introduce estimation biases. Even ignoring this issue, <span class="math inline">\(\alpha\)</span> can’t be interpreted simply because it is not possible to characterize the area of the sampled metacommunity. At this scale, the measure is correct, but the measured object is unclear.</p>
+<p>Finally, the empirical interest of Fisher’s <span class="math inline">\(\alpha\)</span> is limited to the distribution of clearly delimited metacommunities, such as the Amazon forest as a whole. In this context, it allowed among other results to estimate the number of tree species.</p>
+</section>
+<section id="bibliography" class="level1 unnumbered">
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-Arrhenius1921" class="csl-entry" role="listitem">
+Arrhenius, Olof. 1921. <span>‘Species and Area’</span>. <em>Journal of Ecology</em> 9 (1): 95–99. <a href="https://doi.org/10.2307/2255763">https://doi.org/10.2307/2255763</a>.
+</div>
+<div id="ref-Burnham1978" class="csl-entry" role="listitem">
+Burnham, K. P., and W. S. Overton. 1978. <span>‘Estimation of the Size of a Closed Population When Capture Probabilities Vary Among Animals’</span>. <em>Biometrika</em> 65 (3): 625–33. <a href="https://doi.org/10.2307/2335915">https://doi.org/10.2307/2335915</a>.
+</div>
+<div id="ref-Chao2014" class="csl-entry" role="listitem">
+Chao, Anne, Nicholas J. Gotelli, T. C. Hsieh, et al. 2014. <span>‘Rarefaction and Extrapolation with Hill Numbers: A Framework for Sampling and Estimation in Species Diversity Studies’</span>. <em>Ecological Monographs</em> 84 (1): 45–67. <a href="https://doi.org/10.1890/13-0133.1">https://doi.org/10.1890/13-0133.1</a>.
+</div>
+<div id="ref-Chao2012b" class="csl-entry" role="listitem">
+Chao, Anne, and Lou Jost. 2012. <span>‘Coverage-Based Rarefaction and Extrapolation: Standardizing Samples by Completeness Rather Than Size’</span>. <em>Ecology</em> 93 (12): 2533–47. <a href="https://doi.org/10.1890/11-1952.1">https://doi.org/10.1890/11-1952.1</a>.
+</div>
+<div id="ref-Condit2002" class="csl-entry" role="listitem">
+Condit, Richard, Nigel Pitman, Egbert G. Jr Leigh, et al. 2002. <span>‘Beta-Diversity in Tropical Forest Trees’</span>. <em>Science</em> 295 (5555): 666–69. <a href="https://doi.org/10.1126/science.1066854">https://doi.org/10.1126/science.1066854</a>.
+</div>
+<div id="ref-Dengler2009" class="csl-entry" role="listitem">
+Dengler, Jürgen. 2009. <span>‘Which Function Describes the Species-Area Relationship Best? A Review and Empirical Evaluation’</span>. <em>Journal of Biogeography</em> 36 (4): 728–44. <a href="https://doi.org/10.1111/j.1365-2699.2008.02038.x">https://doi.org/10.1111/j.1365-2699.2008.02038.x</a>.
+</div>
+<div id="ref-Duque2017" class="csl-entry" role="listitem">
+Duque, Alvaro, Helene C. Muller-Landau, Renato Valencia, et al. 2017. <span>‘Insights into Regional Patterns of Amazonian Forest Structure, Diversity, and Dominance from Three Large Terra-Firme Forest Dynamics Plots’</span>. <em>Biodiversity and Conservation</em> 26 (3): 669–86. <a href="https://doi.org/10.1007/s10531-016-1265-9">https://doi.org/10.1007/s10531-016-1265-9</a>.
+</div>
+<div id="ref-Engel2015" class="csl-entry" role="listitem">
+Engel, Julien. 2015. <span>‘Plot Networks &amp; Teams’</span>. In <em>ATDN Tree Morphospecies Website</em>. <a href="http://atdnmorphospecies.myspecies.info/node/781">http://atdnmorphospecies.myspecies.info/node/781</a>.
+</div>
+<div id="ref-Engen1977" class="csl-entry" role="listitem">
+Engen, Steinar. 1977. <span>‘Exponential and Logarithmic Species-Area Curves’</span>. <em>The American Naturalist</em> 111 (979): 591–94. <a href="http://www.jstor.org/stable/2460244">http://www.jstor.org/stable/2460244</a>.
+</div>
+<div id="ref-Etienne2005" class="csl-entry" role="listitem">
+Etienne, Rampal S. 2005. <span>‘A New Sampling Formula for Neutral Biodiversity’</span>. <em>Ecology Letters</em> 8 (3): 253–60. <a href="https://doi.org/10.1111/j.1461-0248.2004.00717.x">https://doi.org/10.1111/j.1461-0248.2004.00717.x</a>.
+</div>
+<div id="ref-Fisher1943" class="csl-entry" role="listitem">
+Fisher, Ronald Aylmer, A. Steven Corbet, and Carrington Bonsor Williams. 1943. <span>‘The Relation Between the Number of Species and the Number of Individuals in a Random Sample of an Animal Population’</span>. <em>Journal of Animal Ecology</em> 12: 42–58. <a href="https://doi.org/10.2307/1411">https://doi.org/10.2307/1411</a>.
+</div>
+<div id="ref-Gleason1922" class="csl-entry" role="listitem">
+Gleason, Henry Allan. 1922. <span>‘On the Relation Between Species and Area’</span>. <em>Ecology</em> 3 (2): 158–62. <a href="https://doi.org/10.2307/1929150">https://doi.org/10.2307/1929150</a>.
+</div>
+<div id="ref-Gotelli2001" class="csl-entry" role="listitem">
+Gotelli, Nicholas J., and Robert K. Colwell. 2001. <span>‘Quantifying Biodiversity: Procedures and Pitfalls in the Measurement and Comparison of Species Richness’</span>. <em>Ecology Letters</em> 4 (4): 379–91. <a href="https://doi.org/10.1046/j.1461-0248.2001.00230.x">https://doi.org/10.1046/j.1461-0248.2001.00230.x</a>.
+</div>
+<div id="ref-Grabchak2016" class="csl-entry" role="listitem">
+Grabchak, Michael, Eric Marcon, Gabriel Lang, and Zhiyi Zhang. 2017. <span>‘The Generalized Simpson’s Entropy Is a Measure of Biodiversity’</span>. <em>Plos One</em> 12 (3): e0173305. <a href="https://doi.org/10.1371/journal.pone.0173305">https://doi.org/10.1371/journal.pone.0173305</a>.
+</div>
+<div id="ref-Grilli2012" class="csl-entry" role="listitem">
+Grilli, Jacopo, Sandro Azaele, Jayanth R. Banavar, and Amos Maritan. 2012. <span>‘Spatial Aggregation and the Species-Area Relationship Across Scales’</span>. <em>Journal of Theoretical Biology</em> 313: 87–97. <a href="https://doi.org/10.1016/j.jtbi.2012.07.030">https://doi.org/10.1016/j.jtbi.2012.07.030</a>.
+</div>
+<div id="ref-Hankin2007" class="csl-entry" role="listitem">
+Hankin, Robin K. S. 2007. <span>‘Introducing Untb, an r Package for Simulating Ecological Drift Under the Unified Neutral Theory of Biodiversity’</span>. <em>Journal of Statistical Software</em> 22 (12): 1–15. <a href="https://doi.org/10.18637/jss.v022.i12">https://doi.org/10.18637/jss.v022.i12</a>.
+</div>
+<div id="ref-Harte1999" class="csl-entry" role="listitem">
+Harte, John, Ann Kinzig, and Jessica Green. 1999. <span>‘Self-Similarity in the Distribution and Abundance of Species’</span>. <em>Science</em> 284 (5412): 334–36. <a href="https://doi.org/10.1126/science.284.5412.334">https://doi.org/10.1126/science.284.5412.334</a>.
+</div>
+<div id="ref-Hubbell2001" class="csl-entry" role="listitem">
+Hubbell, Stephen P. 2001. <em>The Unified Neutral Theory of Biodiversity and Biogeography</em>. Princeton University Press.
+</div>
+<div id="ref-Liang2016" class="csl-entry" role="listitem">
+Liang, J., T. W. Crowther, N. Picard, et al. 2016. <span>‘Positive Biodiversity-Productivity Relationship Predominant in Global Forests’</span>. <em>Science</em> 354 (6309): aaf8957. <a href="https://doi.org/10.1126/science.aaf8957">https://doi.org/10.1126/science.aaf8957</a>.
+</div>
+<div id="ref-MacArthur1967" class="csl-entry" role="listitem">
+MacArthur, Robert H., and Edward O. Wilson. 1967. <span>‘The Theory of Island Biogeography’</span>. In <em>Monographs in Population Biology</em>, vol. 1, 1. Princeton University Press.
+</div>
+<div id="ref-Marcon2024" class="csl-entry" role="listitem">
+Marcon, Eric, Ariane Mirabel, Jean-François Molino, and Daniel Sabatier. 2024. <span>‘Estimation of the Number of Tree Species in French Guiana by Extrapolation of Permanent Plots Richness’</span>. <em>Journal of Tropical Ecology</em> 40: e11. <a href="https://doi.org/10.1017/S0266467424000099">https://doi.org/10.1017/S0266467424000099</a>.
+</div>
+<div id="ref-McGill2003" class="csl-entry" role="listitem">
+McGill, Brian J. 2003. <span>‘A Test of the Unified Neutral Theory of Biodiversity’</span>. <em>Nature</em> 422 (6934): 881–85. <a href="https://doi.org/10.1038/nature01583">https://doi.org/10.1038/nature01583</a>.
+</div>
+<div id="ref-Milton2025" class="csl-entry" role="listitem">
+Milton, Tamara F., and Annette Ostling. 2025. <span>‘Amazonian Hyperdominance Exceeds Expectations of Neutral Theory’</span>. <em>Journal of Ecology</em>, 1365–2745.70174. <a href="https://doi.org/10.1111/1365-2745.70174">https://doi.org/10.1111/1365-2745.70174</a>.
+</div>
+<div id="ref-Muller-Landau2024" class="csl-entry" role="listitem">
+Muller-Landau, Helene C., and S. Joseph Wright. 2024. <em>The First 100 Years of Research on Barro Colorado: Plant and Ecosystem Science (Volumes 1 and 2)</em>. Smithsonian Institution Scholarly Press. <a href="https://doi.org/10.5479/si.26048527">https://doi.org/10.5479/si.26048527</a>.
+</div>
+<div id="ref-vegan" class="csl-entry" role="listitem">
+Oksanen, Jari, Gavin L. Simpson, F. Guillaume Blanchet, et al. 2025. <em>Vegan: Community Ecology Package</em>. <a href="https://doi.org/10.32614/CRAN.package.vegan">https://doi.org/10.32614/CRAN.package.vegan</a>.
+</div>
+<div id="ref-Plotkin2000a" class="csl-entry" role="listitem">
+Plotkin, Joshua B., Matthew D. Potts, Nandi Leslie, N. Manokaran, James V. LaFrankie, and Peter S. Ashton. 2000. <span>‘Species-Area Curves, Spatial Aggregation, and Habitat Specialization in Tropical Forests’</span>. <em>Journal of Theoretical Biology</em> 207 (1): 81–99. <a href="https://doi.org/10.1006/jtbi.2000.2158">https://doi.org/10.1006/jtbi.2000.2158</a>.
+</div>
+<div id="ref-Preston1962" class="csl-entry" role="listitem">
+Preston, F. W. 1962. <span>‘The Canonical Distribution of Commonness and Rarity: Part i’</span>. <em>Ecology</em> 43 (2): 185–215. <a href="https://doi.org/10.2307/1931976">https://doi.org/10.2307/1931976</a>.
+</div>
+<div id="ref-R" class="csl-entry" role="listitem">
+R Core Team. 2025. <em>R: A Language and Environment for Statistical Computing</em>. R Foundation for Statistical Computing. <a href="http://www.r-project.org">http://www.r-project.org</a>.
+</div>
+<div id="ref-Schulte2005" class="csl-entry" role="listitem">
+Schulte, Rogier P. O., Egbert A. Lantinga, and Michael J. Hawkins. 2005. <span>‘A New Family of Fisher-Curves Estimates Fisher’s Alpha More Accurately’</span>. <em>Journal of Theoretical Biology</em> 232 (3): 305–13. <a href="https://doi.org/10.1016/j.jtbi.2004.08.014">https://doi.org/10.1016/j.jtbi.2004.08.014</a>.
+</div>
+<div id="ref-Slik2015" class="csl-entry" role="listitem">
+Slik, J. W. Ferry, Víctor Arroyo-Rodríguez, Shin-Ichiro Aiba, et al. 2015. <span>‘An Estimate of the Number of Tropical Tree Species’</span>. <em>Proceedings of the National Academy of Sciences of the United States of America</em> 112 (24): 7472–77. <a href="https://doi.org/10.1073/pnas.1423147112">https://doi.org/10.1073/pnas.1423147112</a>.
+</div>
+<div id="ref-TerSteege2013" class="csl-entry" role="listitem">
+Steege, Hans ter, Nigel C. A. Pitman, Daniel Sabatier, et al. 2013. <span>‘Hyperdominance in the Amazonian Tree Flora’</span>. <em>Science</em> 342 (6156): 1243092. <a href="https://doi.org/10.1126/science.1243092">https://doi.org/10.1126/science.1243092</a>.
+</div>
+<div id="ref-TerSteege2020" class="csl-entry" role="listitem">
+Steege, Hans ter, Paulo I. Prado, Renato A. F. de Lima, et al. 2020. <span>‘Biased-Corrected Richness Estimates for the Amazonian Tree Flora’</span>. <em>Scientific Reports</em> 10 (1): 10130. <a href="https://doi.org/10.1038/s41598-020-66686-3">https://doi.org/10.1038/s41598-020-66686-3</a>.
+</div>
+<div id="ref-Strange2024" class="csl-entry" role="listitem">
+Strange, Niels, Sophus Zu Ermgassen, Erica Marshall, Joseph W. Bull, and Jette Bredahl Jacobsen. 2024. <span>‘Why It Matters How Biodiversity Is Measured in Environmental Valuation Studies Compared to Conservation Science’</span>. <em>Biological Conservation</em> 292: 110546. <a href="https://doi.org/10.1016/j.biocon.2024.110546">https://doi.org/10.1016/j.biocon.2024.110546</a>.
+</div>
+<div id="ref-Stroud2015" class="csl-entry" role="listitem">
+Stroud, James T., Michael R. Bush, Mark C. Ladd, Robert J. Nowicki, Andrew A. Shantz, and Jennifer Sweatman. 2015. <span>‘Is a Community Still a Community? Reviewing Definitions of Key Terms in Community Ecology’</span>. <em>Ecology and Evolution</em> 5 (21): 4757–65. <a href="https://doi.org/10.1002/ece3.1651">https://doi.org/10.1002/ece3.1651</a>.
+</div>
+<div id="ref-Triantis2012" class="csl-entry" role="listitem">
+Triantis, Kostas A., François Guilhaumon, and Robert J. Whittaker. 2012. <span>‘The Island Species-Area Relationship: Biology and Statistics’</span>. <em>Journal of Biogeography</em> 39 (2): 215–31. <a href="https://doi.org/10.1111/j.1365-2699.2011.02652.x">https://doi.org/10.1111/j.1365-2699.2011.02652.x</a>.
+</div>
+<div id="ref-Volkov2003" class="csl-entry" role="listitem">
+Volkov, Igor, Jayanth R. Banavar, Stephen P. Hubbell, and Amos Maritan. 2003. <span>‘Neutral Theory and Relative Species Abundance in Ecology’</span>. <em>Nature</em> 424 (6952): 1035–37. <a href="https://doi.org/10.1038/nature01883">https://doi.org/10.1038/nature01883</a>.
+</div>
+<div id="ref-Williamson2001" class="csl-entry" role="listitem">
+Williamson, Mark, Kevin J. Gaston, and W. M. Lonsdale. 2001. <span>‘The Species-Area Relationship Does Not Have an Asymptote!’</span> <em>Journal of Biogeography</em> 28 (7): 827–30. <a href="https://doi.org/10.1046/j.1365-2699.2001.00603.x">https://doi.org/10.1046/j.1365-2699.2001.00603.x</a>.
+</div>
+</div></section></div></main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
