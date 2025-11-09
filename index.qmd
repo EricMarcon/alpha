@@ -514,7 +514,7 @@ The Y-axis is not in logarithm, so the relation is a convex curve instead of a s
 The black dotted lines show the valid estimation of richness in the whole territory: around 2200 species for 80,000 km^2^.
 The green line is the species accumulation curve of the log-series estimated from the GuyaDiv metacommunity assuming its area is that of French Guiana.
 It overestimates the regional biodiversity at all scales.
-The red curve is the SAC of the actual metacommunity of French Guiana, whose Fisher's $\\alpha$ is twice smaller.
+The red curve is the SAC of the actual metacommunity of French Guiana, whose Fisher's $\alpha$ is twice smaller.
 :::
 
 This theoretical result can be verified empirically with the GuyaDiv network plots in French Guiana.
