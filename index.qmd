@@ -392,7 +392,7 @@ The regional scale is also that of the metacommunity in the neutral model.
 The actual size $J_M$ of the metacommunity a local community results from is difficult to address and of little interest in the theory since the important parameter is $\theta$, that combines both $J_m$ and the speciation rate $\nu$.
 The important fact here is that, according to the neutral model, metacommunities are distributed in log-series whose $\alpha$ parameter asymptotically tends to $\theta$ when their size increases [@Hubbell2001].
 
-Sampling the metacommunity by a large enough number of plots results in a log-series distribution .
+Sampling the metacommunity by a large enough number of plots results in a log-series distribution.
 This property allowed estimating the number of species of the Amazon forest [@TerSteege2013] and of all tropical forests of the world [@Slik2015].
 Discussing the sampling issues due to the spatial structure of species [@TerSteege2020] or the discrepancies between the empirical and theoretical distributions [@Milton2025] is not the scope of this paper: even ignoring them, the theory is very well supported empirically.
 
@@ -577,8 +577,3 @@ At this scale, the measure is correct, but the measured object is unclear.
 
 Finally, the empirical interest of Fisher's $\alpha$ is limited to the distribution of clearly delimited metacommunities, such as the Amazon forest as a whole.
 In this context, it allowed among other results to estimate the number of tree species.
-
-Grenier :
-
--   3 représentations selon les logs, valeur de la pente
--   Rarefaction \<-\> rare species vanish.
