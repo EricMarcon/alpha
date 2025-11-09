@@ -172,40 +172,48 @@ window.Quarto = {
   S(n) = \alpha \ln \left( 1 + \frac{n}{\alpha} \right).
 \tag{1}\]</span></span></p>
 <p>For <span class="math inline">\(n &gt;&gt; \alpha\)</span>, <a href="#eq-fisheralpha" class="quarto-xref">Equation&nbsp;1</a> can be simplified to <span class="math inline">\(S(n) \approx -\alpha ln(\alpha) + \alpha ln(n)\)</span>, i.e.&nbsp;the number of observed species is linearly related to the logarithm of the sample size. The slope of the line is <span class="math inline">\(\alpha\)</span> and the intercept is <span class="math inline">\(-\alpha ln(\alpha)\)</span>.</p>
-<p></p>
-<div class="cell page-columns page-full">
-<div class="cell-output-display page-columns page-full">
 <div id="fig-BCI_accum_logx" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-BCI_accum_logx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="index_files/figure-html/fig-BCI_accum_logx-1.png" class="img-fluid figure-img" width="672">
-</div>
-<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-BCI_accum_logx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Accumulation curve of a log-series distribution (black) with Fisher’s <span class="math inline">\(\alpha\)</span> equal to <code>r round(BCI_alpha)</code> and of BCI (red). The intersection of the dotted lines corresponds to the number of trees and of species of BCI 50-ha inventory the value of <span class="math inline">\(\alpha\)</span> is derived from.
-</figcaption>
+<p></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/BCI_accum_logx-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p></p>
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-BCI_accum_logx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Accumulation curve of a log-series distribution (black) with Fisher’s <span class="math inline">\(\alpha\)</span> equal to 35 and of BCI (red). The intersection of the dotted lines corresponds to the number of trees and of species of BCI 50-ha inventory the value of <span class="math inline">\(\alpha\)</span> is derived from.
+</figcaption>
+</figure>
+</div>
 <p>Based on <a href="#eq-fisheralpha" class="quarto-xref">Equation&nbsp;1</a>, the species accumulation curve has two parts when plotted on a logarithmic x-axis: first, as <span class="math inline">\(n\)</span> is not great enough for the approximation, it is convex, then it is linear (<a href="#fig-BCI_accum_logx" class="quarto-xref">Figure&nbsp;1</a>).</p>
 <p>The distribution can also be represented as a rank-abundance curve (<a href="#fig-BCI_RAC" class="quarto-xref">Figure&nbsp;2</a>). A characteristic feature of the log-series is that the abundance of species decreases linearly with their rank, except for the most abundant ones.</p>
-<p></p>
-<div class="cell page-columns page-full">
-<div class="cell-output-display page-columns page-full">
 <div id="fig-BCI_RAC" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-BCI_RAC-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="index_files/figure-html/fig-BCI_RAC-1.png" class="img-fluid figure-img" width="672">
-</div>
-<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-BCI_RAC-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Rank-abundance curve of a log-series distribution (black) and of BCI (red dots). Species are ordered by decreasing abundance. The log-series is the best fit to BCI data (<span class="math inline">\(\alpha =\)</span> <code>r round(BCI_alpha)</code>).
-</figcaption>
+<p></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/BCI_RAC-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p></p>
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-BCI_RAC-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Rank-abundance curve of a log-series distribution (black) and of BCI (red dots). Species are ordered by decreasing abundance. The log-series is the best fit to BCI data (<span class="math inline">\(\alpha =\)</span> 35).
+</figcaption>
+</figure>
+</div>
 </section>
 <section id="example-data" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="example-data"><span class="header-section-number">2.2</span> Example data</h2>
@@ -215,22 +223,26 @@ Figure&nbsp;2: Rank-abundance curve of a log-series distribution (black) and of 
 </section>
 <section id="local-scale" class="level1 page-columns page-full" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Local scale</h1>
-<p></p>
-<div class="cell page-columns page-full">
-<div class="cell-output-display page-columns page-full">
 <div id="fig-BCI_accum" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-BCI_accum-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="index_files/figure-html/fig-BCI_accum-1.png" class="img-fluid figure-img" width="672">
-</div>
-<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-BCI_accum-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: Species Accumulation Curve of BCI extrapolated up to twice the sample size. The dotted lines correspond to the 50-ha inventory. The horizontal, dotred line, is the estimated asymptotic number of species, calculated with the jackknife estimator of order 1 <span class="citation" data-cites="Burnham1978">(<a href="#ref-Burnham1978" role="doc-biblioref">Burnham and Overton 1978</a>)</span>. The black curve is the SAC of the log-series with <span class="math inline">\(\alpha\)</span> equal to <code>r round(BCI_alpha)</code>.
-</figcaption>
+<p></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/BCI_accum-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p></p>
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-BCI_accum-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Species Accumulation Curve of BCI extrapolated up to twice the sample size. The dotted lines correspond to the 50-ha inventory. The horizontal, dotred line, is the estimated asymptotic number of species, calculated with the jackknife estimator of order 1 <span class="citation" data-cites="Burnham1978">(<a href="#ref-Burnham1978" role="doc-biblioref">Burnham and Overton 1978</a>)</span>. The black curve is the SAC of the log-series with <span class="math inline">\(\alpha\)</span> equal to 35.
+</figcaption>
+</figure>
+</div>
 <p>Sampling the local community results in a species accumulation curve, studied in depth by <span class="citation" data-cites="Gotelli2001">Gotelli and Colwell (<a href="#ref-Gotelli2001" role="doc-biblioref">2001</a>)</span>. The number of species increases step by step, when the next sampled individual belongs to a new one. This stochastic <em>collector’s curve</em> is of less interest than its expectation, assuming individuals are sampled independently: only that smoothed curve is called the SAC. It is actually computed by rarefaction of the distribution of the whole sample <span class="citation" data-cites="Chao2014">(<a href="#ref-Chao2014" role="doc-biblioref">Chao et al. 2014</a>)</span>. It is usually plotted on continuous scales. Between sample sizes <span class="math inline">\(n\)</span> and <span class="math inline">\(n + 1\)</span>, the slope of the curve is the probability for the next individual to belong to a new species <span class="citation" data-cites="Grabchak2016">(<a href="#ref-Grabchak2016" role="doc-biblioref">Grabchak et al. 2017</a>)</span>: it decreases until all species have been discovered, so it is concave.</p>
 <p><a href="#fig-BCI_accum" class="quarto-xref">Figure&nbsp;3</a> shows the SAC of the Barro Colorado Island 50-ha forest plot. The number of species increases with sample size and does not reach an asymptote despite the huge sampling effort. To allow comparing diversity with other sites, two strategies are possible: estimate asymptotic diversity or standardize the sampling effort <span class="citation" data-cites="Chao2012b">(<a href="#ref-Chao2012b" role="doc-biblioref">Chao and Jost 2012</a>)</span>.</p>
 <p>The asymptotic diversity here is the number of species that would be observed if the sample reached the necessary size to encompass all species of the community. In hyperdiverse ecosystems such as evergreen forests, the asymptotic community generally does not exist in the field because of environmental variations: increasing the size of the sample results in sampling in different communities. Thus, the asymptotic estimators of diversity correspond to theoretical asymptotic communities that do not necessarily exist: it is a feature of a model. This is an argument for avoiding them, but the definition of the local community is already a model <span class="citation" data-cites="Stroud2015">(<a href="#ref-Stroud2015" role="doc-biblioref">Stroud et al. 2015</a>)</span>, in the sense that local environmental variations imply that the distribution of species varies in turn: the heterogeneity of the community considered as negligible corresponds to necessary decisions to model the reality. The estimated number of species is 244.</p>
@@ -239,22 +251,26 @@ Figure&nbsp;3: Species Accumulation Curve of BCI extrapolated up to twice the sa
 <p>This discrepancy has two consequences: from a theoretical point of view, <span class="math inline">\(\alpha\)</span> is the parameter of a distribution that is not observed; from an empirical point of view, its estimation is inconsistent.</p>
 <p>The theoretical issue does not require much more argumentation. Applying an appropriate model to describe the distribution of species is similar to trying to describe the size of a rectangle by the single length of its side, assuming it is a square.</p>
 <p>The empirical question deserves further elaboration, based on the BCI dataset for clarity. The basic argument is that the actual distribution is not so different from a log-series that the advantages of summarizing it by <span class="math inline">\(\alpha\)</span> are not worth it. Several R packages allow estimating <span class="math inline">\(\alpha\)</span> from a vector of abundances (see Appendix 1 for details). Most of them (such as <code>vegan::fisher.alpha</code>) just solve <a href="#eq-fisheralpha" class="quarto-xref">Equation&nbsp;1</a>, i.e.&nbsp;they only rely on the total abundance and number of species, ignoring the distribution. More elaborate ones (such as <code>sads::fitls</code>) find the value of <span class="math inline">\(\alpha\)</span> that maximizes the likelihood of the distribution assuming it is a log-series. When applied to the BCI dataset, both return the same estimation: 35. Its poor empirical fit is illustrated by <a href="#fig-BCI_accum" class="quarto-xref">Figure&nbsp;3</a> and <a href="#fig-BCI_accum_logx" class="quarto-xref">Figure&nbsp;1</a>.</p>
-<p></p>
-<div class="cell page-columns page-full">
-<div class="cell-output-display page-columns page-full">
 <div id="fig-BCI_size" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-BCI_size-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="index_files/figure-html/fig-BCI_size-1.png" class="img-fluid figure-img" width="672">
+<p></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/BCI_size-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-BCI_size-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;4: Estimation of Fisher’s <span class="math inline">\(\alpha\)</span> depending on the number of 1-ha plots of BCI. The dots are random draws of plot assemblages. The line is the fit of a linear model relating <span class="math inline">\(\alpha\)</span> to the logarithm of the number of plots.
 </figcaption>
 </figure>
 </div>
-</div>
-</div>
-<p></p>
 <p>In contrast with the assumed advantage of <span class="math inline">\(\alpha\)</span>, its estimation heavily relies on the sample size. <a href="#fig-BCI_size" class="quarto-xref">Figure&nbsp;4</a> shows the average estimation of <span class="math inline">\(\alpha\)</span> based on random subsamples of BCI, from 4 to 50ha, repeated 20 times.</p>
 <p>The estimated value of <span class="math inline">\(\alpha\)</span> decreases from over 40 to approximately 35, with a quite good linear relation between <span class="math inline">\(\alpha\)</span> and the logarithm of the sample size. Several examples can be found in the literature, e.g. <span class="citation" data-cites="Duque2017">Duque et al. (<a href="#ref-Duque2017" role="doc-biblioref">2017</a>)</span>; <span class="citation" data-cites="Schulte2005">Schulte et al. (<a href="#ref-Schulte2005" role="doc-biblioref">2005</a>)</span>, where the dependence of <span class="math inline">\(\alpha\)</span> to sample size is explored either with a statistical or an ecological approach.</p>
 <p>Visually, in <a href="#fig-BCI_accum_logx" class="quarto-xref">Figure&nbsp;1</a>, increasing <span class="math inline">\(\alpha\)</span> moves the log-series distribution to the right and increases its slope. Changing the sample size means changing the intersection point between the accumulation curve and the log-series curve, thus necessarily modifying <span class="math inline">\(\alpha\)</span>. At this stage, there is no real argument to decide whether BCI’s <span class="math inline">\(\alpha\)</span> is 35 or 40.</p>
@@ -283,39 +299,47 @@ Figure&nbsp;4: Estimation of Fisher’s <span class="math inline">\(\alpha\)</sp
 <p>Arrhenius’s model benefits from a long theoretical <span class="citation" data-cites="Williamson2001 Harte1999 Preston1962">(<a href="#ref-Williamson2001" role="doc-biblioref">Williamson et al. 2001</a>; <a href="#ref-Harte1999" role="doc-biblioref">Harte et al. 1999</a>; <a href="#ref-Preston1962" role="doc-biblioref">Preston 1962</a>)</span> and empirical <span class="citation" data-cites="Dengler2009 Triantis2012">(<a href="#ref-Dengler2009" role="doc-biblioref">Dengler 2009</a>; <a href="#ref-Triantis2012" role="doc-biblioref">Triantis et al. 2012</a>)</span> support.</p>
 <p>A simple argument against Gleason’s model is contained in the neutral theory. Consider a large metacommunity and assume it is distributed as a log-series. A smaller metacommunity inside it would just be a sample of it in absence of dispersal limitation. Then both distributions would be identical, i.e.&nbsp;the same log-series with the same parameter <span class="math inline">\(\alpha\)</span>: the same Fisher’s model would be valid for all subsamples of the largest metacommunity, validating Gleason’s model. Yet, dispersal is limited, i.e.&nbsp;not all species of the largest metacommunity are present in the smaller ones: their diversity is reduced. Although they are distributed in log-series, their parameter <span class="math inline">\(\alpha\)</span> is smaller. Thus, the number of species decreases faster with the area than predicted by Gleason’s model.</p>
 <p>At this stage, we face an apparent paradox: the regional species area relationship follows a power model but a metacommunity is distributed in log-series. It is solved considering that the metacommunity’s <span class="math inline">\(\alpha\)</span> parameter depends on its size. Again, a smaller metacommunity embedded in the first one does not contain all species because of dispersal limitation. When the SAR is plotted on a log-log scale, it is linear. If the y-axis is not in logarithmic scale, it becomes concave. In this representation (<a href="#fig-arrhenius_logx" class="quarto-xref">Figure&nbsp;5</a>), a log-series species accumulation curve is a straight line (the number of individuals is much greater than <span class="math inline">\(\alpha\)</span>) so <span class="math inline">\(\alpha\)</span> increases with area.</p>
-<p></p>
-<div class="cell page-columns page-full">
-<div class="cell-output-display page-columns page-full">
 <div id="fig-arrhenius_logx" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-arrhenius_logx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="index_files/figure-html/fig-arrhenius_logx-1.png" class="img-fluid figure-img" width="672">
+<p></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/arrhenius_logx-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-arrhenius_logx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5: Number of tree species depending on the area (in square km, with density 627 trees/ha) in French Guiana, according to the Arrhenius’s power model estimated by <span class="citation" data-cites="Marcon2024">Marcon et al. (<a href="#ref-Marcon2024" role="doc-biblioref">2024</a>)</span>. The Y-axis is not in logarithm, so the relation is a convex curve instead of a straight line. The black dotted lines show the valid estimation of richness in the whole territory: around 2200 species for 80,000 km<sup>2</sup>. The green line is the species accumulation curve of the log-series estimated from the GuyaDiv metacommunity assuming its area is that of French Guiana. It overestimates the regional biodiversity at all scales. The red curve is the SAC of the actual metacommunity of French Guiana, whose Fisher’s <span class="math inline">\(\alpha\)</span> is twice smaller.
 </figcaption>
 </figure>
 </div>
-</div>
-</div>
-<p></p>
 <p>This theoretical result can be verified empirically with the GuyaDiv network plots in French Guiana. In <a href="#fig-guyadiv_alpha" class="quarto-xref">Figure&nbsp;6</a>, an increasing number of plots (one per site) is randomly selected to sample the metacommunity. The estimated <span class="math inline">\(\alpha\)</span> are plotted against the number of plots. Clearly, <span class="math inline">\(\alpha\)</span> increases linearly with the logarithm of the number of plots that is a proxy of the size of the sampled metacommunity.</p>
-<p></p>
-<div class="cell page-columns page-full">
-<div class="cell-output-display page-columns page-full">
 <div id="fig-guyadiv_alpha" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-guyadiv_alpha-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="index_files/figure-html/fig-guyadiv_alpha-1.png" class="img-fluid figure-img" width="672">
+<p></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/guyadiv_alpha-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-guyadiv_alpha-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;6: Estimation of the metacommunity’s <span class="math inline">\(\alpha\)</span> as a function of the number of GuyaDiv plots used to sample it. The line is the fit of the linear model relating <span class="math inline">\(\alpha\)</span> to the logarithm of the number of plots.
 </figcaption>
 </figure>
 </div>
-</div>
-</div>
-<p></p>
 <p>The metacommunity GuyaDiv is a sample of largely exceeds the borders of French Guiana. Its estimated <span class="math inline">\(\alpha\)</span> equals 257, implying more than 4000 tree species in the territory based on the number of trees: 627 per hectare on average multiplied by 8 million hectares. Its SAC is shown on <a href="#fig-arrhenius_logx" class="quarto-xref">Figure&nbsp;5</a> . The actual number of species in French Guiana was obtained by the estimation of the power model <span class="citation" data-cites="Marcon2024">(<a href="#ref-Marcon2024" role="doc-biblioref">Marcon et al. 2024</a>)</span>: it is close to 2200. The correct estimate of <span class="math inline">\(\alpha\)</span> is thus only 128.</p>
 <p>This example illustrates the impossibility to estimate <span class="math inline">\(\alpha\)</span> at a regional scale from sample plots, e.g.&nbsp;to compare the diversity of adjacent regions. Log-series can be sampled, but the size of the metacommunities can’t be controlled. Of course, this issue vanishes when the metacommunity under study is bounded, e.g.&nbsp;the Amazon sampled by <span class="citation" data-cites="TerSteege2013">Steege et al. (<a href="#ref-TerSteege2013" role="doc-biblioref">2013</a>)</span> to estimate its total number of species. In this case, adding samples necessarily leads to an asymptotic estimation of <span class="math inline">\(\alpha\)</span>.</p>
 </section>
