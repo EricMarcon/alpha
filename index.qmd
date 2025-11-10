@@ -43,8 +43,6 @@ execute:
   message: false
   # Show warnings
   warning: false
-  # Show results
-  results: false
   # Cache code results
   cache: true
 # Template specific
@@ -172,6 +170,7 @@ The slope of the line is $\alpha$ and the intercept is $-\alpha ln(\alpha)$.
 ::: {#fig-BCI_accum_logx}
 ```{r}
 #| label: BCI_accum_logx
+#| results: hide
 library("tidyverse")
 library("divent")
 library("vegan")
@@ -214,6 +213,7 @@ A characteristic feature of the log-series is that the abundance of species decr
 ::: {#fig-BCI_RAC}
 ```{r}
 #| label: BCI_RAC
+#| results: hide
 BCI_50ha %>%
   fit_rac(distribution = "lseries") %>% 
   pluck("rac") ->
@@ -251,6 +251,7 @@ They were used to estimate the number of tree species in French Guiana: around 2
 ::: {#fig-BCI_accum}
 ```{r}
 #| label: BCI_accum
+#| results: hide
 BCI_S_estimate <- div_richness(BCI_50ha, as_numeric = TRUE)
 BCI_S_1ha <- round(
   div_richness(
@@ -321,6 +322,7 @@ Its poor empirical fit is illustrated by @fig-BCI_accum and @fig-BCI_accum_logx.
 ::: {#fig-BCI_size}
 ```{r}
 #| label: BCI_size
+#| results: hide
 # Sample `sample_size` sites in an abundance table, group them and compute alpha
 alpha_sub <- function(sample_size, abd) {
   # Draw the rows of to sample in the table
@@ -452,6 +454,7 @@ In this representation (@fig-arrhenius_logx), a log-series species accumulation 
 ::: {#fig-arrhenius_logx}
 ```{r}
 #| label: arrhenius_logx
+#| results: hide
 # Read the data
 # Plots
 "data/plots.csv" %>% 
@@ -527,6 +530,7 @@ Clearly, $\alpha$ increases linearly with the logarithm of the number of plots t
 ::: {#fig-guyadiv_alpha}
 ```{r}
 #| label: guyadiv_alpha
+#| results: hide
 # Function to randomly select a plot in each of a
 # chosen number of sites (sample_size), merge the plots and return alpha.
 guyadiv_sub_alpha <- function(sample_size) {
