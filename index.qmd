@@ -43,6 +43,8 @@ execute:
   message: false
   # Show warnings
   warning: false
+  # Show results
+  results: false
   # Cache code results
   cache: true
 # Template specific
