@@ -26,13 +26,7 @@ jobs:
           options(install.packages.check.source = "no")
           install.packages(c("rmarkdown", "knitr"))
         shell: Rscript {0}
-      - name: Publish to GitHub Pages - index
+      - name: Publish to GitHub Pages
         uses: quarto-dev/quarto-actions/publish@v2
         with:
-          path: index.qmd
-          target: gh-pages
-      - name: Publish to GitHub Pages - appendix
-        uses: quarto-dev/quarto-actions/publish@v2
-        with:
-          path: appendix.qmd
           target: gh-pages
