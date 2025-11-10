@@ -18,6 +18,8 @@ format:
     toc: true
     code-fold: true
     embed-resources: true
+  pdf:
+    toc: true
 ---
 ```{r}
 #| label: DoNotModify
