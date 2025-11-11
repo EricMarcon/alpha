@@ -50,6 +50,9 @@ journalinfo: "Preprint"
 archive: "DOI: xxx/xx"
 keywordlabel: Keywords
 corrauthorlabel: Corresponding Author
+include-in-header:
+  text: |
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}, fontsize=\scriptsize}
 ---
 
 ```{r}
@@ -619,3 +622,203 @@ At this scale, the measure is correct, but the measured object is unclear.
 
 Finally, the empirical interest of Fisher's $\alpha$ is limited to the distribution of clearly delimited metacommunities, such as the Amazon forest as a whole.
 In this context, it allowed among other results to estimate the number of tree species.
+
+# Appendix {.appendix}
+
+## Estimating $\alpha$ with R {.appendix}
+
+### Point estimation {.appendix}
+
+Most implementations of the calculation of $\alpha$ are limited to solving the equation
+
+$$S(n) = \alpha \ln \left( 1 + \frac{n}{\alpha} \right),$$
+
+where $S(n)$ is the number of species observed in a sample of size $n$.
+The only data required are the total number of species and the sample size.
+The fifty hectares of BCI are used in the examples below.
+
+```{r}
+library("tidyverse")
+library("vegan")
+data(BCI)
+BCI %>% 
+  colSums() ->
+  BCI_50ha
+```
+
+Functions are:
+
+-   `vegan::fisher.alpha()` that relies on `vegan::fisherfit()`. The numerical resolution uses `uniroot()`.
+
+```{r}
+#| echo: true
+library("vegan")
+fisher.alpha(BCI_50ha)
+fisherfit(BCI_50ha)
+```
+
+-   `untb::fishers.alpha()`, identical to `vegan::fisherfit()`
+
+```{r}
+#| echo: true
+library("untb")
+fishers.alpha(N = sum(BCI_50ha), S = sum(BCI_50ha > 0))
+```
+
+### Likelihood maximisation {.appendix}
+
+The alternative is to adjust the observed abundance distribution to the theoretical distribution of a log series, maximising its likelihood as a function of $\alpha$.
+
+This is done by `sads::fitls()` which uses `mle2()` to maximise the likelihood of `sads::dls()` (the probability density of the logs-eries). The default starting value is the point estimate.
+
+```{r}
+#| echo: true
+library("sads")
+fitls(BCI_50ha) %>% 
+  coef()
+```
+
+In the case of BCI, the result is the same: the likelihood calculation gives predominant weight to the most abundant species.
+
+
+## Estimating $\theta$ by the abundant species distribution {.appendix}
+
+@Hubbell2001 [page 293] proposes estimating $\theta$ by adjusting the rank-abundance curve to the most frequent species in the community, arguing that these species are also the most abundant in the metacommunity.
+
+```{r}
+#| echo: true
+# Theoretical rank of abundances
+lseries_RAC <- function(abd, alpha) {
+  rank <- vapply(
+    abd, 
+    function(x) {
+      n <- x * log(1 + alpha / sum(abd))
+      f <- stats::integrate(
+        function(t) {exp(-t) / t}, 
+        lower = n, 
+        upper = Inf
+      )
+      fv <- f[["value"]]
+      return(alpha * fv)
+    }, 
+    FUN.VALUE = 0
+  )
+  tibble(rank, abundance = abd) |>
+    arrange(rank)
+}
+# Fit alpha by minimizing the departure of species ranks 
+# from their theoretical value in a logseries
+fit_alpha <- function(abd) {
+  abd_decr <- sort(abd[abd > 0], decreasing = TRUE)
+  optimized <- optim(
+    par = vegan::fisher.alpha(abd),
+    fn = function(alpha) {
+      sum(abs(seq_along(abd_decr) 
+        - lseries_RAC(abd_decr, alpha)$rank))
+    }, 
+    method = "L-BFGS-B",
+    lower = 0
+  )
+  optimized$par
+}
+
+BCI_50ha %>% 
+  sort(decreasing = TRUE) %>% 
+  subset(. > median(.)) ->
+  BCI_abundant
+BCI_theta <- fit_alpha(BCI_abundant)
+library("divent")
+BCI_abundant %>% 
+  as_abundances() %>% 
+  autoplot() +
+  geom_line(
+    data = lseries_RAC(BCI_50ha, alpha = BCI_theta),
+    aes(x = rank, y = abundance)    
+  )
+```
+
+The estimate using Hubbell's method is `r round(BCI_theta)`.
+
+
+## Full simulation {.appendix}
+
+The objective is to close the loop: using the parameters obtained from the BCI data, simulate a metacommunity and then a community of the same size as BCI.
+To validate the approach, the simulated distribution should be similar to the actual one.
+
+Estimation of BCI parameters $\theta$ and $m$ following @Etienne2005 with the untb package.
+
+```{r}
+#| echo: true
+library("untb")
+if (file.exists("data/BCI_logkda.RData")) {
+  # Use the saved result if available to save 
+  # computation resources
+  load("data/BCI_logkda.RData")
+} else {
+  BCI_50ha %>% 
+  # name conflict with dplyr::count()
+  untb::count() %>% 
+  # requires pari/gp installed and in the path, 
+  # or use gp_binary argument
+  logkda() ->
+  BCI_logkda
+  # Save the result
+  save(BCI_logkda, file = "data/BCI_logkda.RData")
+}
+BCI_50ha %>% 
+  # name conflict with dplyr::count()
+  untb::count() %>% 
+  # Estimate theta and m
+  optimal.params(log.kda = BCI_logkda) %>% 
+  print() ->
+  BCI_params
+```
+
+Simulation of a metacommunity: $J_m = 10^6$ (arbitrary), $\theta$ derived from BCI data.
+
+```{r}
+#| echo: true
+J_m <- 1E6
+theta <- BCI_params[1]
+library("divent")
+the_metacommunity <- rcommunity(
+  1, 
+  size = J_m , 
+  distribution = "lseries", 
+  fisher_alpha = theta
+)
+```
+
+Distribution of the local community: $J$ from BCI and $m$ estimated previously.
+
+```{r}
+#| echo: true
+J <- sum(BCI)
+m <- BCI_params[2]
+library("sads")
+# Number of species in the local community
+Svolkov(theta, m, J) %>% 
+  # Must be integers for the simulation
+  round() %>% 
+  # Draw the species abundances
+  rvolkov(theta, m, J) %>% 
+  # Make it an abundances object top plot it
+  as_abundances() %>% 
+  # Whittaker plot
+  autoplot() +
+  # BCI real distribution
+  geom_line(
+    data = {
+      tibble(
+        abundance = sort(
+          BCI_50ha, 
+          decreasing = TRUE
+        )
+      ) %>% 
+      mutate(rank = seq_len(n()))
+    },
+    aes(x = rank, y = abundance)
+  )
+```
+
+The simulated community (red dots) corresponds fairly well to the actual distribution of BCI (black line).
