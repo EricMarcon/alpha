@@ -53,6 +53,13 @@ corrauthorlabel: Corresponding Author
 include-in-header:
   text: |
     \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}, fontsize=\scriptsize}
+    \makeatletter
+    \patchcmd{\@verbatim}
+      {\verbatim@font}
+      {\verbatim@font\footnotesize}
+      {}{}
+    \makeatother
+    \renewcommand*{\bibfont}{\footnotesize}
 ---
 
 ```{r}
@@ -706,8 +713,8 @@ lseries_RAC <- function(abd, alpha) {
   tibble(rank, abundance = abd) |>
     arrange(rank)
 }
-# Fit alpha by minimizing the departure of species ranks 
-# from their theoretical value in a logseries
+# Fit alpha by minimizing the departure of species 
+# ranks from their theoretical value in a logseries
 fit_alpha <- function(abd) {
   abd_decr <- sort(abd[abd > 0], decreasing = TRUE)
   optimized <- optim(
