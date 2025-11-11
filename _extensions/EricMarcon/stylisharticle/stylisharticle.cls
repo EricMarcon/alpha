@@ -110,7 +110,7 @@
   {\ \titlerule*[.5pc]{.}\ \thecontentspage}
   []
 \titlecontents*{subsubsection}[\tocsep]
-  {\addvspace{-6pt}\footnotesize\sffamily}
+  {\addvspace{-4pt}\footnotesize\sffamily}
   {}
   {}
   {}
