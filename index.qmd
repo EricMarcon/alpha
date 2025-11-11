@@ -321,7 +321,7 @@ Applying an appropriate model to describe the distribution of species is similar
 
 The empirical question deserves further elaboration, based on the BCI dataset for clarity.
 The basic argument is that the actual distribution is not so different from a log-series that the advantages of summarizing it by $\alpha$ are not worth it.
-Several R packages allow estimating $\alpha$ from a vector of abundances (see Appendix 1 for details).
+Several R packages allow estimating $\alpha$ from a vector of abundances (see Appendix @sec-appendix1 for details).
 Most of them (such as `vegan::fisher.alpha`) just solve @eq-fisheralpha, i.e. they only rely on the total abundance and number of species, ignoring the distribution.
 More elaborate ones (such as `sads::fitls`) find the value of $\alpha$ that maximizes the likelihood of the distribution assuming it is a log-series.
 When applied to the BCI dataset, both return the same estimation: `r round(BCI_alpha)`.
@@ -392,12 +392,9 @@ A solution to this problem is to return to the neutral model theory and assume t
 Then, the parameter to estimate is $\theta$, the fundamental number of biodiversity in the metacommunity BCI belongs to: the metacommunity is distributed as a log-series whose parameter is $\theta$.
 This is an elegant solution both theoretically (all assumptions are valid) and empirically (the estimation of $\alpha$ is robust).
 
-@Hubbell2001 [page 293] proposed estimating it by adjusting the rank-abundance curve to the most frequent species in the community, arguing that these species are also the most abundant in the metacommunity.
-He found $\theta = 50$.
-The same algorithm is applied to the current BCI dataset in Appendix 2: its result is $\theta = 45$.
-Both $\theta$ and $m$ can be estimated by likelihood maximization of the local distribution [@Etienne2005] with the untb package [@Hankin2007].
+@Hubbell2001 \[page 293\] proposed estimating it by adjusting the rank-abundance curve to the most frequent species in the community, arguing that these species are also the most abundant in the metacommunity. He found $\theta = 50$. The same algorithm is applied to the current BCI dataset in Appendix @sec-appendix2: its result is $\theta = 45$. Both $\theta$ and $m$ can be estimated by likelihood maximization of the local distribution [@Etienne2005] with the untb package [@Hankin2007].
 The retained value of $\theta$ is 48.
-The consistency of this approach is shown in Appendix 3: $\theta$ and $m$ are estimated from the BCI distribution, then a community of the same size is drawn with these parameters: it is very close to the actual distribution.
+The consistency of this approach is shown in Appendix @sec-appendix3: $\theta$ and $m$ are estimated from the BCI distribution, then a community of the same size is drawn with these parameters: it is very close to the actual distribution.
 
 This faces two limits.
 First, as far as we know, it is not applied in the literature.
@@ -630,7 +627,7 @@ In this context, it allowed among other results to estimate the number of tree s
 
 # Appendix {.appendix}
 
-## Estimating $\alpha$ with R {.appendix}
+## Estimating $\alpha$ with R {#sec-appendix1 .appendix}
 
 ### Point estimation {.appendix}
 
@@ -674,7 +671,8 @@ fishers.alpha(N = sum(BCI_50ha), S = sum(BCI_50ha > 0))
 
 The alternative is to adjust the observed abundance distribution to the theoretical distribution of a log series, maximising its likelihood as a function of $\alpha$.
 
-This is done by `sads::fitls()` which uses `mle2()` to maximise the likelihood of `sads::dls()` (the probability density of the logs-eries). The default starting value is the point estimate.
+This is done by `sads::fitls()` which uses `mle2()` to maximise the likelihood of `sads::dls()` (the probability density of the log-series).
+The default starting value is the point estimate.
 
 ```{r}
 #| echo: true
@@ -685,8 +683,7 @@ fitls(BCI_50ha) %>%
 
 In the case of BCI, the result is the same: the likelihood calculation gives predominant weight to the most abundant species.
 
-
-## Estimating $\theta$ by the abundant species distribution {.appendix}
+## Estimating $\theta$ by the abundant species distribution {#sec-appendix2 .appendix}
 
 @Hubbell2001 [page 293] proposes estimating $\theta$ by adjusting the rank-abundance curve to the most frequent species in the community, arguing that these species are also the most abundant in the metacommunity.
 
@@ -744,8 +741,7 @@ BCI_abundant %>%
 
 The estimate using Hubbell's method is `r round(BCI_theta)`.
 
-
-## Full simulation {.appendix}
+## Full simulation {#sec-appendix3 .appendix}
 
 The objective is to close the loop: using the parameters obtained from the BCI data, simulate a metacommunity and then a community of the same size as BCI.
 To validate the approach, the simulated distribution should be similar to the actual one.
