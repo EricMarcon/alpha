@@ -7,14 +7,6 @@ format:
     # Color example, see "Text color"
     header-includes:
       \definecolor{grey}{RGB}{191, 191, 191}
-      \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}, fontsize=\scriptsize}
-      \makeatletter
-      \patchcmd{\@verbatim}
-        {\verbatim@font}
-        {\verbatim@font\footnotesize}
-        {}{}
-      \makeatother
-      \renewcommand*{\bibfont}{\footnotesize}
   stylisharticle-html:
     # Color example, see "Text color"
     css: colors.css
