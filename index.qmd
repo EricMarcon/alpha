@@ -254,10 +254,12 @@ They were used to estimate the number of tree species in French Guiana: around 2
 #| results: hide
 BCI_S_estimate <- div_richness(BCI_50ha, as_numeric = TRUE)
 BCI_density <- round(sum(BCI) / 50)
-BCI_S_1ha <- div_richness(
-  BCI_50ha, 
-  level = BCI_density, 
-  as_numeric = TRUE
+BCI_S_1ha <- round(
+  div_richness(
+    BCI_50ha, 
+    level = BCI_density, 
+    as_numeric = TRUE
+  )
 )
 BCI_accum %>%
   autoplot() +
@@ -298,7 +300,7 @@ The estimated number of species is `r BCI_S_estimate`.
 An alternative consists in standardizing the sample site, in general to allow comparing different communities whose inventories are not large enough to allow a reliable estimation of asymptotic diversity.
 Exact rarefaction formulas are available to calculate the number of tree species at any sampling level smaller than the actual sample, and estimators allow extrapolating the diversity up to a limited level, around twice the actual sample size [@Chao2014].
 The expected number of species in one hectare of BCI, actually based on the average number of trees per hectare (equal to `r BCI_density`), is `r BCI_S_1ha`.
-<!--# 1ha is too small -->
+This result can be compared easily to well-known benchmarks, such as the 367 species inventoried in one hectare of an Amazonian Ecuador forest [@Valencia1994], even though a larger area would be preferable to better take into account the rare species and leave the steepest part of the SAC in @fig-BCI_accum.
 
 In contrast, Fisher's $\alpha$ does not depend on the sample size as soon as $n \gg \alpha$, which is always true in forest inventories.
 Thus, it appears to be an ideal, universal metric of biodiversity, allowing to compare it across sites of different sizes.
@@ -374,7 +376,6 @@ In contrast with the assumed advantage of $\alpha$, its estimation heavily relie
 @fig-BCI_size shows the average estimation of $\alpha$ based on random subsamples of BCI, from 4 to 50ha, repeated `r simulations_n` times.
 The estimated value of $\alpha$ decreases from over 40 to approximately 35, with a quite good linear relation between $\alpha$ and the logarithm of the sample size.
 Several examples can be found in the literature, e.g. @Duque2017; @Schulte2005, where the dependence of $\alpha$ to sample size is explored either with a statistical or an ecological approach.
-<!--# Similar to Condit 2000 -->
 
 Visually, in @fig-BCI_accum_logx, increasing $\alpha$ moves the log-series distribution to the right and increases its slope.
 Changing the sample size means changing the intersection point between the accumulation curve and the log-series curve, thus necessarily modifying $\alpha$.
