@@ -144,7 +144,7 @@ Fisher's log-series [@Fisher1943] was derived originally from the distribution o
 It is formulated as a species-abundance relationship that links the number of species to the number of individuals with a single parameter, called $\alpha$.
 Fisher's $\alpha$ is thus an ideal candidate to measure diversity since it overcomes the previous issue: it is scale-independent if the actual species distribution is a log-series.
 After a long period of relative obscurity, $\alpha$ made a comeback following the development of Hubbell's neutral theory [@Hubbell2001] since the metacommunity is distributed in log-series whose $\alpha$ equals $\theta$, the fundamental number of biodiversity.
-Although the log-series applies neither to the local scale according to the neutral theory, it became popular [@Duque2017] to describe the diversity of forest trees, probably for its simplicity.
+Although the log-series does not apply to the local scale according to the neutral theory, it became popular [@Duque2017] to describe the diversity of forest trees, probably for its simplicity.
 Summarizing a species distribution by a statistics that does not apply to it is questionable.
 The aim of this paper is to show that $\alpha$ actually does not measure diversity unambiguously, neither at local nor at regional scales, and should be limited to the largest metacommunity.
 It is organised as follows: Fisher's $\alpha$ fundamentals are first recalled; its use at the different scales is then discussed before concluding about its applicability.
@@ -158,7 +158,7 @@ In his model, all species are distributed completely randomly and independently 
 The intensities of the Poisson distributions of all species follow in turn a gamma distribution with shape parameter (tending to) zero.
 Last, the number of species is infinite.
 Then, the number of species with non-zero abundance $S(n)$ is linked to the size of the community $n$ through @eq-fisheralpha by a parameter named $\alpha$.
-It is called log-series because the number of species is derived as the sum of the number of species with 1 to an infinite number of individuals: this infinite sum appears to be the Taylor series of the logarithm function.
+It is called log-series because the number of species is derived as the sum of the number of species any number of individuals: this infinite sum appears to be the Taylor series of the logarithm function.
 
 $$
   S(n) = \alpha \ln \left( 1 + \frac{n}{\alpha} \right).
@@ -253,10 +253,11 @@ They were used to estimate the number of tree species in French Guiana: around 2
 #| label: BCI_accum
 #| results: hide
 BCI_S_estimate <- div_richness(BCI_50ha, as_numeric = TRUE)
-BCI_S_1ha <- round(
+BCI_density <- round(sum(BCI) / 50)
+BCI_S_1ha %>% 
   div_richness(
     BCI_50ha, 
-    level = round(sum(BCI) / 50), 
+    level = BCI_density, 
     as_numeric = TRUE
   )
 )
@@ -298,7 +299,8 @@ The estimated number of species is `r BCI_S_estimate`.
 
 An alternative consists in standardizing the sample site, in general to allow comparing different communities whose inventories are not large enough to allow a reliable estimation of asymptotic diversity.
 Exact rarefaction formulas are available to calculate the number of tree species at any sampling level smaller than the actual sample, and estimators allow extrapolating the diversity up to a limited level, around twice the actual sample size [@Chao2014].
-The expected number of species in one hectare of BCI, actually based on the average number of trees per hectare, is `r BCI_S_1ha`.
+The expected number of species in one hectare of BCI, actually based on the average number of trees per hectare (equal to `r BCI_density`), is `r BCI_S_1ha`.
+<!--# 1ha is too small -->
 
 In contrast, Fisher's $\alpha$ does not depend on the sample size as soon as $n \gg \alpha$, which is always true in forest inventories.
 Thus, it appears to be an ideal, universal metric of biodiversity, allowing to compare it across sites of different sizes.
@@ -312,7 +314,7 @@ The theoretical issue does not require much more argumentation.
 Applying an appropriate model to describe the distribution of species is similar to trying to describe the size of a rectangle by the single length of its side, assuming it is a square.
 
 The empirical question deserves further elaboration, based on the BCI dataset for clarity.
-The basic argument is that the actual distribution is not so different from a log-series that the advantages of summarizing it by $\alpha$ are not worth it.
+The basic argument is that the actual distribution is not so different from a log-series that the advantages of summarizing it by $\alpha$ are worth accepting the approximation.
 Several R packages allow estimating $\alpha$ from a vector of abundances (see Appendix @sec-appendix1 for details).
 Most of them (such as `vegan::fisher.alpha`) just solve @eq-fisheralpha, i.e. they only rely on the total abundance and number of species, ignoring the distribution.
 More elaborate ones (such as `sads::fitls`) find the value of $\alpha$ that maximizes the likelihood of the distribution assuming it is a log-series.
@@ -372,9 +374,9 @@ The line is the fit of a linear model relating $\alpha$ to the logarithm of the 
 
 In contrast with the assumed advantage of $\alpha$, its estimation heavily relies on the sample size.
 @fig-BCI_size shows the average estimation of $\alpha$ based on random subsamples of BCI, from 4 to 50ha, repeated `r simulations_n` times.
-
 The estimated value of $\alpha$ decreases from over 40 to approximately 35, with a quite good linear relation between $\alpha$ and the logarithm of the sample size.
 Several examples can be found in the literature, e.g. @Duque2017; @Schulte2005, where the dependence of $\alpha$ to sample size is explored either with a statistical or an ecological approach.
+<!--# Similar to Condit 2000 -->
 
 Visually, in @fig-BCI_accum_logx, increasing $\alpha$ moves the log-series distribution to the right and increases its slope.
 Changing the sample size means changing the intersection point between the accumulation curve and the log-series curve, thus necessarily modifying $\alpha$.
@@ -393,6 +395,7 @@ First, as far as we know, it is not applied in the literature.
 Then, it does not exactly describe the diversity of the local community but that of the metacommunity: summarizing BCI by $\theta = 48$ ignores the migration parameter.
 Modifying $m$ yields very different distribution, from geometric to log-series [@Hubbell2001].
 In other words, $\theta$ only gives a very partial knowledge of the diversity of the local community.
+<!--# add appendix 4 with m 0.01 -->
 
 # Regional scale
 
