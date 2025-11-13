@@ -98,7 +98,7 @@ knitr::knit_hooks$set(
 # Delete this chunk if you don't use R
 
 # Add necessary packages here
-packages <- c("tidyverse", "divent", "vegan", "untb", "ggpubr", "sads")
+packages <- c("tidyverse", "divent", "vegan", "untb", "sads")
 # Install them
 install_packages(packages)
 
@@ -362,9 +362,7 @@ tibble(Size = sizes) %>%
   geom_point() +
   scale_x_log10() +
   labs(x = "Sample size", y = "Fisher's alpha") +
-  geom_smooth(method = "lm") +
-  # Equation
-  ggpubr::stat_regline_equation(label.x.npc = "center")
+  geom_smooth(method = "lm")
 ```
 
 Estimation of Fisher's $\alpha$ depending on the number of 1-ha plots of BCI.
@@ -449,6 +447,7 @@ Again, a smaller metacommunity embedded in the first one does not contain all sp
 When the SAR is plotted on a log-log scale, it is linear (@eq-arrhenius_log).
 If the y-axis is not in logarithmic scale, it becomes concave.
 In this representation (@fig-arrhenius_logx), a log-series species accumulation curve is a straight line (the number of individuals is much greater than $\alpha$).
+This theoretical result can be verified empirically with the GuyaDiv network plots in French Guiana (Appendix @sec-appendix4): $\alpha$ increases with the number of sites included in the sample.
 
 ::: {#fig-arrhenius_logx}
 ```{r}
@@ -519,80 +518,6 @@ The black dotted lines show the valid estimation of richness in the whole territ
 The green line is the species accumulation curve of the log-series estimated from the GuyaDiv metacommunity assuming its area is that of French Guiana.
 It overestimates the regional biodiversity at all scales.
 The red curve is the SAC of the actual metacommunity of French Guiana, whose Fisher's $\alpha$ is twice smaller.
-:::
-
-This theoretical result can be verified empirically with the GuyaDiv network plots in French Guiana.
-In @fig-guyadiv_alpha, an increasing number of plots (one per site) is randomly selected to sample the metacommunity.
-The estimated $\alpha$ are plotted against the number of plots.
-Clearly, $\alpha$ increases linearly with the logarithm of the number of plots that is a proxy of the size of the sampled metacommunity.
-
-::: {#fig-guyadiv_alpha}
-```{r}
-#| label: guyadiv_alpha
-#| results: hide
-# Function to randomly select a plot in each of a
-# chosen number of sites (sample_size), merge the plots and return alpha.
-guyadiv_sub_alpha <- function(sample_size) {
-  # Select one plot per location...
-  guyadiv_plots %>% 
-    # Set a random value to each plot
-    mutate(random = runif(n())) %>% 
-    {. ->> plots_randomized} %>% 
-    group_by(Location) %>%
-    # Select the plot with the max random value in each location
-    summarize(random_max = max(random)) %>% 
-    rename(random = random_max) %>% 
-    # Eliminate non-selected plots
-    inner_join(plots_randomized) %>% 
-    # Keep the plot number and the random number
-    dplyr::select(Plot, random) %>% 
-    # Get the abundances
-    inner_join(guyadiv_abd) %>% 
-    # Sort by random number
-    arrange(random) %>% 
-    # Keep the first rows
-    head(sample_size) %>% 
-    # Delete the random numbers
-    dplyr::select(-random) %>% 
-    # Make the table an adundance object (package divent)
-    rename(site = Plot) %>% 
-    as_abundances() %>% 
-    # Give all plots equal weight
-    mutate(weight = 1) %>% 
-    # Merge the inventories
-    metacommunity() %>% 
-    # Extract a numeric vector
-    as.numeric() %>% 
-    # Compute alpha
-    fisher.alpha()
-}
-
-# Count the number of sites
-guyadiv_plots %>% 
-  group_by(Location) %>% 
-  summarize() %>% 
-  nrow() ->
-  sites_n
-# Choose sizes between 3 and the number of sites
-sizes <- seq_len(sites_n)[-(1:2)]
-# Calculate alpha of each sample
-alphas <- replicate(
-  simulations_n,
-  expr = sapply(sizes, FUN = guyadiv_sub_alpha)
-)
-tibble(NbPlots = sizes) %>%
-  bind_cols(alphas) %>% 
-  pivot_longer(cols = !NbPlots) %>% 
-  ggplot(aes(x = NbPlots, y = value)) +
-  geom_point() +
-  scale_x_log10() +
-  labs(x = "Number of Plots", y = "Fisher's alpha") +
-  geom_smooth(method = "lm") +
-  ggpubr::stat_regline_equation()
-```
-
-Estimation of the metacommunity's $\alpha$ as a function of the number of GuyaDiv plots used to sample it.
-The line is the fit of the linear model relating $\alpha$ to the logarithm of the number of plots.
 :::
 
 The metacommunity GuyaDiv is a sample of largely exceeds the borders of French Guiana.
@@ -836,3 +761,77 @@ The simulated community (red dots) corresponds fairly well to the actual distrib
 
 The blue dots are a distribution simulated with BCI's $\theta$ but a migration parameter reduced to 0.01 to illustrate that the same values of $\theta$ correspond to very different communities.
 Both $\theta$ and $m$ must be considered.
+
+## Increasing regional sampling {#sec-appendix4 .appendix}
+
+An increasing number of GuyaDiv plots (one per site) is randomly selected to sample the metacommunity.
+The estimated $\alpha$ is plotted against the number of plots.
+It increases linearly with the logarithm of the number of plots that is a proxy of the size of the sampled metacommunity.
+
+::: {#fig-guyadiv_alpha}
+```{r}
+#| label: guyadiv_alpha
+#| results: hide
+# Function to randomly select a plot in each of a
+# chosen number of sites (sample_size), merge the plots and return alpha.
+guyadiv_sub_alpha <- function(sample_size) {
+  # Select one plot per location...
+  guyadiv_plots %>% 
+    # Set a random value to each plot
+    mutate(random = runif(n())) %>% 
+    {. ->> plots_randomized} %>% 
+    group_by(Location) %>%
+    # Select the plot with the max random value in each location
+    summarize(random_max = max(random)) %>% 
+    rename(random = random_max) %>% 
+    # Eliminate non-selected plots
+    inner_join(plots_randomized) %>% 
+    # Keep the plot number and the random number
+    dplyr::select(Plot, random) %>% 
+    # Get the abundances
+    inner_join(guyadiv_abd) %>% 
+    # Sort by random number
+    arrange(random) %>% 
+    # Keep the first rows
+    head(sample_size) %>% 
+    # Delete the random numbers
+    dplyr::select(-random) %>% 
+    # Make the table an adundance object (package divent)
+    rename(site = Plot) %>% 
+    as_abundances() %>% 
+    # Give all plots equal weight
+    mutate(weight = 1) %>% 
+    # Merge the inventories
+    metacommunity() %>% 
+    # Extract a numeric vector
+    as.numeric() %>% 
+    # Compute alpha
+    fisher.alpha()
+}
+
+# Count the number of sites
+guyadiv_plots %>% 
+  group_by(Location) %>% 
+  summarize() %>% 
+  nrow() ->
+  sites_n
+# Choose sizes between 3 and the number of sites
+sizes <- seq_len(sites_n)[-(1:2)]
+# Calculate alpha of each sample
+alphas <- replicate(
+  simulations_n,
+  expr = sapply(sizes, FUN = guyadiv_sub_alpha)
+)
+tibble(NbPlots = sizes) %>%
+  bind_cols(alphas) %>% 
+  pivot_longer(cols = !NbPlots) %>% 
+  ggplot(aes(x = NbPlots, y = value)) +
+  geom_point() +
+  scale_x_log10() +
+  labs(x = "Number of Plots", y = "Fisher's alpha") +
+  geom_smooth(method = "lm")
+```
+
+Estimation of the metacommunity's $\alpha$ as a function of the number of GuyaDiv plots used to sample it.
+The line is the fit of the linear model relating $\alpha$ to the logarithm of the number of plots.
+:::
