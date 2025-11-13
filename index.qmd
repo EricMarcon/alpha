@@ -393,7 +393,6 @@ First, as far as we know, it is not applied in the literature.
 Then, it does not exactly describe the diversity of the local community but that of the metacommunity: summarizing BCI by $\theta = 48$ ignores the migration parameter.
 Modifying $m$ yields very different distribution, from geometric to log-series [@Hubbell2001].
 In other words, $\theta$ only gives a very partial knowledge of the diversity of the local community.
-<!--# add appendix 4 with m 0.01 -->
 
 # Regional scale
 
@@ -406,7 +405,7 @@ $$
 $$ {#eq-arrhenius}
 
 where $A$ is the surface area, $c$ a constant that depends on the organisms taken into account and the regional diversity, and $z$ the parameter that relates richness to area.
-Assuming that forest communities are saturated, i.e. $n = \rho A$ where $\rho$ is the number of trees per unit area,the number of individuals is proportional to the area, and, since $\ln n \gg \ln \rho$, the model can be rewritten in a linear form:
+Assuming that forest communities are saturated, i.e. $n = \rho A$ where $\rho$ is the number of trees per unit area, the number of individuals is proportional to the area, and, since $\ln n \gg \ln \rho$, the model can be rewritten in a linear form:
 
 $$
   \ln\left(S\left(n\right)\right) = k_A + z \ln\left(n\right)
@@ -423,7 +422,7 @@ This property allowed estimating the number of species of the Amazon forest [@Te
 Discussing the sampling issues due to the spatial structure of species [@TerSteege2020] or the discrepancies between the empirical and theoretical distributions [@Milton2025] is not the scope of this paper: even ignoring them, the theory is very well supported empirically.
 
 @Gleason1922 refuted Arrhenius's model, arguing that the richness would be far too high for large areas, and proposed a competing model in which the number of species, rather than its logarithm, increased with the logarithm of the area.
-Assuming saturation, i.e. $n = \rho A$ where $\rho$ is the number of trees per unit area, and $\ln n \gg \ln \rho$ , it can be rewritten as
+Assuming saturation, it can be rewritten as
 
 $$
    S\left(n\right) = k_G + \alpha \ln\left(n\right),
@@ -440,14 +439,15 @@ A smaller metacommunity inside it would just be a sample of it in absence of dis
 Then both distributions would be identical, i.e. the same log-series with the same parameter $\alpha$: the same Fisher's model would be valid for all subsamples of the largest metacommunity, validating Gleason's model.
 Yet, dispersal is limited, i.e. not all species of the largest metacommunity are present in the smaller ones: their diversity is reduced.
 Although they are distributed in log-series, their parameter $\alpha$ is smaller.
-Thus, the number of species decreases faster with the area than predicted by Gleason's model.
+Thus, the number of species decreases faster with the area than predicted by Gleason's model, inverting his original argument.
 
 At this stage, we face an apparent paradox: the regional species area relationship follows a power model but a metacommunity is distributed in log-series.
 It is solved considering that the metacommunity's $\alpha$ parameter depends on its size.
 Again, a smaller metacommunity embedded in the first one does not contain all species because of dispersal limitation.
-When the SAR is plotted on a log-log scale, it is linear.
+
+When the SAR is plotted on a log-log scale, it is linear (@eq-arrhenius_log).
 If the y-axis is not in logarithmic scale, it becomes concave.
-In this representation (@fig-arrhenius_logx), a log-series species accumulation curve is a straight line (the number of individuals is much greater than $\alpha$) so $\alpha$ increases with area.
+In this representation (@fig-arrhenius_logx), a log-series species accumulation curve is a straight line (the number of individuals is much greater than $\alpha$).
 
 ::: {#fig-arrhenius_logx}
 ```{r}
@@ -512,7 +512,7 @@ ggplot(data.frame(x = 10^(1:6)), aes(x)) +
   labs(x = "Area", y = "Number of species")
 ```
 
-Number of tree species depending on the area (in square km, with density 627 trees/ha) in French Guiana, according to the Arrhenius's power model estimated by @Marcon2024.
+Number of tree species depending on the area (in square km, with density `r gf_density/100` trees/ha) in French Guiana, according to the Arrhenius's power model estimated by @Marcon2024.
 The Y-axis is not in logarithm, so the relation is a convex curve instead of a straight line.
 The black dotted lines show the valid estimation of richness in the whole territory: around 2200 species for 80,000 km^2^.
 The green line is the species accumulation curve of the log-series estimated from the GuyaDiv metacommunity assuming its area is that of French Guiana.
@@ -572,7 +572,7 @@ guyadiv_plots %>%
   summarize() %>% 
   nrow() ->
   sites_n
-# Choose sized between 1 and the number of sites
+# Choose sizes between 3 and the number of sites
 sizes <- seq_len(sites_n)[-(1:2)]
 # Calculate alpha of each sample
 alphas <- replicate(
@@ -783,7 +783,7 @@ the_metacommunity <- rcommunity(
 )
 ```
 
-Distribution of the local community: $J$ from BCI and $m$ estimated previously.
+Distribution of the local community: $J$ from BCI and $m$ estimated previously, compared to an arbitrary value of $m$.
 
 ```{r}
 #| echo: true
@@ -799,20 +799,39 @@ Svolkov(theta, m, J) %>%
   # Make it an abundances object top plot it
   as_abundances() %>% 
   # Whittaker plot
-  autoplot() +
-  # BCI real distribution
+  autoplot() ->
+  BCI_sim_neutral
+# BCI real distribution
+BCI_50ha %>% 
+  sort(decreasing = TRUE) %>% 
+  as_tibble() %>% 
+  mutate(rank = seq_len(n())) -> 
+  BCI_tbl_50ha
+# Compare with m = 1%
+m_arbitrary <- .01
+Svolkov(theta, m_arbitrary, J) %>% 
+  # Must be integers for the simulation
+  round() %>% 
+  # Draw the species abundances
+  rvolkov(theta, m, J) %>% 
+  sort(decreasing = TRUE) %>% 
+  as_tibble() %>% 
+  mutate(rank = seq_len(n())) -> 
+  BCI_tbl_m001
+# Plot altogether
+BCI_sim_neutral +
   geom_line(
-    data = {
-      tibble(
-        abundance = sort(
-          BCI_50ha, 
-          decreasing = TRUE
-        )
-      ) %>% 
-      mutate(rank = seq_len(n()))
-    },
-    aes(x = rank, y = abundance)
+    data = BCI_tbl_50ha,
+    aes(x = rank, y = value)
+  ) +
+  geom_point(
+    data = BCI_tbl_m001,
+    aes(x = rank, y = value),
+    color = "blue"
   )
 ```
 
 The simulated community (red dots) corresponds fairly well to the actual distribution of BCI (black line).
+
+The blue dots are a distribution simulated with BCI's $\theta$ but a migration parameter reduced to 0.01 to illustrate that the same values of $\theta$ correspond to very different communities.
+Both $\theta$ and $m$ must be considered.
