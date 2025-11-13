@@ -1,6 +1,6 @@
-![stability-wip](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)
+![stability-wip](https://img.shields.io/badge/stability-work_in_progress-lightgrey.svg)
 [![Render and Publish](https://github.com/EricMarcon/alpha/actions/workflows/quarto-publish.yml/badge.svg)](https://github.com/EricMarcon/alpha/actions/workflows/quarto-publish.yml)
 
-# Preprint
+# Draft
 
 Work in progress
