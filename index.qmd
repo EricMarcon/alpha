@@ -836,9 +836,10 @@ tibble(NbPlots = sizes) %>%
   geom_point() +
   scale_x_log10() +
   labs(x = "Number of Plots", y = "Fisher's alpha") +
-  geom_smooth(method = "lm")
+  stat_smooth(method = "lm", formula = y~poly(x,2))
+
 ```
 
 Estimation of the metacommunity's $\alpha$ as a function of the number of GuyaDiv plots used to sample it.
-The line is the fit of the linear model relating $\alpha$ to the logarithm of the number of plots.
+The line is the fit of the quadratic model relating $\alpha$ to the logarithm of the number of plots.
 :::
