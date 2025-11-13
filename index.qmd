@@ -1,5 +1,5 @@
 ---
-title: "Fisher's alpha is not a valid metric of biodiversity in tropical forests"
+title: "Fisher's alpha is generally not a valid metric of biodiversity in tropical forests"
 # Output formats
 format:
   stylisharticle-pdf:
@@ -26,8 +26,8 @@ author:
 abstract: |
   Fisher's alpha should not be used to assess the diversity of tropical forest tree species at the local and regional scales.
   At the local scale, communities are not distributed in log-series: alpha is the parameter of a model that does not fit the data so it can neither be estimated nor interpreted unambiguously.
-  At the regional scale, alpha correctly decribes the distribution of a metacommunity but its extent is unknown.
-  Species richness is always a better diversity metric than alpha, containing basically the same information. 
+  At the regional scale, alpha correctly decribes the distribution of a metacommunity but its extent is unknown when it is not the whole forest area.
+  Species richness is always a better diversity metric than alpha, containing basically the same information without relying on uncertain assumptions.
 keywords: [Fisher's alpha, biodiversity, tropical forests]
 # Bibliography
 reference-section-title: References
