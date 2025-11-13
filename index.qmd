@@ -25,6 +25,9 @@ author:
 # Abstract and Keywords
 abstract: |
   Fisher's alpha should not be used to assess the diversity of tropical forest tree species at the local and regional scales.
+  At the local scale, communities are not distributed in log-series: alpha is the parameter of a model that does not fit the data so it can neither be estimated nor interpreted unambiguously.
+  At the regional scale, alpha correctly decribes the distribution of a metacommunity but its extent is unknown.
+  Species richness is always a better diversity metric than alpha, containing basically the same information. 
 keywords: [Fisher's alpha, biodiversity, tropical forests]
 # Bibliography
 reference-section-title: References
@@ -543,6 +546,11 @@ At this scale, the measure is correct, but the measured object is unclear.
 
 Finally, the empirical interest of Fisher's $\alpha$ is limited to the distribution of clearly delimited metacommunities, such as the Amazon forest as a whole.
 In this context, it allowed among other results to estimate the number of tree species.
+
+Species richness can be unambiguously defined and estimated at all scales.
+At the local scale, given the number of individuals, it contains the same information as $\alpha$ without assuming any particular distribution.
+It can be completed with other diversity metrics, namely Hill numbers [@Marcon2014a].
+At the regional scale, with much more efforts, the number of species can be derived from Arrhenius's power model with appropriate sampling [@Marcon2024].
 
 # Appendix {.appendix}
 
