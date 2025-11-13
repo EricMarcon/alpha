@@ -606,6 +606,7 @@ In the case of BCI, the result is the same: the likelihood calculation gives pre
 
 @Hubbell2001 [page 293] proposes estimating $\theta$ by adjusting the rank-abundance curve to the most frequent species in the community, arguing that these species are also the most abundant in the metacommunity.
 
+::: {#fig-hubbell_alpha}
 ```{r}
 #| echo: true
 # Theoretical rank of abundances
@@ -628,7 +629,7 @@ lseries_RAC <- function(abd, alpha) {
     arrange(rank)
 }
 # Fit alpha by minimizing the departure of species 
-# ranks from their theoretical value in a logseries
+# ranks from their theoretical value in a log-series
 fit_alpha <- function(abd) {
   abd_decr <- sort(abd[abd > 0], decreasing = TRUE)
   optimized <- optim(
@@ -657,6 +658,10 @@ BCI_abundant %>%
     aes(x = rank, y = abundance)    
   )
 ```
+
+Estimation of $\theta$ at BCI based on the best fit of $\alpha$, assuming the half most abundant species are distributed as a log-series.
+The rank-abundance curve of the data (red points) and of the inferred log-series (black line) are shown.
+:::
 
 The estimate using Hubbell's method is `r round(BCI_theta)`.
 
@@ -711,6 +716,7 @@ the_metacommunity <- rcommunity(
 
 Distribution of the local community: $J$ from BCI and $m$ estimated previously, compared to an arbitrary value of $m$.
 
+::: {#fig-bci_sim}
 ```{r}
 #| echo: true
 J <- sum(BCI)
@@ -757,10 +763,11 @@ BCI_sim_neutral +
   )
 ```
 
-The simulated community (red dots) corresponds fairly well to the actual distribution of BCI (black line).
-
+RAC of BCI compared to two simulated distributions.
+The simulated zero-sum multinomial distribution (red dots) simulated with the $\theta$ and $m$ parameters derived from the data corresponds fairly well to the actual distribution of BCI (black line).
 The blue dots are a distribution simulated with BCI's $\theta$ but a migration parameter reduced to 0.01 to illustrate that the same values of $\theta$ correspond to very different communities.
-Both $\theta$ and $m$ must be considered.
+Both $\theta$ and $m$ must be considered to describe the diversity.
+:::
 
 ## Increasing regional sampling {#sec-appendix4 .appendix}
 
