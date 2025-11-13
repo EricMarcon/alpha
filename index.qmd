@@ -254,12 +254,10 @@ They were used to estimate the number of tree species in French Guiana: around 2
 #| results: hide
 BCI_S_estimate <- div_richness(BCI_50ha, as_numeric = TRUE)
 BCI_density <- round(sum(BCI) / 50)
-BCI_S_1ha %>% 
-  div_richness(
-    BCI_50ha, 
-    level = BCI_density, 
-    as_numeric = TRUE
-  )
+BCI_S_1ha <- div_richness(
+  BCI_50ha, 
+  level = BCI_density, 
+  as_numeric = TRUE
 )
 BCI_accum %>%
   autoplot() +
