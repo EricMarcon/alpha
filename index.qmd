@@ -513,7 +513,7 @@ ggplot(data.frame(x = 10^(1:6)), aes(x)) +
 Number of tree species depending on the area (in square km, with density `r gf_density/100` trees/ha) in French Guiana, according to the Arrhenius's power model estimated by @Marcon2024.
 The Y-axis is not in logarithm, so the relation is a convex curve instead of a straight line.
 The black dotted lines show the valid estimation of richness in the whole territory: around 2200 species for 80,000 km^2^.
-The green line is the species accumulation curve of the log-series estimated from the GuyaDiv metacommunity assuming its area is that of French Guiana.
+The blue line is the species accumulation curve of the log-series estimated from the GuyaDiv metacommunity assuming its area is that of French Guiana.
 It overestimates the regional biodiversity at all scales.
 The red curve is the SAC of the actual metacommunity of French Guiana, whose Fisher's $\alpha$ is twice smaller.
 :::
@@ -663,7 +663,6 @@ BCI_abundant %>%
   fig_hubbell_alpha
 ```
 
-
 ::: {#fig-hubbell_alpha}
 ```{r}
 #| label: hubbell_alpha
@@ -778,7 +777,6 @@ BCI_sim_neutral +
   fig_bci_sim
 ```
 
-
 ::: {#fig-bci_sim}
 ```{r}
 #| label: bci_sim
@@ -864,7 +862,6 @@ tibble(NbPlots = sizes) %>%
   stat_smooth(method = "lm", formula = y~poly(x,2)) ->
   fig_guyadiv_alpha
 ```
-
 
 ::: {#fig-guyadiv_alpha}
 ```{r}
