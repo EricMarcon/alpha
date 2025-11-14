@@ -374,7 +374,7 @@ In contrast with the assumed advantage of $\alpha$, its estimation heavily relie
 The estimated value of $\alpha$ decreases from over 40 to approximately 35, with a quite good linear relation between $\alpha$ and the logarithm of the sample size.
 Several examples can be found in the literature, e.g. @Duque2017; @Schulte2005, where the dependence of $\alpha$ to sample size is explored either with a statistical or an ecological approach.
 
-Visually, in @fig-BCI_accum_logx, increasing $\alpha$ moves the log-series distribution to the right and increases its slope.
+Visually, in @fig-BCI_accum_logx, increasing $\alpha$ increases the slope of the log-series curve.
 Changing the sample size means changing the intersection point between the accumulation curve and the log-series curve, thus necessarily modifying $\alpha$.
 At this stage, there is no real argument to decide whether BCI's $\alpha$ is 35 or 40.
 
