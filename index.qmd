@@ -15,13 +15,14 @@ author:
   - name: Eric Marcon
     affiliations:
       - name: AgroParisTech
-        department: UMR Amap
+        department: UMR Amap, Université de Montpellier, Cirad, CNRS, INRAE, IRD
         city: Montpellier
         country: France
-        postal-code: 34000
     orcid: 0000-0002-5249-321X
     email: eric.marcon@agroparistech.fr
     url: https://ericmarcon.github.io/
+    attributes:
+      corresponding: AAA
 # Abstract and Keywords
 abstract: |
   Fisher's alpha should not be used to assess the diversity of tropical forest tree species at the local and regional scales.
