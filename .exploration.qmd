@@ -107,7 +107,6 @@ BCI %>%
   BCI_50ha
 ```
 
-
 La fonction `lseries_RAC()` calcule le rang théorique de chaque espèces en fonction de son abondance.
 Ces rangs ne sont pas entiers.
 
@@ -313,7 +312,6 @@ logkda_my <- function(
 }
 ```
 
-
 Vérification du fonctionnement de la fonction.
 
 ```{r}
@@ -388,7 +386,6 @@ La communauté simulée (points rouges) correspond assez bien à la distribution
 ## Paracou 6
 
 Fonctions pour l'ajustement de la RAC en logsérie, copié de `calcul_alpha.qmd`, tests retirés.
-
 
 Estimation d'alpha à Paracou.
 
