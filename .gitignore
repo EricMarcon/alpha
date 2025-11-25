@@ -43,3 +43,4 @@ bin/*
 
 /.quarto/
 **/*.quarto_ipynb
+/stylisharticle.cls
