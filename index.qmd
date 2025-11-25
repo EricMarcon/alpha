@@ -445,7 +445,7 @@ It is solved considering that the metacommunity's $\alpha$ parameter depends on 
 Again, a smaller metacommunity embedded in the first one does not contain all species because of dispersal limitation.
 
 When the SAR is plotted on a log-log scale, it is linear (@eq-arrhenius_log).
-If the y-axis is not in logarithmic scale, it becomes concave.
+If the y-axis is not in logarithmic scale, it becomes convex.
 In this representation (@fig-arrhenius_logx), a log-series species accumulation curve is a straight line (the number of individuals is much greater than $\alpha$).
 This theoretical result can be verified empirically with the GuyaDiv network plots in French Guiana (Appendix @sec-appendix4): $\alpha$ increases with the number of sites included in the sample.
 
