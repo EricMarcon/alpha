@@ -40,6 +40,10 @@ docs/
 logkda.*
 CTFSRPackage.rdata
 bin/*
+*.txt
+index.pdf
+index.tex
+index.html
 
 /.quarto/
 **/*.quarto_ipynb
