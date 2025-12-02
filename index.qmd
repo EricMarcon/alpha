@@ -148,7 +148,7 @@ Fisher's log-series [@Fisher1943] was derived originally from the distribution o
 It is formulated as a species-abundance relationship that links the number of species to the number of individuals with a single parameter, called $\alpha$.
 Fisher's $\alpha$ is thus an ideal candidate to measure diversity since it overcomes the previous issue: it is scale-independent if the actual species distribution is a log-series.
 After a long period of relative obscurity, $\alpha$ made a comeback following the development of Hubbell's neutral theory [@Hubbell2001] since the metacommunity is distributed in log-series whose $\alpha$ equals $\theta$, the fundamental number of biodiversity.
-Although the log-series does not apply to the local scale according to the neutral theory, it became popular [@Duque2017] to describe the diversity of forest trees, probably for its simplicity.
+Although the log-series does not apply to the local scale according to the neutral theory, it became popular [@Duque2017; @TerSteege2023] to describe the diversity of forest trees, probably for its simplicity.
 Summarizing a species distribution by a statistics that does not apply to it is questionable.
 The aim of this paper is to show that $\alpha$ actually does not measure diversity unambiguously, neither at local nor at regional scales, and should be limited to the largest metacommunity.
 It is organised as follows: Fisher's $\alpha$ fundamentals are first recalled; its use at the different scales is then discussed before concluding about its applicability.
@@ -168,7 +168,7 @@ $$
   S(n) = \alpha \ln \left( 1 + \frac{n}{\alpha} \right).
 $$ {#eq-fisheralpha}
 
-For $n >> \alpha$, @eq-fisheralpha can be simplified to $S(n) \approx -\alpha ln(\alpha) + \alpha ln(n)$, i.e. the number of observed species is linearly related to the logarithm of the sample size.
+For $n \gg \alpha$, @eq-fisheralpha can be simplified to $S(n) \approx -\alpha ln(\alpha) + \alpha ln(n)$, i.e. the number of observed species is linearly related to the logarithm of the sample size.
 The slope of the line is $\alpha$ and the intercept is $-\alpha ln(\alpha)$.
 
 ::: {#fig-BCI_accum_logx}
@@ -204,14 +204,15 @@ BCI %>%
   geom_function(fun = \(n) {BCI_alpha * log(1 + n / BCI_alpha)}, col = "black")
 ```
 
-Accumulation curve of a log-series distribution (black) with Fisher's $\alpha$ equal to `r round(BCI_alpha)` and of BCI (red).
+Species Accumulation Curve (SAC) of a log-series distribution (black) with Fisher's $\alpha$ equal to `r round(BCI_alpha)` and of BCI (red).
 The intersection of the dotted lines corresponds to the number of trees and of species of BCI 50-ha inventory the value of $\alpha$ is derived from.
 :::
 
 Based on @eq-fisheralpha, the species accumulation curve has two parts when plotted on a logarithmic x-axis: first, as $n$ is not great enough for the approximation, it is convex, then it is linear (@fig-BCI_accum_logx).
 
-The distribution can also be represented as a rank-abundance curve (@fig-BCI_RAC).
+The distribution can also be represented as a rank-abundance curve (RAC: @fig-BCI_RAC).
 A characteristic feature of the log-series is that the abundance of species decreases linearly with their rank, except for the most abundant ones.
+Rare species are included in the RAC as $n$ increases.
 
 ::: {#fig-BCI_RAC}
 ```{r}
@@ -230,7 +231,7 @@ BCI_50ha %>%
   )
 ```
 
-Rank-abundance curve of a log-series distribution (black) and of BCI (red dots).
+Rank-Abundance Curve (RAC) of a log-series distribution (black) and of BCI (red dots).
 Species are ordered by decreasing abundance.
 The log-series is the best fit to BCI data ($\alpha =$ `r round(BCI_alpha)`).
 :::
@@ -312,14 +313,23 @@ It is close to a log-normal distribution [@McGill2003], but differs from by a gr
 This discrepancy has two consequences: from a theoretical point of view, $\alpha$ is the parameter of a distribution that is not observed; from an empirical point of view, its estimation is inconsistent.
 
 The theoretical issue does not require much more argumentation.
-Applying an appropriate model to describe the distribution of species is similar to trying to describe the size of a rectangle by the single length of its side, assuming it is a square.
+Applying an inappropriate model to describe the distribution of species is similar to trying to describe the size of a rectangle by the single length of its side, assuming it is a square.
 
-The empirical question deserves further elaboration, based on the BCI dataset for clarity.
-The basic argument is that the actual distribution is not so different from a log-series that the advantages of summarizing it by $\alpha$ are worth accepting the approximation.
+The empirical question deserves further elaboration because it is always possible to estimate $\alpha$ from the data and implicitly assume log-series distributions.
+A basic argument is that the actual distribution is not so different from a log-series that the advantages of summarizing it by $\alpha$ are worth accepting the approximation.
+In an important article, @TerSteege2023 study the $\alpha$ diversity of tree species across the Amazon, defined as "Fisher's alpha of a tree-inventory plot".
+Historically, @Whittaker1960 named the average local diversity after Fisher's $\alpha$, but his metric was species richness.
+@TerSteege2023 revert the reference, assuming that Fisher's $\alpha$ is a standard measure of $\alpha$ diversity.
+This shortcut must be discussed in depth.
+
 Several R packages allow estimating $\alpha$ from a vector of abundances (see Appendix @sec-appendix1 for details).
 Most of them (such as `vegan::fisher.alpha`) just solve @eq-fisheralpha, i.e. they only rely on the total abundance and number of species, ignoring the distribution.
-More elaborate ones (such as `sads::fitls`) find the value of $\alpha$ that maximizes the likelihood of the distribution assuming it is a log-series.
-When applied to the BCI dataset, both return the same estimation: `r round(BCI_alpha)`.
+This estimator will be denoted $\hat\alpha(n, S)$: it corresponds to the intersection between the SACs of a log-series and of the data (@fig-BCI_accum).
+Often, the sample size is an area $A$, so the estimator is rather $\hat\alpha(n(A), S)$ where the number of individuals depends on the area.
+More elaborate functions (such as `sads::fitls`) find the value of $\alpha$ that maximizes the likelihood of the distribution assuming it is a log-series.
+That estimator will be denoted $\hat\alpha(\{\mathbf{p}\})$: it corresponds to the best fit of the RAC of a log-series to the data (@fig-BCI_RAC), where $p_s$ is the probability for an individual to belong to species $s$ and $\{\mathbf{p}\} = \{p_1, p_2, \dots, p_s, \dots\}$ is the set of species probabilities.
+
+When applied to the BCI dataset, both $\hat\alpha(n, S)$ and $\hat\alpha(\{\mathbf{p}\})$ return the same estimation: `r round(BCI_alpha)`.
 Its poor empirical fit is illustrated by @fig-BCI_accum and @fig-BCI_accum_logx.
 
 ::: {#fig-BCI_size}
@@ -370,27 +380,42 @@ The dots are random draws of plot assemblages.
 The line is the fit of a linear model relating $\alpha$ to the logarithm of the number of plots.
 :::
 
-In contrast with the assumed advantage of $\alpha$, its estimation heavily relies on the sample size.
+In contrast with the assumed advantage of $\alpha$, its estimate $\hat\alpha(n, S)$ heavily relies on the sample size.
 @fig-BCI_size shows the average estimation of $\alpha$ based on random subsamples of BCI, from 4 to 50ha, repeated `r simulations_n` times.
 The estimated value of $\alpha$ decreases from over 40 to approximately 35, with a quite good linear relation between $\alpha$ and the logarithm of the sample size.
 Several examples can be found in the literature, e.g. @Duque2017; @Schulte2005, where the dependence of $\alpha$ to sample size is explored either with a statistical or an ecological approach.
+Actually, according to the definition of the SAC that reaches an asymptote, $\hat\alpha(n, S) \to 0$ when $n \to \infty$.
 
 Visually, in @fig-BCI_accum_logx, increasing $\alpha$ increases the slope of the log-series curve.
 Changing the sample size means changing the intersection point between the accumulation curve and the log-series curve, thus necessarily modifying $\alpha$.
-At this stage, there is no real argument to decide whether BCI's $\alpha$ is 35 or 40.
+At this stage, there is no real argument to decide whether BCI's $\alpha$ is 35 or 40, or even its asymptotic estimate equal to 0.
+The best choice is probably to consider that it is simply not defined.
 
-A solution to this problem is to return to the neutral model theory and assume that the local community is not a log-series because of dispersal limitation, i.e. its migration parameter $m$ is not 1.
-Then, the parameter to estimate is $\theta$, the fundamental number of biodiversity in the metacommunity BCI belongs to: the metacommunity is distributed as a log-series whose parameter is $\theta$.
-This is an elegant solution both theoretically (all assumptions are valid) and empirically (the estimation of $\alpha$ is robust).
+A degraded utilization of $\alpha$ (precisely: $\hat\alpha(n, S)$ ) would be legitimate if it allowed ordering communities [@Tothmeresz1995], even though it does not qualify a log-series distribution.
+If the sample size $n$ is standardized, then a bijective relation exists between the estimate of $\alpha$ and the number of species, $S$, i.e. standardized richness.
+In this case, $\hat\alpha(n, S)$ is a valid, although uselessly complicated, index of diversity.
+But when the sampling effort is an area, $n$ varies.
+Everything else equal, $S$ increases with $n$ (this defines the SAC).
+The consequence of smaller tree density is thus unpredictable, since $\hat\alpha(n, S)$ is an increasing function of $S$ but a decreasing function of $n$.
+In a log-series distribution, $S$ and $n$ neutralise each other so that $\alpha$ is constant, but other distributions entangle their impact.
+In other words, comparing two communities with $\hat\alpha(n, S)$ may just show that the supposedly more diverse one just contains less trees per hectare.
+Empirically, @TerSteege2023 show that $\hat\alpha(n, S)$ and species richness are highly correlated in the Amazon, but their discrepancies can't be explained, questioning the interest of estimating $\alpha$.
 
-@Hubbell2001 \[page 293\] proposed estimating it by adjusting the rank-abundance curve to the most frequent species in the community, arguing that these species are also the most abundant in the metacommunity. He found $\theta = 50$. The same algorithm is applied to the current BCI dataset in Appendix @sec-appendix2: its result is $\theta = 45$. Both $\theta$ and $m$ can be estimated by likelihood maximization of the local distribution [@Etienne2005] with the untb package [@Hankin2007].
+A solution to the issues described above is assuming that the local community is a sample of the metacommunity, following the neutral theory.
+It is not a log-series only because of dispersal limitation, i.e. its migration parameter $m$ is not 1.
+Then, the parameter to estimate is $\theta$, the fundamental number of biodiversity in the metacommunity BCI belongs to.
+Increasing the sample size does not lead to reach the asymptotic, local diversity but (because the modelling choice is different) makes the distribution converge to that of the metacommunity: $\hat\alpha(\{\mathbf{p}\}) \to \theta$ when $n \to \infty$.
+This is an elegant solution both theoretically (all assumptions are valid) and empirically (the estimation of $\theta$ is unbiased).
+
+@Hubbell2001 \[page 293\] proposed estimating $\theta$ by adjusting the rank-abundance curve to the most frequent species in the community, arguing that these species are also the most abundant in the metacommunity. He found $\theta = 50$. The same algorithm is applied to the current BCI dataset in Appendix @sec-appendix2: its result is $\theta = 45$. More robustly, both $\theta$ and $m$ can be estimated by likelihood maximization of the local distribution [@Etienne2005] with the untb package [@Hankin2007].
 The retained value of $\theta$ is 48.
 The consistency of this approach is shown in Appendix @sec-appendix3: $\theta$ and $m$ are estimated from the BCI distribution, then a community of the same size is drawn with these parameters: it is very close to the actual distribution.
 
-This faces two limits.
+This approach faces two limits.
 First, as far as we know, it is not applied in the literature.
-Then, it does not exactly describe the diversity of the local community but that of the metacommunity: summarizing BCI by $\theta = 48$ ignores the migration parameter.
-Modifying $m$ yields very different distribution, from geometric to log-series [@Hubbell2001].
+The metric of @TerSteege2023 is $\hat\alpha(n(1\mathbb{ha}), S)$, not $\theta$.
+Last, it does not describe the diversity of the local community but that of the metacommunity: summarizing BCI by $\theta = 48$ ignores the migration parameter.
+Modifying $m$ yields very different distributions, from geometric to log-series [@Hubbell2001].
 In other words, $\theta$ only gives a very partial knowledge of the diversity of the local community.
 
 # Regional scale
@@ -413,7 +438,7 @@ $$ {#eq-arrhenius_log}
 where $k_A$ is another constant.
 
 The regional scale is also that of the metacommunity in the neutral model.
-The actual size $J_M$ of the metacommunity a local community results from is difficult to address and of little interest in the theory since the important parameter is $\theta$, that combines both $J_m$ and the speciation rate $\nu$.
+The actual size $J_M$ of the metacommunity a local community results from is difficult to address and of little interest in the theory since the important parameter is $\theta$, that combines both $J_M$ and the speciation rate $\nu$.
 The important fact here is that, according to the neutral model, metacommunities are distributed in log-series whose $\alpha$ parameter asymptotically tends to $\theta$ when their size increases [@Hubbell2001].
 
 Sampling the metacommunity by a large enough number of plots results in a log-series distribution.
@@ -427,7 +452,7 @@ $$
    S\left(n\right) = k_G + \alpha \ln\left(n\right),
 $$ {#eq-gleason_log}
 
-where $k_G$ is another constant and $\alpha$ the slope of the relation.
+where $k_G$ is yet another constant and $\alpha$ the slope of the relation.
 This model is actually identical to Fisher's [@Engen1977].
 
 Arrhenius's model benefits from a long theoretical [@Williamson2001; @Harte1999; @Preston1962] and empirical [@Dengler2009; @Triantis2012] support.
