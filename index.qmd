@@ -211,6 +211,9 @@ The intersection of the dotted lines corresponds to the number of trees and of s
 Based on @eq-fisheralpha, the species accumulation curve has two parts when plotted on a logarithmic x-axis: first, as $n$ is not great enough for the approximation, it is convex, then it is linear (@fig-BCI_accum_logx).
 
 The distribution can also be represented as a rank-abundance curve (RAC: @fig-BCI_RAC).
+$p_s$ is the probability for an individual to belong to species $s$ and $\{\mathbf{p}\} = \{p_1, p_2, \dots, p_s, \dots\}$ is the set of species probabilities.
+The relative abundance of species $s$ estimates its probability: $\hat{p}_s = n_s / n$, so $\{\mathbf{\hat{p}}\}$, the empirical distribution, is an estimator of $\{\mathbf{p}\}$, the actual species distribution.
+The RAC represents the (relative or absolute) abundances of observed species in decreasing order.
 A characteristic feature of the log-series is that the abundance of species decreases linearly with their rank, except for the most abundant ones.
 Rarer species are included in the RAC as $n$ increases.
 
@@ -296,7 +299,7 @@ To allow comparing diversity with other sites, two strategies are possible: esti
 The asymptotic diversity is the number of species that would be observed if the sample reached the necessary size to encompass all species of the community.
 In hyperdiverse ecosystems such as evergreen forests, the asymptotic community generally does not exist in the field because of environmental variations: increasing the size of the sample results in sampling in different communities.
 Thus, the asymptotic estimators of diversity correspond to theoretical asymptotic communities that do not necessarily exist: it is a feature of a model.
-This ma be an argument for avoiding them, but the definition of the local community is already a model [@Stroud2015], in the sense that local environmental variations imply that the distribution of species varies in turn: the heterogeneity of the community considered as negligible corresponds to necessary decisions to model the reality.
+This may be an argument for avoiding them, but the definition of the local community is already a model [@Stroud2015], in the sense that local environmental variations imply that the distribution of species varies in turn: the neglected heterogeneity of the community corresponds to necessary decisions to model the reality.
 The estimated number of species is `r BCI_S_estimate`.
 
 The alternative consists in standardizing the sample size, in general to allow comparing different communities whose inventories are not large enough to allow a reliable estimation of asymptotic diversity.
@@ -327,9 +330,9 @@ Most of them (such as `vegan::fisher.alpha`) just solve @eq-fisheralpha, i.e. th
 This estimator will be denoted $\hat\alpha(n, S)$: it corresponds to the intersection between the SACs of a log-series and of the data (@fig-BCI_accum).
 Often, the sample size is an area $A$, so the estimator is rather $\hat\alpha(n(A), S)$ where the number of individuals depends on the area.
 More elaborate functions (such as `sads::fitls`) find the value of $\alpha$ that maximizes the likelihood of the distribution assuming it is a log-series.
-That estimator will be denoted $\hat\alpha(\{\mathbf{p}\})$: it corresponds to the best fit of the RAC of a log-series to the data (@fig-BCI_RAC), where $p_s$ is the probability for an individual to belong to species $s$ and $\{\mathbf{p}\} = \{p_1, p_2, \dots, p_s, \dots\}$ is the set of species probabilities.
+That estimator will be denoted $\hat\alpha(\{\mathbf{\hat{p}}\})$: it corresponds to the best fit of the RAC of a log-series to the data (@fig-BCI_RAC).
 
-When applied to the BCI dataset, both $\hat\alpha(n, S)$ and $\hat\alpha(\{\mathbf{p}\})$ return the same estimation: `r round(BCI_alpha)`.
+When applied to the BCI dataset, both $\hat\alpha(n, S)$ and $\hat\alpha(\{\mathbf{\hat{p}}\})$ return the same estimation: `r round(BCI_alpha)`.
 Its poor empirical fit is illustrated by @fig-BCI_accum and @fig-BCI_accum_logx.
 
 ::: {#fig-BCI_size}
@@ -391,20 +394,19 @@ Changing the sample size means changing the intersection point between the accum
 At this stage, there is no real argument to decide whether BCI's $\alpha$ is 35 or 40, or even its asymptotic estimate equal to 0.
 The best choice is probably to consider that it is simply not defined.
 
-A degraded utilization of $\alpha$ (precisely: $\hat\alpha(n, S)$ ) would be legitimate if it allowed ordering communities [@Tothmeresz1995], even though it does not qualify a log-series distribution.
-If the sample size $n$ is standardized, then a bijective relation exists between the estimate of $\alpha$ and the number of species, $S$, i.e. standardized richness.
+A degraded utilization of $\alpha$, more precisely $\hat\alpha(n, S)$, would be legitimate if it allowed ordering communities [@Tothmeresz1995], even though it does not qualify a log-series distribution.
+If the sample size $n$ is fixed, then a bijective relation exists between the estimate of $\alpha$ and the number of species $S$, i.e. standardised richness.
 In this case, $\hat\alpha(n, S)$ is a valid, although uselessly complicated, index of diversity.
 But when the sampling effort is an area, $n$ varies.
-Everything else equal, $S$ increases with $n$ (this defines the SAC).
-The consequence of smaller tree density is thus unpredictable, since $\hat\alpha(n, S)$ is an increasing function of $S$ but a decreasing function of $n$.
-In a log-series distribution, $S$ and $n$ neutralise each other so that $\alpha$ is constant, but other distributions entangle their impact.
-In other words, comparing two communities with $\hat\alpha(n, S)$ may just show that the supposedly more diverse one just contains less trees per hectare.
-Empirically, @TerSteege2023 show that $\hat\alpha(n, S)$ and species richness are highly correlated in the Amazon, but their discrepancies can't be explained, questioning the interest of estimating $\alpha$.
+Everything else equal, $S$ increases with $n$ : this defines the SAC.
+The consequence of different tree density is thus unpredictable, since $\hat\alpha(n, S)$ is an increasing function of $S$ but a decreasing function of $n$.
+In a log-series distribution, $S$ and $n$ neutralise each other so that $\alpha$ is constant, but other distributions entangle their effects.
+Two communities with the same species distributions, whose diversites are by definition equal [@Patil1982], may be ordered differently if their densities vary.
 
-A solution to the issues described above is assuming that the local community is a sample of the metacommunity, following the neutral theory.
+A workaround for these problems is assuming that the local community is a sample of the metacommunity, following the neutral theory.
 It is not a log-series only because of dispersal limitation, i.e. its migration parameter $m$ is not 1.
 Then, the parameter to estimate is $\theta$, the fundamental number of biodiversity in the metacommunity BCI belongs to.
-Increasing the sample size does not lead to reach the asymptotic, local diversity but (because the modelling choice is different) makes the distribution converge to that of the metacommunity: $\hat\alpha(\{\mathbf{p}\}) \to \theta$ when $n \to \infty$.
+Increasing the sample size does not lead to reach the asymptotic, local diversity but (because the modelling choice is different) makes the distribution converge to that of the metacommunity: $\hat\alpha(\{\mathbf{\hat{p}\}}) \to \theta$ when $n \to \infty$.
 This is an elegant solution both theoretically (all assumptions are valid) and empirically (the estimation of $\theta$ is unbiased).
 
 @Hubbell2001 \[page 293\] proposed estimating $\theta$ by adjusting the rank-abundance curve to the most frequent species in the community, arguing that these species are also the most abundant in the metacommunity. He found $\theta = 50$. The same algorithm is applied to the current BCI dataset in Appendix @sec-appendix2: its result is $\theta = 45$. More robustly, both $\theta$ and $m$ can be estimated by likelihood maximization of the local distribution [@Etienne2005] with the untb package [@Hankin2007].
@@ -412,9 +414,8 @@ The retained value of $\theta$ is 48.
 The consistency of this approach is shown in Appendix @sec-appendix3: $\theta$ and $m$ are estimated from the BCI distribution, then a community of the same size is drawn with these parameters: it is very close to the actual distribution.
 
 This approach faces two limits.
-First, as far as we know, it is not applied in the literature.
-The metric of @TerSteege2023 is $\hat\alpha(n(1\mathbb{ha}), S)$, not $\theta$.
-Last, it does not describe the diversity of the local community but that of the metacommunity: summarizing BCI by $\theta = 48$ ignores the migration parameter.
+As far as we know, it is not applied in the literature: the metric of @TerSteege2023 is $\hat\alpha(n(1\ \mathbb{ha}), S)$, not $\theta$.
+More importantly, it does not describe the diversity of the local community but that of the metacommunity: summarizing BCI by $\theta = 48$ ignores the migration parameter.
 Modifying $m$ yields very different distributions, from geometric to log-series [@Hubbell2001].
 In other words, $\theta$ only gives a very partial knowledge of the diversity of the local community.
 
@@ -438,7 +439,7 @@ $$ {#eq-arrhenius_log}
 where $k_A$ is another constant.
 
 The regional scale is also that of the metacommunity in the neutral model.
-The actual size $J_M$ of the metacommunity a local community results from is difficult to address and of little interest in the theory since the important parameter is $\theta$, that combines both $J_M$ and the speciation rate $\nu$.
+The actual size $J_m$ of the metacommunity a local community results from is difficult to address and of little interest in the theory since the important parameter is $\theta$, that combines both $J_m$ and the speciation rate $\nu$.
 The important fact here is that, according to the neutral model, metacommunities are distributed in log-series whose $\alpha$ parameter asymptotically tends to $\theta$ when their size increases [@Hubbell2001].
 
 Sampling the metacommunity by a large enough number of plots results in a log-series distribution.
@@ -546,7 +547,7 @@ The red curve is the SAC of the actual metacommunity of French Guiana, whose Fis
 
 The metacommunity GuyaDiv is a sample of largely exceeds the borders of French Guiana.
 Its estimated $\alpha$ equals `r round(gf_alpha_guyadiv)`, implying more than 4000 tree species in the territory based on the number of trees: 627 per hectare on average multiplied by 8 million hectares.
-Its SAC is shown on @fig-arrhenius_logx .
+Its SAC is shown in @fig-arrhenius_logx .
 The actual number of species in French Guiana was obtained by the estimation of the power model [@Marcon2024]: it is close to 2200.
 The correct estimate of $\alpha$ is thus only `r round(gf_alpha_arrhenius)`.
 
@@ -714,14 +715,14 @@ Estimation of BCI parameters $\theta$ and $m$ following @Etienne2005 with the un
 #| echo: true
 library("untb")
 if (file.exists("data/BCI_logkda.RData")) {
-  # Use the saved result if available to save 
+  # Use the saved result if available to save
   # computation resources
   load("data/BCI_logkda.RData")
 } else {
   BCI_50ha %>% 
   # name conflict with dplyr::count()
   untb::count() %>% 
-  # requires pari/gp installed and in the path, 
+  # requires pari/gp installed and in the search paths,
   # or use gp_binary argument
   logkda() ->
   BCI_logkda
