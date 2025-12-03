@@ -212,7 +212,7 @@ Based on @eq-fisheralpha, the species accumulation curve has two parts when plot
 
 The distribution can also be represented as a rank-abundance curve (RAC: @fig-BCI_RAC).
 A characteristic feature of the log-series is that the abundance of species decreases linearly with their rank, except for the most abundant ones.
-Rare species are included in the RAC as $n$ increases.
+Rarer species are included in the RAC as $n$ increases.
 
 ::: {#fig-BCI_RAC}
 ```{r}
@@ -278,7 +278,7 @@ BCI_accum %>%
 
 Species Accumulation Curve of BCI extrapolated up to twice the sample size.
 The dotted lines correspond to the 50-ha inventory.
-The horizontal, dotred line, is the estimated asymptotic number of species, calculated with the jackknife estimator of order 1 [@Burnham1978].
+The horizontal, dotted line, is the estimated asymptotic number of species, calculated with the jackknife estimator of order 1 [@Burnham1978].
 The black curve is the SAC of the log-series with $\alpha$ equal to `r round(BCI_alpha)`.
 :::
 
@@ -291,15 +291,15 @@ Between sample sizes $n$ and $n + 1$, the slope of the curve is the probability 
 
 @fig-BCI_accum shows the SAC of the Barro Colorado Island 50-ha forest plot.
 The number of species increases with sample size and does not reach an asymptote despite the huge sampling effort.
-To allow comparing diversity with other sites, two strategies are possible: estimate asymptotic diversity or standardize the sampling effort [@Chao2012b].
+To allow comparing diversity with other sites, two strategies are possible: estimating asymptotic diversity or standardizing the sampling effort [@Chao2012b].
 
-The asymptotic diversity here is the number of species that would be observed if the sample reached the necessary size to encompass all species of the community.
+The asymptotic diversity is the number of species that would be observed if the sample reached the necessary size to encompass all species of the community.
 In hyperdiverse ecosystems such as evergreen forests, the asymptotic community generally does not exist in the field because of environmental variations: increasing the size of the sample results in sampling in different communities.
 Thus, the asymptotic estimators of diversity correspond to theoretical asymptotic communities that do not necessarily exist: it is a feature of a model.
-This is an argument for avoiding them, but the definition of the local community is already a model [@Stroud2015], in the sense that local environmental variations imply that the distribution of species varies in turn: the heterogeneity of the community considered as negligible corresponds to necessary decisions to model the reality.
+This ma be an argument for avoiding them, but the definition of the local community is already a model [@Stroud2015], in the sense that local environmental variations imply that the distribution of species varies in turn: the heterogeneity of the community considered as negligible corresponds to necessary decisions to model the reality.
 The estimated number of species is `r BCI_S_estimate`.
 
-An alternative consists in standardizing the sample site, in general to allow comparing different communities whose inventories are not large enough to allow a reliable estimation of asymptotic diversity.
+The alternative consists in standardizing the sample size, in general to allow comparing different communities whose inventories are not large enough to allow a reliable estimation of asymptotic diversity.
 Exact rarefaction formulas are available to calculate the number of tree species at any sampling level smaller than the actual sample, and estimators allow extrapolating the diversity up to a limited level, around twice the actual sample size [@Chao2014].
 The expected number of species in one hectare of BCI, actually based on the average number of trees per hectare (equal to `r BCI_density`), is `r BCI_S_1ha`.
 This result can be compared easily to well-known benchmarks, such as the 367 species inventoried in one hectare of an Amazonian Ecuador forest [@Valencia1994], even though a larger area would be preferable to better take into account the rare species and leave the steepest part of the SAC in @fig-BCI_accum.
@@ -319,7 +319,7 @@ The empirical question deserves further elaboration because it is always possibl
 A basic argument is that the actual distribution is not so different from a log-series that the advantages of summarizing it by $\alpha$ are worth accepting the approximation.
 In an important article, @TerSteege2023 study the $\alpha$ diversity of tree species across the Amazon, defined as "Fisher's alpha of a tree-inventory plot".
 Historically, @Whittaker1960 named the average local diversity after Fisher's $\alpha$, but his metric was species richness.
-@TerSteege2023 revert the reference, assuming that Fisher's $\alpha$ is a standard measure of $\alpha$ diversity.
+@TerSteege2023 revert the reference, declaring Fisher's $\alpha$ the standard measure of $\alpha$ diversity.
 This shortcut must be discussed in depth.
 
 Several R packages allow estimating $\alpha$ from a vector of abundances (see Appendix @sec-appendix1 for details).
@@ -383,10 +383,10 @@ The line is the fit of a linear model relating $\alpha$ to the logarithm of the 
 In contrast with the assumed advantage of $\alpha$, its estimate $\hat\alpha(n, S)$ heavily relies on the sample size.
 @fig-BCI_size shows the average estimation of $\alpha$ based on random subsamples of BCI, from 4 to 50ha, repeated `r simulations_n` times.
 The estimated value of $\alpha$ decreases from over 40 to approximately 35, with a quite good linear relation between $\alpha$ and the logarithm of the sample size.
-Several examples can be found in the literature, e.g. @Duque2017; @Schulte2005, where the dependence of $\alpha$ to sample size is explored either with a statistical or an ecological approach.
+Several examples can be found in the literature, e.g. @Duque2017 and @Schulte2005, where the dependence of $\alpha$ to sample size is explored either with a statistical or an ecological approach.
 Actually, according to the definition of the SAC that reaches an asymptote, $\hat\alpha(n, S) \to 0$ when $n \to \infty$.
 
-Visually, in @fig-BCI_accum_logx, increasing $\alpha$ increases the slope of the log-series curve.
+Visually, in @fig-BCI_accum_logx, decreasing $\alpha$ decreases the slope of the log-series curve.
 Changing the sample size means changing the intersection point between the accumulation curve and the log-series curve, thus necessarily modifying $\alpha$.
 At this stage, there is no real argument to decide whether BCI's $\alpha$ is 35 or 40, or even its asymptotic estimate equal to 0.
 The best choice is probably to consider that it is simply not defined.
