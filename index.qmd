@@ -316,7 +316,7 @@ It is close to a log-normal distribution [@McGill2003], but differs from by a gr
 This discrepancy has two consequences: from a theoretical point of view, $\alpha$ is the parameter of a distribution that is not observed; from an empirical point of view, its estimation is inconsistent.
 
 The theoretical issue does not require much more argumentation.
-Applying an inappropriate model to describe the distribution of species is similar to trying to describe the size of a rectangle by the single length of its side, assuming it is a square.
+Applying an inappropriate model to describe the distribution of species is similar to trying to describe the size of a rectangle by its length, assuming it is a square.
 
 The empirical question deserves further elaboration because it is always possible to estimate $\alpha$ from the data and implicitly assume log-series distributions.
 A basic argument is that the actual distribution is not so different from a log-series that the advantages of summarizing it by $\alpha$ are worth accepting the approximation.
@@ -406,7 +406,7 @@ Two communities with the same species distributions, whose diversites are by def
 A workaround for these problems is assuming that the local community is a sample of the metacommunity, following the neutral theory.
 It is not a log-series only because of dispersal limitation, i.e. its migration parameter $m$ is not 1.
 Then, the parameter to estimate is $\theta$, the fundamental number of biodiversity in the metacommunity BCI belongs to.
-Increasing the sample size does not lead to reach the asymptotic, local diversity but (because the modelling choice is different) makes the distribution converge to that of the metacommunity: $\hat\alpha(\{\mathbf{\hat{p}\}}) \to \theta$ when $n \to \infty$.
+Increasing the sample size does not lead to reach the asymptotic, local diversity but (because the modelling choice is different) makes the distribution converge to that of the metacommunity: $\hat\alpha(\{\mathbf{\hat{p}\}}) \to \hat\alpha(\{\mathbf{p}\}) = \theta$ when $n \to \infty$.
 This is an elegant solution both theoretically (all assumptions are valid) and empirically (the estimation of $\theta$ is unbiased).
 
 @Hubbell2001 \[page 293\] proposed estimating $\theta$ by adjusting the rank-abundance curve to the most frequent species in the community, arguing that these species are also the most abundant in the metacommunity. He found $\theta = 50$. The same algorithm is applied to the current BCI dataset in Appendix @sec-appendix2: its result is $\theta = 45$. More robustly, both $\theta$ and $m$ can be estimated by likelihood maximization of the local distribution [@Etienne2005] with the untb package [@Hankin2007].
@@ -573,6 +573,10 @@ Species richness can be unambiguously defined and estimated at all scales.
 At the local scale, given the number of individuals, it contains the same information as $\alpha$ without assuming any particular distribution.
 It can be completed with other diversity metrics, namely Hill numbers [@Marcon2014a].
 At the regional scale, with much more efforts, the number of species can be derived from Arrhenius's power model with appropriate sampling [@Marcon2024].
+
+# Acknowledgement {.appendix}
+
+The author thanks Jérôme Chave for discussions that motivated writing this article to explicit our disagreement about utilizing Fisher's $\alpha$ as a diversity metric.
 
 # Appendix {.appendix}
 
