@@ -27,7 +27,7 @@ author:
 abstract: |
   Fisher's alpha should not be used to assess the diversity of tropical forest tree species at the local and regional scales.
   At the local scale, communities are not distributed in log-series: alpha is the parameter of a model that does not fit the data so it can neither be estimated nor interpreted unambiguously.
-  At the regional scale, alpha correctly describes the distribution of a metacommunity but its extent is unknown when it is not the whole forest area.
+  At the regional scale, alpha correctly describes the distribution of a metacommunity whose extent is unknown when it is not the whole forest area.
   Species richness is always a better diversity metric than alpha, containing basically the same information without relying on uncertain assumptions.
 keywords: [Fisher's alpha, biodiversity, tropical forests]
 # Bibliography
@@ -144,7 +144,7 @@ At the local scale, i.e. when the distribution of species can be considered as u
 At regional scales, i.e. when different communities are included and beta-diversity comes into play, species-area relationships (SAR) properly speaking are derived from ecological theory [@Harte1999] with empirical support [@Arrhenius1921].
 Whatever the scale, the number species increases with the area or the number of individuals, making it a challenge to correctly describe biodiversity with a number: species richness (i.e. the number of species) is the simplest candidate, but its application may be ambiguous.
 
-Fisher's log-series [@Fisher1943] was derived originally from the distribution of tropical butterflies.
+Fisher's log-series [@Fisher1943] was derived originally from a distribution of tropical butterflies.
 It is formulated as a species-abundance relationship that links the number of species to the number of individuals with a single parameter, called $\alpha$.
 Fisher's $\alpha$ is thus an ideal candidate to measure diversity since it overcomes the previous issue: it is scale-independent if the actual species distribution is a log-series.
 After a long period of relative obscurity, $\alpha$ made a comeback following the development of Hubbell's neutral theory [@Hubbell2001] since the metacommunity is distributed in log-series whose $\alpha$ equals $\theta$, the fundamental number of biodiversity.
@@ -281,7 +281,7 @@ BCI_accum %>%
 
 Species Accumulation Curve of BCI extrapolated up to twice the sample size.
 The dotted lines correspond to the 50-ha inventory.
-The horizontal, dotted line, is the estimated asymptotic number of species, calculated with the jackknife estimator of order 1 [@Burnham1978].
+The horizontal, dotted line, is the estimated asymptotic number of species, calculated with the jackknife estimator of order 1.
 The black curve is the SAC of the log-series with $\alpha$ equal to `r round(BCI_alpha)`.
 :::
 
@@ -296,11 +296,10 @@ Between sample sizes $n$ and $n + 1$, the slope of the curve is the probability 
 The number of species increases with sample size and does not reach an asymptote despite the huge sampling effort.
 To allow comparing diversity with other sites, two strategies are possible: estimating asymptotic diversity or standardizing the sampling effort [@Chao2012b].
 
-The asymptotic diversity is the number of species that would be observed if the sample reached the necessary size to encompass all species of the community.
+The asymptotic diversity is the number of species that would be observed if the sample reached the necessary size to encompass all species of the community : it equals `r BCI_S_estimate` according to the jackknife estimator [@Burnham1978].
 In hyperdiverse ecosystems such as evergreen forests, the asymptotic community generally does not exist in the field because of environmental variations: increasing the size of the sample results in sampling in different communities.
 Thus, the asymptotic estimators of diversity correspond to theoretical asymptotic communities that do not necessarily exist: it is a feature of a model.
-This may be an argument for avoiding them, but the definition of the local community is already a model [@Stroud2015], in the sense that local environmental variations imply that the distribution of species varies in turn: the neglected heterogeneity of the community corresponds to necessary decisions to model the reality.
-The estimated number of species is `r BCI_S_estimate`.
+This may be an argument for avoiding them, but the definition of the local community is already a model [@Stroud2015], in the sense that local environmental variations imply that the distribution of species varies in turn: the neglected heterogeneity of what is defined as the local community corresponds to necessary decisions to model the reality.
 
 The alternative consists in standardizing the sample size, in general to allow comparing different communities whose inventories are not large enough to allow a reliable estimation of asymptotic diversity.
 Exact rarefaction formulas are available to calculate the number of tree species at any sampling level smaller than the actual sample, and estimators allow extrapolating the diversity up to a limited level, around twice the actual sample size [@Chao2014].
@@ -312,7 +311,6 @@ Thus, it appears to be an ideal, universal metric of biodiversity, allowing to c
 The issue is that the distribution of tropical forest tree communities is not a log-series.
 @Hubbell2001 named it the zero-sum multinomial distribution; its mathematical derivation is due to @Volkov2003.
 It is close to a log-normal distribution [@McGill2003], but differs from by a greater abundance of the rarest species.
-
 This discrepancy has two consequences: from a theoretical point of view, $\alpha$ is the parameter of a distribution that is not observed; from an empirical point of view, its estimation is inconsistent.
 
 The theoretical issue does not require much more argumentation.
@@ -335,7 +333,7 @@ A new estimator based on goodness of fit instead of likelihood maximization is p
 
 When applied to the BCI dataset, both $\hat\alpha(n, S)$ and $\hat\alpha_{MLE}(\{\mathbf{\hat{p}}\})$ return the same estimation: `r round(BCI_alpha)`.
 Its poor empirical fit is illustrated by @fig-BCI_accum and @fig-BCI_accum_logx.
-$\hat\alpha_{gof}(\{\mathbf{\hat{p}}\})$ better takes into account the rarer species (@fig-bci_alpha_gof).
+$\hat\alpha_{gof}(\{\mathbf{\hat{p}}\})$ better takes into account the rarer species (Appendix @fig-bci_alpha_gof).
 It equals 42.
 
 ::: {#fig-BCI_size}
@@ -389,11 +387,8 @@ The line is the fit of a linear model relating $\alpha$ to the logarithm of the 
 In contrast with the assumed advantage of $\alpha$, its estimate $\hat\alpha(n, S)$ heavily relies on the sample size.
 @fig-BCI_size shows the average estimation of $\alpha$ based on random subsamples of BCI, from 4 to 50ha, repeated `r simulations_n` times.
 The estimated value of $\alpha$ decreases from over 40 to approximately 35, with a quite good linear relation between $\alpha$ and the logarithm of the sample size.
-Several examples can be found in the literature, e.g. @Duque2017 and @Schulte2005, where the dependence of $\alpha$ to sample size is explored either with a statistical or an ecological approach.
+Several studies can be found in the literature, e.g. @Duque2017 and @Schulte2005, where the dependence of $\alpha$ to sample size is explored either with a statistical or an ecological approach.
 Actually, according to the definition of the SAC that reaches an asymptote, $\hat\alpha(n, S) \to 0$ when $n \to \infty$.
-
-Visually, in @fig-BCI_accum_logx, decreasing $\alpha$ decreases the slope of the log-series curve.
-Changing the sample size means changing the intersection point between the accumulation curve and the log-series curve, thus necessarily modifying $\alpha$.
 At this stage, there is no real argument to decide whether BCI's $\alpha$ is 35 or 40, or even its asymptotic estimate equal to 0.
 The best choice is probably to consider that it is simply not defined.
 
@@ -433,7 +428,7 @@ $$
 $$ {#eq-arrhenius}
 
 where $A$ is the surface area, $c$ a constant that depends on the organisms taken into account and the regional diversity, and $z$ the parameter that relates richness to area.
-Assuming that forest communities are saturated, i.e. $n = \rho A$ where $\rho$ is the number of trees per unit area, the number of individuals is proportional to the area, and, since $\ln n \gg \ln \rho$, the model can be rewritten in a linear form:
+Assuming that forest communities are saturated [@Hubbell2001], i.e. $n = \rho A$ where $\rho$ is the number of trees per unit area, the number of individuals is proportional to the area, and, since $\ln n \gg \ln \rho$, the model can be rewritten in a linear form:
 
 $$
   \ln\left(S\left(n\right)\right) = k_A + z \ln\left(n\right)
@@ -460,7 +455,6 @@ where $k_G$ is yet another constant and $\alpha$ the slope of the relation.
 This model is actually identical to Fisher's [@Engen1977].
 
 Arrhenius's model benefits from a long theoretical [@Williamson2001; @Harte1999; @Preston1962] and empirical [@Dengler2009; @Triantis2012] support.
-
 A simple argument against Gleason's model is contained in the neutral theory.
 Consider a large metacommunity and assume it is distributed as a log-series.
 A smaller metacommunity inside it would just be a sample of it in absence of dispersal limitation.
@@ -469,7 +463,7 @@ Yet, dispersal is limited, i.e. not all species of the largest metacommunity are
 Although they are distributed in log-series, their parameter $\alpha$ is smaller.
 Thus, the number of species decreases faster with the area than predicted by Gleason's model, inverting his original argument.
 
-At this stage, we face an apparent paradox: the regional species area relationship follows a power model but a metacommunity is distributed in log-series.
+At this stage, we face an apparent paradox: the regional species-area relationship follows a power model but a metacommunity is distributed in log-series.
 It is solved considering that the metacommunity's $\alpha$ parameter depends on its size.
 Again, a smaller metacommunity embedded in the first one does not contain all species because of dispersal limitation.
 
@@ -572,7 +566,7 @@ At this scale, the measure is correct, but the measured object is unclear.
 Finally, the empirical interest of Fisher's $\alpha$ is limited to the distribution of clearly delimited metacommunities, such as the Amazon forest as a whole.
 In this context, it allowed among other results to estimate the number of tree species.
 
-Species richness can be unambiguously defined and estimated at all scales.
+In contrast, species richness can be unambiguously defined and estimated at all scales.
 At the local scale, given the number of individuals, it contains the same information as $\alpha$ without assuming any particular distribution.
 It can be completed with other diversity metrics, namely Hill numbers [@Marcon2014a].
 At the regional scale, with much more efforts, the number of species can be derived from Arrhenius's power model with appropriate sampling [@Marcon2024].
@@ -641,7 +635,11 @@ In the case of BCI, the result is the same: the likelihood calculation gives pre
 
 ### Goodness of fit {.appendix}
 
-The theoretical rank of a species can be calculated from its relative abundance [@May1975] with the following function `lseries_RAC`: it is a real value, not an integer.
+The theoretical rank of a species $r_s$ can be calculated from its abundance $n_s$ [@May1975] with the following function `lseries_RAC`:
+
+$$r_s = \alpha \int_{n_s \ln(1 + \alpha / n)}^\infty{\frac{e^{-t}}{t} dt}$$
+
+It is a real value, not an integer.
 
 ```{r}
 #| label: lseries_RAC
@@ -654,20 +652,23 @@ The theoretical rank of a species can be calculated from its relative abundance 
 #'
 #' @returns a vector of ranks
 lseries_RAC <- function(abd, alpha) {
+  n <- sum(abd)
   rank <- vapply(
+    # Calculate the rank of each species
     abd, 
-    function(x) {
-      n <- x * log(1 + alpha / sum(abd))
+    FUN = function(n_s) {
+      # Calculate the integral
       f <- stats::integrate(
         function(t) {exp(-t) / t}, 
-        lower = n, 
+        lower = n_s * log(1 + alpha / n), 
         upper = Inf
       )
-      fv <- f[["value"]]
-      return(alpha * fv)
+      # Multiply it by alpha
+      alpha * f[["value"]]
     }, 
     FUN.VALUE = 0
   )
+  # Return the RAC as a tibble
   tibble::tibble(rank, abundance = abd) |>
     dplyr::arrange(rank)
 }
@@ -764,7 +765,7 @@ The good fit of this estimation is shown on @fig-hubbell_alpha.
 The objective is to close the loop: using the parameters obtained from the BCI data, simulate a metacommunity and then a community of the same size as BCI.
 To validate the approach, the simulated distribution should be similar to the actual one.
 
-Estimation of BCI parameters $\theta$ and $m$ following @Etienne2005 with the untb package.
+BCI parameters $\theta$ and $m$ are estimated following @Etienne2005 with the untb package.
 
 ```{r}
 #| label: bci_params
@@ -794,7 +795,7 @@ BCI_50ha %>%
   BCI_params
 ```
 
-Simulation of a metacommunity: $J_m = 10^6$ (arbitrary), $\theta$ derived from BCI data.
+A metacommunity with $J_m = 10^6$ (arbitrary) and $\theta$ derived from BCI data is simulated.
 
 ```{r}
 #| label: the_metacommunity
@@ -810,7 +811,8 @@ the_metacommunity <- rcommunity(
 )
 ```
 
-Distribution of the local community: $J$ from BCI and $m$ estimated previously, compared to an arbitrary value of $m$.
+The distribution of the local community is derived.
+$J$ is that of BCI and $m$ was estimated previously, compared to an arbitrary value of $m$.
 
 ```{r}
 #| label: bci_sim_code
@@ -877,8 +879,8 @@ Both $\theta$ and $m$ must be considered to describe the diversity.
 ## Increasing regional sampling {#sec-appendix4 .appendix}
 
 An increasing number of GuyaDiv plots (one per site) is randomly selected to sample the metacommunity.
-The estimated $\alpha$ is plotted against the number of plots.
-It increases linearly with the logarithm of the number of plots that is a proxy of the size of the sampled metacommunity.
+The estimated $\alpha$ is plotted against the number of plots (@fig-guyadiv_alpha).
+It increases with the logarithm of the number of plots that is a proxy of the size of the sampled metacommunity.
 
 ```{r}
 #| label: guyadiv_alpha_code
@@ -891,10 +893,11 @@ guyadiv_sub_alpha <- function(sample_size) {
   guyadiv_plots %>% 
     # Set a random value to each plot
     mutate(random = runif(n())) %>% 
+    # Save the tibble
     {. ->> plots_randomized} %>% 
-    group_by(Location) %>%
     # Select the plot with the max random value 
     # in each location
+    group_by(Location) %>%
     summarize(random_max = max(random)) %>% 
     rename(random = random_max) %>% 
     # Eliminate non-selected plots
@@ -942,7 +945,7 @@ tibble(NbPlots = sizes) %>%
   geom_point() +
   scale_x_log10() +
   labs(x = "Number of Plots", y = "Fisher's alpha") +
-  stat_smooth(method = "lm", formula = y~poly(x,2)) ->
+  stat_smooth(method = "lm", formula = y ~ poly(x, 2)) ->
   fig_guyadiv_alpha
 ```
 
