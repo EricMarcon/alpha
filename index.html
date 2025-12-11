@@ -143,6 +143,7 @@ window.Quarto = {
   <li><a href="#regional-scale" id="toc-regional-scale" class="nav-link" data-scroll-target="#regional-scale"><span class="header-section-number">4</span> Regional scale</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">5</span> Conclusion</a></li>
   
+  
   <li><a href="#bibliography" id="toc-bibliography" class="nav-link" data-scroll-target="#bibliography">References</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF (stylisharticle)</a></li></ul></div></nav>
@@ -179,7 +180,7 @@ window.Quarto = {
 <div>
   <div class="abstract">
     <div class="block-title">Abstract</div>
-    <p>Fisher’s alpha should not be used to assess the diversity of tropical forest tree species at the local and regional scales. At the local scale, communities are not distributed in log-series: alpha is the parameter of a model that does not fit the data so it can neither be estimated nor interpreted unambiguously. At the regional scale, alpha correctly describes the distribution of a metacommunity but its extent is unknown when it is not the whole forest area. Species richness is always a better diversity metric than alpha, containing basically the same information without relying on uncertain assumptions.</p>
+    <p>Fisher’s alpha should not be used to assess the diversity of tropical forest tree species at the local and regional scales. At the local scale, communities are not distributed in log-series: alpha is the parameter of a model that does not fit the data so it can neither be estimated nor interpreted unambiguously. At the regional scale, alpha correctly describes the distribution of a metacommunity whose extent is unknown when it is not the whole forest area. Species richness is always a better diversity metric than alpha, containing basically the same information without relying on uncertain assumptions.</p>
   </div>
 </div>
 
@@ -197,7 +198,7 @@ window.Quarto = {
 <h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
 <p>Tropical evergreen forests such as the Amazon host thousand of tree species that are difficult to assess <span class="citation" data-cites="TerSteege2013">(<a href="#ref-TerSteege2013" role="doc-biblioref">Steege et al. 2013</a>)</span>. Even though their biodiversity does not reduce to trees, understanding their distribution is a necessary step to both understand the functioning of the ecosystem <span class="citation" data-cites="Liang2016">(<a href="#ref-Liang2016" role="doc-biblioref">Liang et al. 2016</a>)</span> and develop conservation policies <span class="citation" data-cites="Strange2024">(<a href="#ref-Strange2024" role="doc-biblioref">Strange et al. 2024</a>)</span>.</p>
 <p>The relation between diversity and area has long been questioned by ecologists <span class="citation" data-cites="MacArthur1967 Plotkin2000a">(<a href="#ref-MacArthur1967" role="doc-biblioref">MacArthur and Wilson 1967</a>; <a href="#ref-Plotkin2000a" role="doc-biblioref">Plotkin et al. 2000</a>)</span>. It must be addressed according to the considered scale <span class="citation" data-cites="Grilli2012">(<a href="#ref-Grilli2012" role="doc-biblioref">Grilli et al. 2012</a>)</span>. At the local scale, i.e.&nbsp;when the distribution of species can be considered as unique, species accumulation curves (SAC) are built from it with well-known statistical tools <span class="citation" data-cites="Gotelli2001 Chao2014">(<a href="#ref-Gotelli2001" role="doc-biblioref">Gotelli and Colwell 2001</a>; <a href="#ref-Chao2014" role="doc-biblioref">Chao et al. 2014</a>)</span>. At regional scales, i.e.&nbsp;when different communities are included and beta-diversity comes into play, species-area relationships (SAR) properly speaking are derived from ecological theory <span class="citation" data-cites="Harte1999">(<a href="#ref-Harte1999" role="doc-biblioref">Harte et al. 1999</a>)</span> with empirical support <span class="citation" data-cites="Arrhenius1921">(<a href="#ref-Arrhenius1921" role="doc-biblioref">Arrhenius 1921</a>)</span>. Whatever the scale, the number species increases with the area or the number of individuals, making it a challenge to correctly describe biodiversity with a number: species richness (i.e.&nbsp;the number of species) is the simplest candidate, but its application may be ambiguous.</p>
-<p>Fisher’s log-series <span class="citation" data-cites="Fisher1943">(<a href="#ref-Fisher1943" role="doc-biblioref">Fisher et al. 1943</a>)</span> was derived originally from the distribution of tropical butterflies. It is formulated as a species-abundance relationship that links the number of species to the number of individuals with a single parameter, called <span class="math inline">\(\alpha\)</span>. Fisher’s <span class="math inline">\(\alpha\)</span> is thus an ideal candidate to measure diversity since it overcomes the previous issue: it is scale-independent if the actual species distribution is a log-series. After a long period of relative obscurity, <span class="math inline">\(\alpha\)</span> made a comeback following the development of Hubbell’s neutral theory <span class="citation" data-cites="Hubbell2001">(<a href="#ref-Hubbell2001" role="doc-biblioref">Hubbell 2001</a>)</span> since the metacommunity is distributed in log-series whose <span class="math inline">\(\alpha\)</span> equals <span class="math inline">\(\theta\)</span>, the fundamental number of biodiversity. Although the log-series does not apply to the local scale according to the neutral theory, it became popular <span class="citation" data-cites="Duque2017 TerSteege2023">(<a href="#ref-Duque2017" role="doc-biblioref">Duque et al. 2017</a>; <a href="#ref-TerSteege2023" role="doc-biblioref">Ter Steege et al. 2023</a>)</span> to describe the diversity of forest trees, probably for its simplicity. Summarizing a species distribution by a statistics that does not apply to it is questionable. The aim of this paper is to show that <span class="math inline">\(\alpha\)</span> actually does not measure diversity unambiguously, neither at local nor at regional scales, and should be limited to the largest metacommunity. It is organised as follows: Fisher’s <span class="math inline">\(\alpha\)</span> fundamentals are first recalled; its use at the different scales is then discussed before concluding about its applicability.</p>
+<p>Fisher’s log-series <span class="citation" data-cites="Fisher1943">(<a href="#ref-Fisher1943" role="doc-biblioref">Fisher et al. 1943</a>)</span> was derived originally from a distribution of tropical butterflies. It is formulated as a species-abundance relationship that links the number of species to the number of individuals with a single parameter, called <span class="math inline">\(\alpha\)</span>. Fisher’s <span class="math inline">\(\alpha\)</span> is thus an ideal candidate to measure diversity since it overcomes the previous issue: it is scale-independent if the actual species distribution is a log-series. After a long period of relative obscurity, <span class="math inline">\(\alpha\)</span> made a comeback following the development of Hubbell’s neutral theory <span class="citation" data-cites="Hubbell2001">(<a href="#ref-Hubbell2001" role="doc-biblioref">Hubbell 2001</a>)</span> since the metacommunity is distributed in log-series whose <span class="math inline">\(\alpha\)</span> equals <span class="math inline">\(\theta\)</span>, the fundamental number of biodiversity. Although the log-series does not apply to the local scale according to the neutral theory, it became popular <span class="citation" data-cites="Duque2017 TerSteege2023">(<a href="#ref-Duque2017" role="doc-biblioref">Duque et al. 2017</a>; <a href="#ref-TerSteege2023" role="doc-biblioref">Ter Steege et al. 2023</a>)</span> to describe the diversity of forest trees, probably for its simplicity. Summarizing a species distribution by a statistics that does not apply to it is questionable. The aim of this paper is to show that <span class="math inline">\(\alpha\)</span> actually does not measure diversity unambiguously, neither at local nor at regional scales, and should be limited to the largest metacommunity. It is organised as follows: Fisher’s <span class="math inline">\(\alpha\)</span> fundamentals are first recalled; its use at the different scales is then discussed before concluding about its applicability.</p>
 </section>
 <section id="material-and-methods" class="level1 page-columns page-full" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Material and methods</h1>
@@ -275,20 +276,19 @@ Figure&nbsp;2: Rank-Abundance Curve (RAC) of a log-series distribution (black) a
 <p></p>
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-BCI_accum-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: Species Accumulation Curve of BCI extrapolated up to twice the sample size. The dotted lines correspond to the 50-ha inventory. The horizontal, dotted line, is the estimated asymptotic number of species, calculated with the jackknife estimator of order 1 <span class="citation" data-cites="Burnham1978">(<a href="#ref-Burnham1978" role="doc-biblioref">Burnham and Overton 1978</a>)</span>. The black curve is the SAC of the log-series with <span class="math inline">\(\alpha\)</span> equal to 35.
+Figure&nbsp;3: Species Accumulation Curve of BCI extrapolated up to twice the sample size. The dotted lines correspond to the 50-ha inventory. The horizontal, dotted line, is the estimated asymptotic number of species, calculated with the jackknife estimator of order 1. The black curve is the SAC of the log-series with <span class="math inline">\(\alpha\)</span> equal to 35.
 </figcaption>
 </figure>
 </div>
 <p>Sampling the local community results in a species accumulation curve, studied in depth by <span class="citation" data-cites="Gotelli2001">Gotelli and Colwell (<a href="#ref-Gotelli2001" role="doc-biblioref">2001</a>)</span>. The number of species increases step by step, when the next sampled individual belongs to a new one. This stochastic <em>collector’s curve</em> is of less interest than its expectation, assuming individuals are sampled independently: only that smoothed curve is called the SAC. It is actually computed by rarefaction of the distribution of the whole sample <span class="citation" data-cites="Chao2014">(<a href="#ref-Chao2014" role="doc-biblioref">Chao et al. 2014</a>)</span>. It is usually plotted on continuous scales. Between sample sizes <span class="math inline">\(n\)</span> and <span class="math inline">\(n + 1\)</span>, the slope of the curve is the probability for the next individual to belong to a new species <span class="citation" data-cites="Grabchak2016">(<a href="#ref-Grabchak2016" role="doc-biblioref">Grabchak et al. 2017</a>)</span>: it decreases until all species have been discovered, so it is concave.</p>
 <p><a href="#fig-BCI_accum" class="quarto-xref">Figure&nbsp;3</a> shows the SAC of the Barro Colorado Island 50-ha forest plot. The number of species increases with sample size and does not reach an asymptote despite the huge sampling effort. To allow comparing diversity with other sites, two strategies are possible: estimating asymptotic diversity or standardizing the sampling effort <span class="citation" data-cites="Chao2012b">(<a href="#ref-Chao2012b" role="doc-biblioref">Chao and Jost 2012</a>)</span>.</p>
-<p>The asymptotic diversity is the number of species that would be observed if the sample reached the necessary size to encompass all species of the community. In hyperdiverse ecosystems such as evergreen forests, the asymptotic community generally does not exist in the field because of environmental variations: increasing the size of the sample results in sampling in different communities. Thus, the asymptotic estimators of diversity correspond to theoretical asymptotic communities that do not necessarily exist: it is a feature of a model. This may be an argument for avoiding them, but the definition of the local community is already a model <span class="citation" data-cites="Stroud2015">(<a href="#ref-Stroud2015" role="doc-biblioref">Stroud et al. 2015</a>)</span>, in the sense that local environmental variations imply that the distribution of species varies in turn: the neglected heterogeneity of the community corresponds to necessary decisions to model the reality. The estimated number of species is 244.</p>
+<p>The asymptotic diversity is the number of species that would be observed if the sample reached the necessary size to encompass all species of the community : it equals 244 according to the jackknife estimator <span class="citation" data-cites="Burnham1978">(<a href="#ref-Burnham1978" role="doc-biblioref">Burnham and Overton 1978</a>)</span>. In hyperdiverse ecosystems such as evergreen forests, the asymptotic community generally does not exist in the field because of environmental variations: increasing the size of the sample results in sampling in different communities. Thus, the asymptotic estimators of diversity correspond to theoretical asymptotic communities that do not necessarily exist: it is a feature of a model. This may be an argument for avoiding them, but the definition of the local community is already a model <span class="citation" data-cites="Stroud2015">(<a href="#ref-Stroud2015" role="doc-biblioref">Stroud et al. 2015</a>)</span>, in the sense that local environmental variations imply that the distribution of species varies in turn: the neglected heterogeneity of what is defined as the local community corresponds to necessary decisions to model the reality.</p>
 <p>The alternative consists in standardizing the sample size, in general to allow comparing different communities whose inventories are not large enough to allow a reliable estimation of asymptotic diversity. Exact rarefaction formulas are available to calculate the number of tree species at any sampling level smaller than the actual sample, and estimators allow extrapolating the diversity up to a limited level, around twice the actual sample size <span class="citation" data-cites="Chao2014">(<a href="#ref-Chao2014" role="doc-biblioref">Chao et al. 2014</a>)</span>. The expected number of species in one hectare of BCI, actually based on the average number of trees per hectare (equal to 429), is 103. This result can be compared easily to well-known benchmarks, such as the 367 species inventoried in one hectare of an Amazonian Ecuador forest <span class="citation" data-cites="Valencia1994">(<a href="#ref-Valencia1994" role="doc-biblioref">Valencia et al. 1994</a>)</span>, even though a larger area would be preferable to better take into account the rare species and leave the steepest part of the SAC in <a href="#fig-BCI_accum" class="quarto-xref">Figure&nbsp;3</a>.</p>
-<p>In contrast, Fisher’s <span class="math inline">\(\alpha\)</span> does not depend on the sample size as soon as <span class="math inline">\(n \gg \alpha\)</span>, which is always true in forest inventories. Thus, it appears to be an ideal, universal metric of biodiversity, allowing to compare it across sites of different sizes. The issue is that the distribution of tropical forest tree communities is not a log-series. <span class="citation" data-cites="Hubbell2001">Hubbell (<a href="#ref-Hubbell2001" role="doc-biblioref">2001</a>)</span> named it the zero-sum multinomial distribution; its mathematical derivation is due to <span class="citation" data-cites="Volkov2003">Volkov et al. (<a href="#ref-Volkov2003" role="doc-biblioref">2003</a>)</span>. It is close to a log-normal distribution <span class="citation" data-cites="McGill2003">(<a href="#ref-McGill2003" role="doc-biblioref">McGill 2003</a>)</span>, but differs from by a greater abundance of the rarest species.</p>
-<p>This discrepancy has two consequences: from a theoretical point of view, <span class="math inline">\(\alpha\)</span> is the parameter of a distribution that is not observed; from an empirical point of view, its estimation is inconsistent.</p>
-<p>The theoretical issue does not require much more argumentation. Applying an inappropriate model to describe the distribution of species is similar to trying to describe the size of a rectangle by the single length of its side, assuming it is a square.</p>
+<p>In contrast, Fisher’s <span class="math inline">\(\alpha\)</span> does not depend on the sample size as soon as <span class="math inline">\(n \gg \alpha\)</span>, which is always true in forest inventories. Thus, it appears to be an ideal, universal metric of biodiversity, allowing to compare it across sites of different sizes. The issue is that the distribution of tropical forest tree communities is not a log-series. <span class="citation" data-cites="Hubbell2001">Hubbell (<a href="#ref-Hubbell2001" role="doc-biblioref">2001</a>)</span> named it the zero-sum multinomial distribution; its mathematical derivation is due to <span class="citation" data-cites="Volkov2003">Volkov et al. (<a href="#ref-Volkov2003" role="doc-biblioref">2003</a>)</span>. It is close to a log-normal distribution <span class="citation" data-cites="McGill2003">(<a href="#ref-McGill2003" role="doc-biblioref">McGill 2003</a>)</span>, but differs from by a greater abundance of the rarest species. This discrepancy has two consequences: from a theoretical point of view, <span class="math inline">\(\alpha\)</span> is the parameter of a distribution that is not observed; from an empirical point of view, its estimation is inconsistent.</p>
+<p>The theoretical issue does not require much more argumentation. Applying an inappropriate model to describe the distribution of species is similar to trying to describe the size of a rectangle by its length, assuming it is a square.</p>
 <p>The empirical question deserves further elaboration because it is always possible to estimate <span class="math inline">\(\alpha\)</span> from the data and implicitly assume log-series distributions. A basic argument is that the actual distribution is not so different from a log-series that the advantages of summarizing it by <span class="math inline">\(\alpha\)</span> are worth accepting the approximation. In an important article, <span class="citation" data-cites="TerSteege2023">Ter Steege et al. (<a href="#ref-TerSteege2023" role="doc-biblioref">2023</a>)</span> study the <span class="math inline">\(\alpha\)</span> diversity of tree species across the Amazon, defined as “Fisher’s alpha of a tree-inventory plot”. Historically, <span class="citation" data-cites="Whittaker1960">Whittaker (<a href="#ref-Whittaker1960" role="doc-biblioref">1960</a>)</span> named the average local diversity after Fisher’s <span class="math inline">\(\alpha\)</span>, but his metric was species richness. <span class="citation" data-cites="TerSteege2023">Ter Steege et al. (<a href="#ref-TerSteege2023" role="doc-biblioref">2023</a>)</span> revert the reference, declaring Fisher’s <span class="math inline">\(\alpha\)</span> the standard measure of <span class="math inline">\(\alpha\)</span> diversity. This shortcut must be discussed in depth.</p>
-<p>Several R packages allow estimating <span class="math inline">\(\alpha\)</span> from a vector of abundances (see Appendix <a href="#sec-appendix1" class="quarto-xref">Section&nbsp;6.1</a> for details). Most of them (such as <code>vegan::fisher.alpha</code>) just solve <a href="#eq-fisheralpha" class="quarto-xref">Equation&nbsp;1</a>, i.e.&nbsp;they only rely on the total abundance and number of species, ignoring the distribution. This estimator will be denoted <span class="math inline">\(\hat\alpha(n, S)\)</span>: it corresponds to the intersection between the SACs of a log-series and of the data (<a href="#fig-BCI_accum" class="quarto-xref">Figure&nbsp;3</a>). Often, the sample size is an area <span class="math inline">\(A\)</span>, so the estimator is rather <span class="math inline">\(\hat\alpha(n(A), S)\)</span> where the number of individuals depends on the area. More elaborate functions (such as <code>sads::fitls</code>) find the value of <span class="math inline">\(\alpha\)</span> that maximizes the likelihood of the distribution assuming it is a log-series. That estimator will be denoted <span class="math inline">\(\hat\alpha(\{\mathbf{\hat{p}}\})\)</span>: it corresponds to the best fit of the RAC of a log-series to the data (<a href="#fig-BCI_RAC" class="quarto-xref">Figure&nbsp;2</a>).</p>
-<p>When applied to the BCI dataset, both <span class="math inline">\(\hat\alpha(n, S)\)</span> and <span class="math inline">\(\hat\alpha(\{\mathbf{\hat{p}}\})\)</span> return the same estimation: 35. Its poor empirical fit is illustrated by <a href="#fig-BCI_accum" class="quarto-xref">Figure&nbsp;3</a> and <a href="#fig-BCI_accum_logx" class="quarto-xref">Figure&nbsp;1</a>.</p>
+<p>Several R packages allow estimating <span class="math inline">\(\alpha\)</span> from a vector of abundances (see Appendix <a href="#sec-appendix1" class="quarto-xref">Section&nbsp;7.1</a> for details). Most of them (such as <code>vegan::fisher.alpha</code>) just solve <a href="#eq-fisheralpha" class="quarto-xref">Equation&nbsp;1</a>, i.e.&nbsp;they only rely on the total abundance and number of species, ignoring the distribution. This estimator will be denoted <span class="math inline">\(\hat\alpha(n, S)\)</span>: it corresponds to the intersection between the SACs of a log-series and of the data (<a href="#fig-BCI_accum" class="quarto-xref">Figure&nbsp;3</a>). Often, the sample size is an area <span class="math inline">\(A\)</span>, so the estimator is rather <span class="math inline">\(\hat\alpha(n(A), S)\)</span> where the number of individuals depends on the area. More elaborate functions (such as <code>sads::fitls</code>) find the value of <span class="math inline">\(\alpha\)</span> that maximizes the likelihood of the distribution assuming it is a log-series. That estimator will be denoted <span class="math inline">\(\hat\alpha_{MLE}(\{\mathbf{\hat{p}}\})\)</span>. A new estimator based on goodness of fit instead of likelihood maximization is proposed in Appendix <a href="#sec-appendix1" class="quarto-xref">Section&nbsp;7.1</a>: <span class="math inline">\(\hat\alpha_{gof}(\{\mathbf{\hat{p}}\})\)</span>.</p>
+<p>When applied to the BCI dataset, both <span class="math inline">\(\hat\alpha(n, S)\)</span> and <span class="math inline">\(\hat\alpha_{MLE}(\{\mathbf{\hat{p}}\})\)</span> return the same estimation: 35. Its poor empirical fit is illustrated by <a href="#fig-BCI_accum" class="quarto-xref">Figure&nbsp;3</a> and <a href="#fig-BCI_accum_logx" class="quarto-xref">Figure&nbsp;1</a>. <span class="math inline">\(\hat\alpha_{gof}(\{\mathbf{\hat{p}}\})\)</span> better takes into account the rarer species (Appendix <a href="#fig-bci_alpha_gof" class="quarto-xref">Figure&nbsp;6</a>). It equals 42.</p>
 <div id="fig-BCI_size" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-BCI_size-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -309,12 +309,11 @@ Figure&nbsp;4: Estimation of Fisher’s <span class="math inline">\(\alpha\)</sp
 </figcaption>
 </figure>
 </div>
-<p>In contrast with the assumed advantage of <span class="math inline">\(\alpha\)</span>, its estimate <span class="math inline">\(\hat\alpha(n, S)\)</span> heavily relies on the sample size. <a href="#fig-BCI_size" class="quarto-xref">Figure&nbsp;4</a> shows the average estimation of <span class="math inline">\(\alpha\)</span> based on random subsamples of BCI, from 4 to 50ha, repeated 20 times. The estimated value of <span class="math inline">\(\alpha\)</span> decreases from over 40 to approximately 35, with a quite good linear relation between <span class="math inline">\(\alpha\)</span> and the logarithm of the sample size. Several examples can be found in the literature, e.g. <span class="citation" data-cites="Duque2017">Duque et al. (<a href="#ref-Duque2017" role="doc-biblioref">2017</a>)</span> and <span class="citation" data-cites="Schulte2005">Schulte et al. (<a href="#ref-Schulte2005" role="doc-biblioref">2005</a>)</span>, where the dependence of <span class="math inline">\(\alpha\)</span> to sample size is explored either with a statistical or an ecological approach. Actually, according to the definition of the SAC that reaches an asymptote, <span class="math inline">\(\hat\alpha(n, S) \to 0\)</span> when <span class="math inline">\(n \to \infty\)</span>.</p>
-<p>Visually, in <a href="#fig-BCI_accum_logx" class="quarto-xref">Figure&nbsp;1</a>, decreasing <span class="math inline">\(\alpha\)</span> decreases the slope of the log-series curve. Changing the sample size means changing the intersection point between the accumulation curve and the log-series curve, thus necessarily modifying <span class="math inline">\(\alpha\)</span>. At this stage, there is no real argument to decide whether BCI’s <span class="math inline">\(\alpha\)</span> is 35 or 40, or even its asymptotic estimate equal to 0. The best choice is probably to consider that it is simply not defined.</p>
+<p>In contrast with the assumed advantage of <span class="math inline">\(\alpha\)</span>, its estimate <span class="math inline">\(\hat\alpha(n, S)\)</span> heavily relies on the sample size. <a href="#fig-BCI_size" class="quarto-xref">Figure&nbsp;4</a> shows the average estimation of <span class="math inline">\(\alpha\)</span> based on random subsamples of BCI, from 4 to 50ha, repeated 20 times. The estimated value of <span class="math inline">\(\alpha\)</span> decreases from over 40 to approximately 35, with a quite good linear relation between <span class="math inline">\(\alpha\)</span> and the logarithm of the sample size. Several studies can be found in the literature, e.g. <span class="citation" data-cites="Duque2017">Duque et al. (<a href="#ref-Duque2017" role="doc-biblioref">2017</a>)</span> and <span class="citation" data-cites="Schulte2005">Schulte et al. (<a href="#ref-Schulte2005" role="doc-biblioref">2005</a>)</span>, where the dependence of <span class="math inline">\(\alpha\)</span> to sample size is explored either with a statistical or an ecological approach. Actually, according to the definition of the SAC that reaches an asymptote, <span class="math inline">\(\hat\alpha(n, S) \to 0\)</span> when <span class="math inline">\(n \to \infty\)</span>. At this stage, there is no real argument to decide whether BCI’s <span class="math inline">\(\alpha\)</span> is 35 or 40, or even its asymptotic estimate equal to 0. The best choice is probably to consider that it is simply not defined.</p>
 <p>A degraded utilization of <span class="math inline">\(\alpha\)</span>, more precisely <span class="math inline">\(\hat\alpha(n, S)\)</span>, would be legitimate if it allowed ordering communities <span class="citation" data-cites="Tothmeresz1995">(<a href="#ref-Tothmeresz1995" role="doc-biblioref">Tothmeresz 1995</a>)</span>, even though it does not qualify a log-series distribution. If the sample size <span class="math inline">\(n\)</span> is fixed, then a bijective relation exists between the estimate of <span class="math inline">\(\alpha\)</span> and the number of species <span class="math inline">\(S\)</span>, i.e.&nbsp;standardised richness. In this case, <span class="math inline">\(\hat\alpha(n, S)\)</span> is a valid, although uselessly complicated, index of diversity. But when the sampling effort is an area, <span class="math inline">\(n\)</span> varies. Everything else equal, <span class="math inline">\(S\)</span> increases with <span class="math inline">\(n\)</span> : this defines the SAC. The consequence of different tree density is thus unpredictable, since <span class="math inline">\(\hat\alpha(n, S)\)</span> is an increasing function of <span class="math inline">\(S\)</span> but a decreasing function of <span class="math inline">\(n\)</span>. In a log-series distribution, <span class="math inline">\(S\)</span> and <span class="math inline">\(n\)</span> neutralise each other so that <span class="math inline">\(\alpha\)</span> is constant, but other distributions entangle their effects. Two communities with the same species distributions, whose diversites are by definition equal <span class="citation" data-cites="Patil1982">(<a href="#ref-Patil1982" role="doc-biblioref">Patil and Taillie 1982</a>)</span>, may be ordered differently if their densities vary.</p>
-<p>A workaround for these problems is assuming that the local community is a sample of the metacommunity, following the neutral theory. It is not a log-series only because of dispersal limitation, i.e.&nbsp;its migration parameter <span class="math inline">\(m\)</span> is not 1. Then, the parameter to estimate is <span class="math inline">\(\theta\)</span>, the fundamental number of biodiversity in the metacommunity BCI belongs to. Increasing the sample size does not lead to reach the asymptotic, local diversity but (because the modelling choice is different) makes the distribution converge to that of the metacommunity: <span class="math inline">\(\hat\alpha(\{\mathbf{\hat{p}\}}) \to \theta\)</span> when <span class="math inline">\(n \to \infty\)</span>. This is an elegant solution both theoretically (all assumptions are valid) and empirically (the estimation of <span class="math inline">\(\theta\)</span> is unbiased).</p>
-<p><span class="citation" data-cites="Hubbell2001">Hubbell (<a href="#ref-Hubbell2001" role="doc-biblioref">2001</a>)</span> [page 293] proposed estimating <span class="math inline">\(\theta\)</span> by adjusting the rank-abundance curve to the most frequent species in the community, arguing that these species are also the most abundant in the metacommunity. He found <span class="math inline">\(\theta = 50\)</span>. The same algorithm is applied to the current BCI dataset in Appendix <a href="#sec-appendix2" class="quarto-xref">Section&nbsp;6.2</a>: its result is <span class="math inline">\(\theta = 45\)</span>. More robustly, both <span class="math inline">\(\theta\)</span> and <span class="math inline">\(m\)</span> can be estimated by likelihood maximization of the local distribution <span class="citation" data-cites="Etienne2005">(<a href="#ref-Etienne2005" role="doc-biblioref">Etienne 2005</a>)</span> with the untb package <span class="citation" data-cites="Hankin2007">(<a href="#ref-Hankin2007" role="doc-biblioref">Hankin 2007</a>)</span>. The retained value of <span class="math inline">\(\theta\)</span> is 48. The consistency of this approach is shown in Appendix <a href="#sec-appendix3" class="quarto-xref">Section&nbsp;6.3</a>: <span class="math inline">\(\theta\)</span> and <span class="math inline">\(m\)</span> are estimated from the BCI distribution, then a community of the same size is drawn with these parameters: it is very close to the actual distribution.</p>
-<p>This approach faces two limits. As far as we know, it is not applied in the literature: the metric of <span class="citation" data-cites="TerSteege2023">Ter Steege et al. (<a href="#ref-TerSteege2023" role="doc-biblioref">2023</a>)</span> is <span class="math inline">\(\hat\alpha(n(1\ \mathbb{ha}), S)\)</span>, not <span class="math inline">\(\theta\)</span>. More importantly, it does not describe the diversity of the local community but that of the metacommunity: summarizing BCI by <span class="math inline">\(\theta = 48\)</span> ignores the migration parameter. Modifying <span class="math inline">\(m\)</span> yields very different distributions, from geometric to log-series <span class="citation" data-cites="Hubbell2001">(<a href="#ref-Hubbell2001" role="doc-biblioref">Hubbell 2001</a>)</span>. In other words, <span class="math inline">\(\theta\)</span> only gives a very partial knowledge of the diversity of the local community.</p>
+<p>A workaround for these problems is assuming that the local community is a sample of the metacommunity, following the neutral theory. It is not a log-series only because of dispersal limitation, i.e.&nbsp;its migration parameter <span class="math inline">\(m\)</span> is not 1. Then, the parameter to estimate is <span class="math inline">\(\theta\)</span>, the fundamental number of biodiversity in the metacommunity BCI belongs to. Increasing the sample size does not lead to reach the asymptotic, local diversity but (because the modelling choice is different) makes the distribution converge to that of the metacommunity: <span class="math inline">\(\hat\alpha(\{\mathbf{\hat{p}\}}) \to \hat\alpha(\{\mathbf{p}\}) = \theta\)</span> when <span class="math inline">\(n \to \infty\)</span>. This is an elegant solution both theoretically (all assumptions are valid) and empirically (the estimation of <span class="math inline">\(\theta\)</span> is unbiased).</p>
+<p><span class="citation" data-cites="Hubbell2001">Hubbell (<a href="#ref-Hubbell2001" role="doc-biblioref">2001</a>)</span> [page 293] proposed estimating <span class="math inline">\(\theta\)</span> by adjusting the rank-abundance curve to the most frequent species in the community, arguing that these species are also the most abundant in the metacommunity. He found <span class="math inline">\(\theta = 50\)</span>. The same algorithm is applied to the current BCI dataset in Appendix <a href="#sec-appendix2" class="quarto-xref">Section&nbsp;7.2</a>: its result is <span class="math inline">\(\theta = 45\)</span>. More robustly, both <span class="math inline">\(\theta\)</span> and <span class="math inline">\(m\)</span> can be estimated by likelihood maximization of the local distribution <span class="citation" data-cites="Etienne2005">(<a href="#ref-Etienne2005" role="doc-biblioref">Etienne 2005</a>)</span> with the untb package <span class="citation" data-cites="Hankin2007">(<a href="#ref-Hankin2007" role="doc-biblioref">Hankin 2007</a>)</span>. The retained value of <span class="math inline">\(\theta\)</span> is 48. The consistency of this approach is shown in Appendix <a href="#sec-appendix3" class="quarto-xref">Section&nbsp;7.3</a>: <span class="math inline">\(\theta\)</span> and <span class="math inline">\(m\)</span> are estimated from the BCI distribution, then a community of the same size is drawn with these parameters: it is very close to the actual distribution.</p>
+<p>This approach faces two limits. As far as we know, it is not applied in the literature: the metric of <span class="citation" data-cites="TerSteege2023">Ter Steege et al. (<a href="#ref-TerSteege2023" role="doc-biblioref">2023</a>)</span> is <span class="math inline">\(\hat\alpha(n(1\ \mathrm{ha}), S)\)</span>, not <span class="math inline">\(\theta\)</span>. More importantly, it does not describe the diversity of the local community but that of the metacommunity: summarizing BCI by <span class="math inline">\(\theta = 48\)</span> ignores the migration parameter. Modifying <span class="math inline">\(m\)</span> yields very different distributions, from geometric to log-series <span class="citation" data-cites="Hubbell2001">(<a href="#ref-Hubbell2001" role="doc-biblioref">Hubbell 2001</a>)</span>. In other words, <span class="math inline">\(\theta\)</span> only gives a very partial knowledge of the diversity of the local community.</p>
 </section>
 <section id="regional-scale" class="level1 page-columns page-full" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Regional scale</h1>
@@ -322,7 +321,7 @@ Figure&nbsp;4: Estimation of Fisher’s <span class="math inline">\(\alpha\)</sp
 <p><span id="eq-arrhenius"><span class="math display">\[
   S(A) =c A^z,
 \tag{2}\]</span></span></p>
-<p>where <span class="math inline">\(A\)</span> is the surface area, <span class="math inline">\(c\)</span> a constant that depends on the organisms taken into account and the regional diversity, and <span class="math inline">\(z\)</span> the parameter that relates richness to area. Assuming that forest communities are saturated, i.e.&nbsp;<span class="math inline">\(n = \rho A\)</span> where <span class="math inline">\(\rho\)</span> is the number of trees per unit area, the number of individuals is proportional to the area, and, since <span class="math inline">\(\ln n \gg \ln \rho\)</span>, the model can be rewritten in a linear form:</p>
+<p>where <span class="math inline">\(A\)</span> is the surface area, <span class="math inline">\(c\)</span> a constant that depends on the organisms taken into account and the regional diversity, and <span class="math inline">\(z\)</span> the parameter that relates richness to area. Assuming that forest communities are saturated <span class="citation" data-cites="Hubbell2001">(<a href="#ref-Hubbell2001" role="doc-biblioref">Hubbell 2001</a>)</span>, i.e.&nbsp;<span class="math inline">\(n = \rho A\)</span> where <span class="math inline">\(\rho\)</span> is the number of trees per unit area, the number of individuals is proportional to the area, and, since <span class="math inline">\(\ln n \gg \ln \rho\)</span>, the model can be rewritten in a linear form:</p>
 <p><span id="eq-arrhenius_log"><span class="math display">\[
   \ln\left(S\left(n\right)\right) = k_A + z \ln\left(n\right)
 \tag{3}\]</span></span></p>
@@ -334,10 +333,9 @@ Figure&nbsp;4: Estimation of Fisher’s <span class="math inline">\(\alpha\)</sp
    S\left(n\right) = k_G + \alpha \ln\left(n\right),
 \tag{4}\]</span></span></p>
 <p>where <span class="math inline">\(k_G\)</span> is yet another constant and <span class="math inline">\(\alpha\)</span> the slope of the relation. This model is actually identical to Fisher’s <span class="citation" data-cites="Engen1977">(<a href="#ref-Engen1977" role="doc-biblioref">Engen 1977</a>)</span>.</p>
-<p>Arrhenius’s model benefits from a long theoretical <span class="citation" data-cites="Williamson2001 Harte1999 Preston1962">(<a href="#ref-Williamson2001" role="doc-biblioref">Williamson et al. 2001</a>; <a href="#ref-Harte1999" role="doc-biblioref">Harte et al. 1999</a>; <a href="#ref-Preston1962" role="doc-biblioref">Preston 1962</a>)</span> and empirical <span class="citation" data-cites="Dengler2009 Triantis2012">(<a href="#ref-Dengler2009" role="doc-biblioref">Dengler 2009</a>; <a href="#ref-Triantis2012" role="doc-biblioref">Triantis et al. 2012</a>)</span> support.</p>
-<p>A simple argument against Gleason’s model is contained in the neutral theory. Consider a large metacommunity and assume it is distributed as a log-series. A smaller metacommunity inside it would just be a sample of it in absence of dispersal limitation. Then both distributions would be identical, i.e.&nbsp;the same log-series with the same parameter <span class="math inline">\(\alpha\)</span>: the same Fisher’s model would be valid for all subsamples of the largest metacommunity, validating Gleason’s model. Yet, dispersal is limited, i.e.&nbsp;not all species of the largest metacommunity are present in the smaller ones: their diversity is reduced. Although they are distributed in log-series, their parameter <span class="math inline">\(\alpha\)</span> is smaller. Thus, the number of species decreases faster with the area than predicted by Gleason’s model, inverting his original argument.</p>
-<p>At this stage, we face an apparent paradox: the regional species area relationship follows a power model but a metacommunity is distributed in log-series. It is solved considering that the metacommunity’s <span class="math inline">\(\alpha\)</span> parameter depends on its size. Again, a smaller metacommunity embedded in the first one does not contain all species because of dispersal limitation.</p>
-<p>When the SAR is plotted on a log-log scale, it is linear (<a href="#eq-arrhenius_log" class="quarto-xref">Equation&nbsp;3</a>). If the y-axis is not in logarithmic scale, it becomes convex. In this representation (<a href="#fig-arrhenius_logx" class="quarto-xref">Figure&nbsp;5</a>), a log-series species accumulation curve is a straight line (the number of individuals is much greater than <span class="math inline">\(\alpha\)</span>). This theoretical result can be verified empirically with the GuyaDiv network plots in French Guiana (Appendix <a href="#sec-appendix4" class="quarto-xref">Section&nbsp;6.4</a>): <span class="math inline">\(\alpha\)</span> increases with the number of sites included in the sample.</p>
+<p>Arrhenius’s model benefits from a long theoretical <span class="citation" data-cites="Williamson2001 Harte1999 Preston1962">(<a href="#ref-Williamson2001" role="doc-biblioref">Williamson et al. 2001</a>; <a href="#ref-Harte1999" role="doc-biblioref">Harte et al. 1999</a>; <a href="#ref-Preston1962" role="doc-biblioref">Preston 1962</a>)</span> and empirical <span class="citation" data-cites="Dengler2009 Triantis2012">(<a href="#ref-Dengler2009" role="doc-biblioref">Dengler 2009</a>; <a href="#ref-Triantis2012" role="doc-biblioref">Triantis et al. 2012</a>)</span> support. A simple argument against Gleason’s model is contained in the neutral theory. Consider a large metacommunity and assume it is distributed as a log-series. A smaller metacommunity inside it would just be a sample of it in absence of dispersal limitation. Then both distributions would be identical, i.e.&nbsp;the same log-series with the same parameter <span class="math inline">\(\alpha\)</span>: the same Fisher’s model would be valid for all subsamples of the largest metacommunity, validating Gleason’s model. Yet, dispersal is limited, i.e.&nbsp;not all species of the largest metacommunity are present in the smaller ones: their diversity is reduced. Although they are distributed in log-series, their parameter <span class="math inline">\(\alpha\)</span> is smaller. Thus, the number of species decreases faster with the area than predicted by Gleason’s model, inverting his original argument.</p>
+<p>At this stage, we face an apparent paradox: the regional species-area relationship follows a power model but a metacommunity is distributed in log-series. It is solved considering that the metacommunity’s <span class="math inline">\(\alpha\)</span> parameter depends on its size. Again, a smaller metacommunity embedded in the first one does not contain all species because of dispersal limitation.</p>
+<p>When the SAR is plotted on a log-log scale, it is linear (<a href="#eq-arrhenius_log" class="quarto-xref">Equation&nbsp;3</a>). If the y-axis is not in logarithmic scale, it becomes convex. In this representation (<a href="#fig-arrhenius_logx" class="quarto-xref">Figure&nbsp;5</a>), a log-series species accumulation curve is a straight line (the number of individuals is much greater than <span class="math inline">\(\alpha\)</span>). This theoretical result can be verified empirically with the GuyaDiv network plots in French Guiana (Appendix <a href="#sec-appendix4" class="quarto-xref">Section&nbsp;7.4</a>): <span class="math inline">\(\alpha\)</span> increases with the number of sites included in the sample.</p>
 <div id="fig-arrhenius_logx" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-arrhenius_logx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -366,21 +364,26 @@ Figure&nbsp;5: Number of tree species depending on the area (in square km, with 
 <p>Despite its popularity as an index of diversity, Fisher’s <span class="math inline">\(\alpha\)</span> should not be applied to tropical forest communities because it is the parameter of a model that does not fit the data. According to the neutral theory, log-series communities would result from migration parameter 1, i.e.&nbsp;in the absence of dispersal limitation of the species of the metacommunity, which never occurs. Forcing the estimation of <span class="math inline">\(\alpha\)</span> in non-log-series distributions results in highly scale-dependent values that seriously question the comparisons between communities based on their <span class="math inline">\(\alpha\)</span> index.</p>
 <p>At the regional scale, metacommunities do follow log-series distributions so <span class="math inline">\(\alpha\)</span> can be estimated from a set of scattered forest plots, even though the spatial structure of species may introduce estimation biases. Even ignoring this issue, <span class="math inline">\(\alpha\)</span> can’t be interpreted simply because it is not possible to characterize the area of the sampled metacommunity. At this scale, the measure is correct, but the measured object is unclear.</p>
 <p>Finally, the empirical interest of Fisher’s <span class="math inline">\(\alpha\)</span> is limited to the distribution of clearly delimited metacommunities, such as the Amazon forest as a whole. In this context, it allowed among other results to estimate the number of tree species.</p>
-<p>Species richness can be unambiguously defined and estimated at all scales. At the local scale, given the number of individuals, it contains the same information as <span class="math inline">\(\alpha\)</span> without assuming any particular distribution. It can be completed with other diversity metrics, namely Hill numbers <span class="citation" data-cites="Marcon2014a">(<a href="#ref-Marcon2014a" role="doc-biblioref">Marcon et al. 2014</a>)</span>. At the regional scale, with much more efforts, the number of species can be derived from Arrhenius’s power model with appropriate sampling <span class="citation" data-cites="Marcon2024">(<a href="#ref-Marcon2024" role="doc-biblioref">Marcon et al. 2024</a>)</span>.</p>
+<p>In contrast, species richness can be unambiguously defined and estimated at all scales. At the local scale, given the number of individuals, it contains the same information as <span class="math inline">\(\alpha\)</span> without assuming any particular distribution. It can be completed with other diversity metrics, namely Hill numbers <span class="citation" data-cites="Marcon2014a">(<a href="#ref-Marcon2014a" role="doc-biblioref">Marcon et al. 2014</a>)</span>. At the regional scale, with much more efforts, the number of species can be derived from Arrhenius’s power model with appropriate sampling <span class="citation" data-cites="Marcon2024">(<a href="#ref-Marcon2024" role="doc-biblioref">Marcon et al. 2024</a>)</span>.</p>
 </section>
+
 
 <section id="bibliography" class="level1 unnumbered">
 
 
 </section>
 
-<div id="quarto-appendix" class="default page-columns page-full"><section id="appendix" class="level1 appendix" data-number="6"><h2 class="anchored quarto-appendix-heading"><span class="header-section-number">6</span> Appendix</h2><div class="quarto-appendix-contents">
+<div id="quarto-appendix" class="default page-columns page-full"><section id="acknowledgement" class="level1 appendix" data-number="6"><h2 class="anchored quarto-appendix-heading"><span class="header-section-number">6</span> Acknowledgement</h2><div class="quarto-appendix-contents">
+
+<p>The author thanks Jérôme Chave for discussions that motivated writing this article to explicit our disagreement about utilizing Fisher’s <span class="math inline">\(\alpha\)</span> as a diversity metric.</p>
+</div></section><section id="appendix" class="level1 appendix" data-number="7"><h2 class="anchored quarto-appendix-heading"><span class="header-section-number">7</span> Appendix</h2><div class="quarto-appendix-contents">
 
 
 
 
 
-</div></section><section id="sec-appendix1" class="level2 appendix" data-number="6.1"><h2 class="anchored quarto-appendix-heading"><span class="header-section-number">6.1</span> Estimating <span class="math inline">\(\alpha\)</span> with R</h2><div class="quarto-appendix-contents">
+</div></section><section id="sec-appendix1" class="level2 appendix" data-number="7.1"><h2 class="anchored quarto-appendix-heading"><span class="header-section-number">7.1</span> Estimating <span class="math inline">\(\alpha\)</span> with R</h2><div class="quarto-appendix-contents">
+
 
 
 
@@ -439,60 +442,107 @@ Fisher alpha:   35.05477 </code></pre>
 </div>
 <p></p>
 <p>In the case of BCI, the result is the same: the likelihood calculation gives predominant weight to the most abundant species.</p>
-</div></section><section id="sec-appendix2" class="level2 appendix page-columns page-full" data-number="6.2"><h2 class="anchored quarto-appendix-heading"><span class="header-section-number">6.2</span> Estimating <span class="math inline">\(\theta\)</span> by the abundant species distribution</h2><div class="quarto-appendix-contents page-columns page-full">
+</div></section><section id="goodness-of-fit" class="level3 appendix page-columns page-full"><h2 class="anchored quarto-appendix-heading">Goodness of fit</h2><div class="quarto-appendix-contents page-columns page-full">
+
+<p>The theoretical rank of a species <span class="math inline">\(r_s\)</span> can be calculated from its abundance <span class="math inline">\(n_s\)</span> <span class="citation" data-cites="May1975">(<a href="#ref-May1975" role="doc-biblioref">May 1975</a>)</span> with the following function <code>lseries_RAC</code>:</p>
+<p><span class="math display">\[r_s = \alpha \int_{n_s \ln(1 + \alpha / n)}^\infty{\frac{e^{-t}}{t} dt}\]</span></p>
+<p>It is a real value, not an integer.</p>
+<p></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' Theoretical rank of abundances</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param abd a vector of abundances</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param alpha Fisher's alpha of the distribution</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#' @returns a vector of ranks</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>lseries_RAC <span class="ot">&lt;-</span> <span class="cf">function</span>(abd, alpha) {</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">sum</span>(abd)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  rank <span class="ot">&lt;-</span> <span class="fu">vapply</span>(</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate the rank of each species</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    abd, </span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">FUN =</span> <span class="cf">function</span>(n_s) {</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Calculate the integral</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>      f <span class="ot">&lt;-</span> stats<span class="sc">::</span><span class="fu">integrate</span>(</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">function</span>(t) {<span class="fu">exp</span>(<span class="sc">-</span>t) <span class="sc">/</span> t}, </span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">lower =</span> n_s <span class="sc">*</span> <span class="fu">log</span>(<span class="dv">1</span> <span class="sc">+</span> alpha <span class="sc">/</span> n), </span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">upper =</span> <span class="cn">Inf</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Multiply it by alpha</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>      alpha <span class="sc">*</span> f[[<span class="st">"value"</span>]]</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    }, </span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">FUN.VALUE =</span> <span class="dv">0</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Return the RAC as a tibble</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">tibble</span>(rank, <span class="at">abundance =</span> abd) <span class="sc">|&gt;</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">arrange</span>(rank)</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p></p>
+<p>The best-fit value of <span class="math inline">\(\alpha\)</span> can be found by minimizing the sum of the absolute differences between theoretical and observed ranks.</p>
+<p></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' Fit alpha by minimizing the departure of species </span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#' ranks from their theoretical value in a log-series</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param abd a vector of abundances</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#' @returns the best-fit value of of Fisher's alpha</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>fit_alpha <span class="ot">&lt;-</span> <span class="cf">function</span>(abd) {</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  abd_decr <span class="ot">&lt;-</span> <span class="fu">sort</span>(abd[abd <span class="sc">&gt;</span> <span class="dv">0</span>], <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  optimized <span class="ot">&lt;-</span> stats<span class="sc">::</span><span class="fu">optim</span>(</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">par =</span> vegan<span class="sc">::</span><span class="fu">fisher.alpha</span>(abd),</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">fn =</span> <span class="cf">function</span>(alpha) {</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sum</span>(<span class="fu">abs</span>(<span class="fu">seq_along</span>(abd_decr) </span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>        <span class="sc">-</span> <span class="fu">lseries_RAC</span>(abd_decr, alpha)<span class="sc">$</span>rank))</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    }, </span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"L-BFGS-B"</span>,</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">lower =</span> <span class="dv">0</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  optimized<span class="sc">$</span>par</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p></p>
+<p>Applied to BCI, the estimate of <span class="math inline">\(\alpha\)</span> is 42.</p>
+<p></p>
+<p></p>
+<div id="fig-bci_alpha_gof" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-bci_alpha_gof-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<p></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/bci_alpha_gof-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-bci_alpha_gof-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Rank-Abundance Curve (RAC) of BCI (red points) and of the best-fit log-series (black line).
+</figcaption>
+</figure>
+</div>
+</div></section><section id="sec-appendix2" class="level2 appendix page-columns page-full" data-number="7.2"><h2 class="anchored quarto-appendix-heading"><span class="header-section-number">7.2</span> Estimating <span class="math inline">\(\theta\)</span> by the abundant species distribution</h2><div class="quarto-appendix-contents page-columns page-full">
 
 <p><span class="citation" data-cites="Hubbell2001">Hubbell (<a href="#ref-Hubbell2001" role="doc-biblioref">2001, 293</a>)</span> proposes estimating <span class="math inline">\(\theta\)</span> by adjusting the rank-abundance curve to the most frequent species in the community, arguing that these species are also the most abundant in the metacommunity.</p>
 <p></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Theoretical rank of abundances</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>lseries_RAC <span class="ot">&lt;-</span> <span class="cf">function</span>(abd, alpha) {</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  rank <span class="ot">&lt;-</span> <span class="fu">vapply</span>(</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    abd, </span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">function</span>(x) {</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>      n <span class="ot">&lt;-</span> x <span class="sc">*</span> <span class="fu">log</span>(<span class="dv">1</span> <span class="sc">+</span> alpha <span class="sc">/</span> <span class="fu">sum</span>(abd))</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>      f <span class="ot">&lt;-</span> stats<span class="sc">::</span><span class="fu">integrate</span>(</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">function</span>(t) {<span class="fu">exp</span>(<span class="sc">-</span>t) <span class="sc">/</span> t}, </span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">lower =</span> n, </span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">upper =</span> <span class="cn">Inf</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>      fv <span class="ot">&lt;-</span> f[[<span class="st">"value"</span>]]</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(alpha <span class="sc">*</span> fv)</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    }, </span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">FUN.VALUE =</span> <span class="dv">0</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(rank, <span class="at">abundance =</span> abd) <span class="sc">|&gt;</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(rank)</span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit alpha by minimizing the departure of species </span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co"># ranks from their theoretical value in a log-series</span></span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>fit_alpha <span class="ot">&lt;-</span> <span class="cf">function</span>(abd) {</span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>  abd_decr <span class="ot">&lt;-</span> <span class="fu">sort</span>(abd[abd <span class="sc">&gt;</span> <span class="dv">0</span>], <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>  optimized <span class="ot">&lt;-</span> <span class="fu">optim</span>(</span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">par =</span> vegan<span class="sc">::</span><span class="fu">fisher.alpha</span>(abd),</span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">fn =</span> <span class="cf">function</span>(alpha) {</span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sum</span>(<span class="fu">abs</span>(<span class="fu">seq_along</span>(abd_decr) </span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>        <span class="sc">-</span> <span class="fu">lseries_RAC</span>(abd_decr, alpha)<span class="sc">$</span>rank))</span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    }, </span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"L-BFGS-B"</span>,</span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">lower =</span> <span class="dv">0</span></span>
-<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>  optimized<span class="sc">$</span>par</span>
-<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>BCI_50ha <span class="sc">%&gt;%</span> </span>
-<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sort</span>(<span class="at">decreasing =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">subset</span>(. <span class="sc">&gt;</span> <span class="fu">median</span>(.)) <span class="ot">-&gt;</span></span>
-<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>  BCI_abundant</span>
-<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>BCI_theta <span class="ot">&lt;-</span> <span class="fu">fit_alpha</span>(BCI_abundant)</span>
-<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"divent"</span>)</span>
-<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>BCI_abundant <span class="sc">%&gt;%</span> </span>
-<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_abundances</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>() <span class="sc">+</span></span>
-<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
-<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> <span class="fu">lseries_RAC</span>(BCI_50ha, <span class="at">alpha =</span> BCI_theta),</span>
-<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> rank, <span class="at">y =</span> abundance)    </span>
-<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>  ) <span class="ot">-&gt;</span></span>
-<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>  fig_hubbell_alpha</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>BCI_50ha <span class="sc">%&gt;%</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sort</span>(<span class="at">decreasing =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">subset</span>(. <span class="sc">&gt;</span> <span class="fu">median</span>(.)) <span class="ot">-&gt;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  BCI_abundant</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>BCI_theta <span class="ot">&lt;-</span> <span class="fu">fit_alpha</span>(BCI_abundant)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"divent"</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>BCI_abundant <span class="sc">%&gt;%</span> </span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_abundances</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>() <span class="sc">+</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> <span class="fu">lseries_RAC</span>(BCI_50ha, <span class="at">alpha =</span> BCI_theta),</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> rank, <span class="at">y =</span> abundance)    </span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="ot">-&gt;</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  fig_hubbell_alpha</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p></p>
 <div id="fig-hubbell_alpha" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
@@ -511,106 +561,106 @@ Fisher alpha:   35.05477 </code></pre>
 <p></p>
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-hubbell_alpha-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6: Estimation of <span class="math inline">\(\theta\)</span> at BCI based on the best fit of <span class="math inline">\(\alpha\)</span>, assuming the half most abundant species are distributed as a log-series. The rank-abundance curve of the data (red points) and of the inferred log-series (black line) are shown.
+Figure&nbsp;7: Estimation of <span class="math inline">\(\theta\)</span> at BCI based on the best fit of <span class="math inline">\(\alpha\)</span>, assuming the half most abundant species are distributed as a log-series. The rank-abundance curve of the data (red points) and of the inferred log-series (black line) are shown.
 </figcaption>
 </figure>
 </div>
-<p>The estimate using Hubbell’s method is 45. The good fit of this estimation is shown on <a href="#fig-hubbell_alpha" class="quarto-xref">Figure&nbsp;6</a>.</p>
-</div></section><section id="sec-appendix3" class="level2 appendix page-columns page-full" data-number="6.3"><h2 class="anchored quarto-appendix-heading"><span class="header-section-number">6.3</span> Full simulation</h2><div class="quarto-appendix-contents page-columns page-full">
+<p>The estimate using Hubbell’s method is 45. The good fit of this estimation is shown on <a href="#fig-hubbell_alpha" class="quarto-xref">Figure&nbsp;7</a>.</p>
+</div></section><section id="sec-appendix3" class="level2 appendix page-columns page-full" data-number="7.3"><h2 class="anchored quarto-appendix-heading"><span class="header-section-number">7.3</span> Full simulation</h2><div class="quarto-appendix-contents page-columns page-full">
 
 <p>The objective is to close the loop: using the parameters obtained from the BCI data, simulate a metacommunity and then a community of the same size as BCI. To validate the approach, the simulated distribution should be similar to the actual one.</p>
-<p>Estimation of BCI parameters <span class="math inline">\(\theta\)</span> and <span class="math inline">\(m\)</span> following <span class="citation" data-cites="Etienne2005">Etienne (<a href="#ref-Etienne2005" role="doc-biblioref">2005</a>)</span> with the untb package.</p>
+<p>BCI parameters <span class="math inline">\(\theta\)</span> and <span class="math inline">\(m\)</span> are estimated following <span class="citation" data-cites="Etienne2005">Etienne (<a href="#ref-Etienne2005" role="doc-biblioref">2005</a>)</span> with the untb package.</p>
 <p></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"untb"</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">file.exists</span>(<span class="st">"data/BCI_logkda.RData"</span>)) {</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Use the saved result if available to save</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># computation resources</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">load</span>(<span class="st">"data/BCI_logkda.RData"</span>)</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  BCI_50ha <span class="sc">%&gt;%</span> </span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># name conflict with dplyr::count()</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  untb<span class="sc">::</span><span class="fu">count</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># requires pari/gp installed and in the search paths,</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># or use gp_binary argument</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">logkda</span>() <span class="ot">-&gt;</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  BCI_logkda</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Save the result</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">save</span>(BCI_logkda, <span class="at">file =</span> <span class="st">"data/BCI_logkda.RData"</span>)</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>BCI_50ha <span class="sc">%&gt;%</span> </span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># name conflict with dplyr::count()</span></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  untb<span class="sc">::</span><span class="fu">count</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Estimate theta and m</span></span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">optimal.params</span>(<span class="at">log.kda =</span> BCI_logkda) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>() <span class="ot">-&gt;</span></span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>  BCI_params</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"untb"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">file.exists</span>(<span class="st">"data/BCI_logkda.RData"</span>)) {</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Use the saved result if available to save</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># computation resources</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">load</span>(<span class="st">"data/BCI_logkda.RData"</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  BCI_50ha <span class="sc">%&gt;%</span> </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># name conflict with dplyr::count()</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  untb<span class="sc">::</span><span class="fu">count</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># requires pari/gp installed and in the search paths,</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># or use gp_binary argument</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">logkda</span>() <span class="ot">-&gt;</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  BCI_logkda</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Save the result</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">save</span>(BCI_logkda, <span class="at">file =</span> <span class="st">"data/BCI_logkda.RData"</span>)</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>BCI_50ha <span class="sc">%&gt;%</span> </span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># name conflict with dplyr::count()</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  untb<span class="sc">::</span><span class="fu">count</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Estimate theta and m</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">optimal.params</span>(<span class="at">log.kda =</span> BCI_logkda) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>() <span class="ot">-&gt;</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>  BCI_params</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     theta          m 
 47.6001882  0.0926531 </code></pre>
 </div>
 </div>
 <p></p>
-<p>Simulation of a metacommunity: <span class="math inline">\(J_m = 10^6\)</span> (arbitrary), <span class="math inline">\(\theta\)</span> derived from BCI data.</p>
+<p>A metacommunity with <span class="math inline">\(J_m = 10^6\)</span> (arbitrary) and <span class="math inline">\(\theta\)</span> derived from BCI data is simulated.</p>
 <p></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>J_m <span class="ot">&lt;-</span> <span class="fl">1E6</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">&lt;-</span> BCI_params[<span class="dv">1</span>]</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"divent"</span>)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>the_metacommunity <span class="ot">&lt;-</span> <span class="fu">rcommunity</span>(</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>, </span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> J_m , </span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">distribution =</span> <span class="st">"lseries"</span>, </span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">fisher_alpha =</span> theta</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>J_m <span class="ot">&lt;-</span> <span class="fl">1E6</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">&lt;-</span> BCI_params[<span class="dv">1</span>]</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"divent"</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>the_metacommunity <span class="ot">&lt;-</span> <span class="fu">rcommunity</span>(</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>, </span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> J_m , </span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">distribution =</span> <span class="st">"lseries"</span>, </span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">fisher_alpha =</span> theta</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p></p>
-<p>Distribution of the local community: <span class="math inline">\(J\)</span> from BCI and <span class="math inline">\(m\)</span> estimated previously, compared to an arbitrary value of <span class="math inline">\(m\)</span>.</p>
+<p>The distribution of the local community is derived. <span class="math inline">\(J\)</span> is that of BCI and <span class="math inline">\(m\)</span> was estimated previously, compared to an arbitrary value of <span class="math inline">\(m\)</span>.</p>
 <p></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>J <span class="ot">&lt;-</span> <span class="fu">sum</span>(BCI)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> BCI_params[<span class="dv">2</span>]</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"sads"</span>)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of species in the local community</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">Svolkov</span>(theta, m, J) <span class="sc">%&gt;%</span> </span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Must be integers for the simulation</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Draw the species abundances</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rvolkov</span>(theta, m, J) <span class="sc">%&gt;%</span> </span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Make it an abundances object top plot it</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_abundances</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Whittaker plot</span></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>() <span class="ot">-&gt;</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  BCI_sim_neutral</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co"># BCI real distribution</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>BCI_50ha <span class="sc">%&gt;%</span> </span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sort</span>(<span class="at">decreasing =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rank =</span> <span class="fu">seq_len</span>(<span class="fu">n</span>())) <span class="ot">-&gt;</span> </span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  BCI_tbl_50ha</span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare with m = 1%</span></span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>m_arbitrary <span class="ot">&lt;-</span> .<span class="dv">01</span></span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a><span class="fu">Svolkov</span>(theta, m_arbitrary, J) <span class="sc">%&gt;%</span> </span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Must be integers for the simulation</span></span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Draw the species abundances</span></span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rvolkov</span>(theta, m, J) <span class="sc">%&gt;%</span> </span>
-<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sort</span>(<span class="at">decreasing =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rank =</span> <span class="fu">seq_len</span>(<span class="fu">n</span>())) <span class="ot">-&gt;</span> </span>
-<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>  BCI_tbl_m001</span>
-<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot altogether</span></span>
-<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>BCI_sim_neutral <span class="sc">+</span></span>
-<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
-<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> BCI_tbl_50ha,</span>
-<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> rank, <span class="at">y =</span> value)</span>
-<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
-<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> BCI_tbl_m001,</span>
-<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> rank, <span class="at">y =</span> value),</span>
-<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"blue"</span></span>
-<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>  ) <span class="ot">-&gt;</span></span>
-<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>  fig_bci_sim</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>J <span class="ot">&lt;-</span> <span class="fu">sum</span>(BCI)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> BCI_params[<span class="dv">2</span>]</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"sads"</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of species in the local community</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">Svolkov</span>(theta, m, J) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Must be integers for the simulation</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Draw the species abundances</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rvolkov</span>(theta, m, J) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Make it an abundances object top plot it</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_abundances</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Whittaker plot</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>() <span class="ot">-&gt;</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>  BCI_sim_neutral</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="co"># BCI real distribution</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>BCI_50ha <span class="sc">%&gt;%</span> </span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sort</span>(<span class="at">decreasing =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rank =</span> <span class="fu">seq_len</span>(<span class="fu">n</span>())) <span class="ot">-&gt;</span> </span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>  BCI_tbl_50ha</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare with m = 1%</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>m_arbitrary <span class="ot">&lt;-</span> .<span class="dv">01</span></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="fu">Svolkov</span>(theta, m_arbitrary, J) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Must be integers for the simulation</span></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Draw the species abundances</span></span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rvolkov</span>(theta, m, J) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sort</span>(<span class="at">decreasing =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rank =</span> <span class="fu">seq_len</span>(<span class="fu">n</span>())) <span class="ot">-&gt;</span> </span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>  BCI_tbl_m001</span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot altogether</span></span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a>BCI_sim_neutral <span class="sc">+</span></span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> BCI_tbl_50ha,</span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> rank, <span class="at">y =</span> value)</span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> BCI_tbl_m001,</span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> rank, <span class="at">y =</span> value),</span>
+<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"blue"</span></span>
+<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a>  ) <span class="ot">-&gt;</span></span>
+<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a>  fig_bci_sim</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p></p>
 <div id="fig-bci_sim" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
@@ -629,77 +679,78 @@ Figure&nbsp;6: Estimation of <span class="math inline">\(\theta\)</span> at BCI 
 <p></p>
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-bci_sim-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7: RAC of BCI compared to two simulated distributions. The simulated zero-sum multinomial distribution (red dots) simulated with the <span class="math inline">\(\theta\)</span> and <span class="math inline">\(m\)</span> parameters derived from the data corresponds fairly well to the actual distribution of BCI (black line). The blue dots are a distribution simulated with BCI’s <span class="math inline">\(\theta\)</span> but a migration parameter reduced to 0.01 to illustrate that the same values of <span class="math inline">\(\theta\)</span> correspond to very different communities. Both <span class="math inline">\(\theta\)</span> and <span class="math inline">\(m\)</span> must be considered to describe the diversity.
+Figure&nbsp;8: RAC of BCI compared to two simulated distributions. The simulated zero-sum multinomial distribution (red dots) simulated with the <span class="math inline">\(\theta\)</span> and <span class="math inline">\(m\)</span> parameters derived from the data corresponds fairly well to the actual distribution of BCI (black line). The blue dots are a distribution simulated with BCI’s <span class="math inline">\(\theta\)</span> but a migration parameter reduced to 0.01 to illustrate that the same values of <span class="math inline">\(\theta\)</span> correspond to very different communities. Both <span class="math inline">\(\theta\)</span> and <span class="math inline">\(m\)</span> must be considered to describe the diversity.
 </figcaption>
 </figure>
 </div>
-<p><a href="#fig-bci_sim" class="quarto-xref">Figure&nbsp;7</a> shows that the simulated community is very similar to the real one but that modifying the migration parameter results in a very different distribution: <span class="math inline">\(\theta\)</span> alone does not give much information on the local community.</p>
-</div></section><section id="sec-appendix4" class="level2 appendix page-columns page-full" data-number="6.4"><h2 class="anchored quarto-appendix-heading"><span class="header-section-number">6.4</span> Increasing regional sampling</h2><div class="quarto-appendix-contents page-columns page-full">
+<p><a href="#fig-bci_sim" class="quarto-xref">Figure&nbsp;8</a> shows that the simulated community is very similar to the real one but that modifying the migration parameter results in a very different distribution: <span class="math inline">\(\theta\)</span> alone does not give much information on the local community.</p>
+</div></section><section id="sec-appendix4" class="level2 appendix page-columns page-full" data-number="7.4"><h2 class="anchored quarto-appendix-heading"><span class="header-section-number">7.4</span> Increasing regional sampling</h2><div class="quarto-appendix-contents page-columns page-full">
 
-<p>An increasing number of GuyaDiv plots (one per site) is randomly selected to sample the metacommunity. The estimated <span class="math inline">\(\alpha\)</span> is plotted against the number of plots. It increases linearly with the logarithm of the number of plots that is a proxy of the size of the sampled metacommunity.</p>
+<p>An increasing number of GuyaDiv plots (one per site) is randomly selected to sample the metacommunity. The estimated <span class="math inline">\(\alpha\)</span> is plotted against the number of plots (<a href="#fig-guyadiv_alpha" class="quarto-xref">Figure&nbsp;9</a>). It increases with the logarithm of the number of plots that is a proxy of the size of the sampled metacommunity.</p>
 <p></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to randomly select a plot in each of a</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># chosen number of sites (sample_size), </span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># merge the plots and return alpha.</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>guyadiv_sub_alpha <span class="ot">&lt;-</span> <span class="cf">function</span>(sample_size) {</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Select one plot per location...</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  guyadiv_plots <span class="sc">%&gt;%</span> </span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set a random value to each plot</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">random =</span> <span class="fu">runif</span>(<span class="fu">n</span>())) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    {. <span class="ot">-&gt;&gt;</span> plots_randomized} <span class="sc">%&gt;%</span> </span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(Location) <span class="sc">%&gt;%</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Select the plot with the max random value </span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># in each location</span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">random_max =</span> <span class="fu">max</span>(random)) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="at">random =</span> random_max) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Eliminate non-selected plots</span></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">inner_join</span>(plots_randomized) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Keep the plot number and the random number</span></span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(Plot, random) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Get the abundances</span></span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">inner_join</span>(guyadiv_abd) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Sort by random number</span></span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(random) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Keep the first rows</span></span>
-<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">head</span>(sample_size) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Delete the random numbers</span></span>
-<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>random) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Make the table an abundance object (divent)</span></span>
-<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="at">site =</span> Plot) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as_abundances</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Give all plots equal weight</span></span>
-<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">weight =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Merge the inventories</span></span>
-<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">metacommunity</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Extract a numeric vector</span></span>
-<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.numeric</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Compute alpha</span></span>
-<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fisher.alpha</span>()</span>
-<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Count the number of sites</span></span>
-<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>guyadiv_plots <span class="sc">%&gt;%</span> </span>
-<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Location) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nrow</span>() <span class="ot">-&gt;</span></span>
-<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a>  sites_n</span>
-<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose sizes between 3 and the number of sites</span></span>
-<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a>sizes <span class="ot">&lt;-</span> <span class="fu">seq_len</span>(sites_n)[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)]</span>
-<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate alpha of each sample</span></span>
-<span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a>alphas <span class="ot">&lt;-</span> <span class="fu">replicate</span>(</span>
-<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a>  simulations_n,</span>
-<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a>  <span class="at">expr =</span> <span class="fu">sapply</span>(sizes, <span class="at">FUN =</span> guyadiv_sub_alpha)</span>
-<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">NbPlots =</span> sizes) <span class="sc">%&gt;%</span></span>
-<span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(alphas) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-55"><a href="#cb14-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">!</span>NbPlots) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-56"><a href="#cb14-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> NbPlots, <span class="at">y =</span> value)) <span class="sc">+</span></span>
-<span id="cb14-57"><a href="#cb14-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb14-58"><a href="#cb14-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>() <span class="sc">+</span></span>
-<span id="cb14-59"><a href="#cb14-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Number of Plots"</span>, <span class="at">y =</span> <span class="st">"Fisher's alpha"</span>) <span class="sc">+</span></span>
-<span id="cb14-60"><a href="#cb14-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> y<span class="sc">~</span><span class="fu">poly</span>(x,<span class="dv">2</span>)) <span class="ot">-&gt;</span></span>
-<span id="cb14-61"><a href="#cb14-61" aria-hidden="true" tabindex="-1"></a>  fig_guyadiv_alpha</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to randomly select a plot in each of a</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># chosen number of sites (sample_size), </span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># merge the plots and return alpha.</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>guyadiv_sub_alpha <span class="ot">&lt;-</span> <span class="cf">function</span>(sample_size) {</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Select one plot per location...</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  guyadiv_plots <span class="sc">%&gt;%</span> </span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set a random value to each plot</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">random =</span> <span class="fu">runif</span>(<span class="fu">n</span>())) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Save the tibble</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    {. <span class="ot">-&gt;&gt;</span> plots_randomized} <span class="sc">%&gt;%</span> </span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Select the plot with the max random value </span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># in each location</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(Location) <span class="sc">%&gt;%</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">random_max =</span> <span class="fu">max</span>(random)) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="at">random =</span> random_max) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Eliminate non-selected plots</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">inner_join</span>(plots_randomized) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Keep the plot number and the random number</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(Plot, random) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Get the abundances</span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">inner_join</span>(guyadiv_abd) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Sort by random number</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(random) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Keep the first rows</span></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">head</span>(sample_size) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Delete the random numbers</span></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>random) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Make the table an abundance object (divent)</span></span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="at">site =</span> Plot) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as_abundances</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Give all plots equal weight</span></span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">weight =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Merge the inventories</span></span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">metacommunity</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Extract a numeric vector</span></span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.numeric</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Compute alpha</span></span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fisher.alpha</span>()</span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Count the number of sites</span></span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a>guyadiv_plots <span class="sc">%&gt;%</span> </span>
+<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Location) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nrow</span>() <span class="ot">-&gt;</span></span>
+<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>  sites_n</span>
+<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose sizes between 3 and the number of sites</span></span>
+<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>sizes <span class="ot">&lt;-</span> <span class="fu">seq_len</span>(sites_n)[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)]</span>
+<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate alpha of each sample</span></span>
+<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>alphas <span class="ot">&lt;-</span> <span class="fu">replicate</span>(</span>
+<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a>  simulations_n,</span>
+<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a>  <span class="at">expr =</span> <span class="fu">sapply</span>(sizes, <span class="at">FUN =</span> guyadiv_sub_alpha)</span>
+<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">NbPlots =</span> sizes) <span class="sc">%&gt;%</span></span>
+<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(alphas) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">!</span>NbPlots) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> NbPlots, <span class="at">y =</span> value)) <span class="sc">+</span></span>
+<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>() <span class="sc">+</span></span>
+<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Number of Plots"</span>, <span class="at">y =</span> <span class="st">"Fisher's alpha"</span>) <span class="sc">+</span></span>
+<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="dv">2</span>)) <span class="ot">-&gt;</span></span>
+<span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a>  fig_guyadiv_alpha</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p></p>
 <div id="fig-guyadiv_alpha" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
@@ -718,7 +769,7 @@ Figure&nbsp;7: RAC of BCI compared to two simulated distributions. The simulated
 <p></p>
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-guyadiv_alpha-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8: Estimation of the metacommunity’s <span class="math inline">\(\alpha\)</span> as a function of the number of GuyaDiv plots used to sample it. The line is the fit of the quadratic model relating <span class="math inline">\(\alpha\)</span> to the logarithm of the number of plots.
+Figure&nbsp;9: Estimation of the metacommunity’s <span class="math inline">\(\alpha\)</span> as a function of the number of GuyaDiv plots used to sample it. The line is the fit of the quadratic model relating <span class="math inline">\(\alpha\)</span> to the logarithm of the number of plots.
 </figcaption>
 </figure>
 </div>
@@ -788,6 +839,9 @@ Marcon, Eric, Ariane Mirabel, Jean-François Molino, and Daniel Sabatier. 2024. 
 </div>
 <div id="ref-Marcon2014a" class="csl-entry" role="listitem">
 Marcon, Eric, Ivan Scotti, Bruno Hérault, Vivien Rossi, and Gabriel Lang. 2014. <span>‘Generalization of the Partitioning of Shannon Diversity’</span>. <em>Plos One</em> 9 (3): e90289. <a href="https://doi.org/10.1371/journal.pone.0090289">https://doi.org/10.1371/journal.pone.0090289</a>.
+</div>
+<div id="ref-May1975" class="csl-entry" role="listitem">
+May, Robert M. 1975. <span>‘Patterns of Species Abundance and Diversity’</span>. In <em>Ecology and Evolution of Communities</em>, edited by M L Cody and J M Diamond. Harvard University Press.
 </div>
 <div id="ref-McGill2003" class="csl-entry" role="listitem">
 McGill, Brian J. 2003. <span>‘A Test of the Unified Neutral Theory of Biodiversity’</span>. <em>Nature</em> 422 (6934): 881–85. <a href="https://doi.org/10.1038/nature01583">https://doi.org/10.1038/nature01583</a>.
