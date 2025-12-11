@@ -22,7 +22,7 @@ author:
     email: eric.marcon@agroparistech.fr
     url: https://ericmarcon.github.io/
     attributes:
-      corresponding: AAA
+      corresponding: true
 # Abstract and Keywords
 abstract: |
   Fisher's alpha should not be used to assess the diversity of tropical forest tree species at the local and regional scales.
@@ -33,7 +33,7 @@ keywords: [Fisher's alpha, biodiversity, tropical forests]
 # Bibliography
 reference-section-title: References
 bibliography: references.bib
-biblio-style: chicago
+csl: ecology-letters
 # Language
 lang: en-GB
 # Code options 
