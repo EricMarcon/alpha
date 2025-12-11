@@ -165,7 +165,7 @@ Then, the number of species with non-zero abundance $S(n)$ is linked to the size
 It is called log-series because the number of species is derived as the sum of the number of species any number of individuals: this infinite sum appears to be the Taylor series of the logarithm function.
 
 $$
-  S(n) = \alpha \ln \left( 1 + \frac{n}{\alpha} \right).
+  S(n) = \alpha \ln \left( 1 + \frac{n}{\alpha} \right)
 $$ {#eq-fisheralpha}
 
 For $n \gg \alpha$, @eq-fisheralpha can be simplified to $S(n) \approx -\alpha ln(\alpha) + \alpha ln(n)$, i.e. the number of observed species is linearly related to the logarithm of the sample size.
@@ -544,7 +544,7 @@ The red curve is the SAC of the actual metacommunity of French Guiana, whose Fis
 
 The metacommunity GuyaDiv is a sample of largely exceeds the borders of French Guiana.
 Its estimated $\alpha$ equals `r round(gf_alpha_guyadiv)`, implying more than 4000 tree species in the territory based on the number of trees: 627 per hectare on average multiplied by 8 million hectares.
-Its SAC is shown in @fig-arrhenius_logx .
+Its SAC is shown in @fig-arrhenius_logx.
 The actual number of species in French Guiana was obtained by the estimation of the power model [@Marcon2024]: it is close to 2200.
 The correct estimate of $\alpha$ is thus only `r round(gf_alpha_arrhenius)`.
 
