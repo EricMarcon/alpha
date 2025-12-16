@@ -10,7 +10,13 @@ format:
   stylisharticle-html:
     # Color example, see "Text color"
     css: colors.css
-# Authors (https://quarto.org/docs/journals/authors.html#author-schema)
+  elsevier-pdf:
+    journal:
+      name: Ecological Modelling
+      formatting: preprint
+      model: 1p
+      layout: onecolumn
+      cite-style: authoryear
 author:
   - name: Eric Marcon
     affiliations:
