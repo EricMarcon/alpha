@@ -581,4 +581,4 @@ At the regional scale, with much more efforts, the number of species can be deri
 # Acknowledgement {.appendix}
 
 The author thanks Jérôme Chave for discussions that motivated writing this article to explicit our disagreement about utilizing Fisher's $\alpha$ as a diversity metric.
-
+This work benefited from an ‘Investissement d’Avenir’ grant managed by the Agence Nationale de la Recherche (LABEX CEBA, ref. ANR-10-LBX-25).
