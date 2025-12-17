@@ -29,6 +29,7 @@
 *.nav
 *.snm
 *.vrb
+*.spl
 
 # Template specific
 packages.bib
@@ -44,6 +45,8 @@ bin/*
 index.pdf
 index.tex
 index.html
+appendix.pdf
+appendix.html
 
 /.quarto/
 **/*.quarto_ipynb
