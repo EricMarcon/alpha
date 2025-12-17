@@ -40,7 +40,7 @@ keywords: [Fisher's alpha, biodiversity, tropical forests]
 # Bibliography
 reference-section-title: References
 bibliography: references.bib
-csl: elsarticle
+csl: elsevier-harvard
 # Language
 lang: en-GB
 # Code options 
