@@ -1,0 +1,537 @@
+---
+title: "Appendix - Fisher's alpha is generally not a valid metric of biodiversity in tropical forests"
+# Output formats
+format:
+  stylisharticle-html:
+    # Color example, see "Text color"
+    css: colors.css
+  elsevier-pdf:
+    journal:
+      name: Ecological Modelling
+      formatting: preprint
+      model: 1p
+      layout: onecolumn
+      cite-style: authoryear
+author:
+  - name: Eric Marcon
+    affiliations:
+      - name: AgroParisTech
+        department: UMR Amap, Université de Montpellier, Cirad, CNRS, INRAE, IRD
+        city: Montpellier
+        country: France
+    orcid: 0000-0002-5249-321X
+    email: eric.marcon@agroparistech.fr
+    url: https://ericmarcon.github.io/
+    attributes:
+      corresponding: true
+# Abstract and Keywords
+abstract: |
+  Fisher's alpha should not be used to assess the diversity of tropical forest tree species at the local and regional scales.
+  At the local scale, communities are not distributed in log-series: alpha is the parameter of a model that does not fit the data so it can neither be estimated nor interpreted unambiguously.
+  At the regional scale, alpha correctly describes the distribution of a metacommunity whose extent is unknown when it is not the whole forest area.
+  Species richness is always a better diversity metric than alpha, containing basically the same information without relying on uncertain assumptions.
+keywords: [Fisher's alpha, biodiversity, tropical forests]
+# Bibliography
+reference-section-title: References
+bibliography: references.bib
+csl: elsarticle
+# Language
+lang: en-GB
+# Code options 
+# https://quarto.org/docs/computations/execution-options.html#output-options
+execute:
+  # show code chunk output
+  include: true
+  # Show the code in the output
+  echo: false
+  # Show messages
+  message: false
+  # Show warnings
+  warning: false
+  # Cache code results
+  cache: true
+# Template specific
+journalinfo: "Preprint"
+archive: "DOI: xxx/xx"
+keywordlabel: Keywords
+corrauthorlabel: Corresponding Author
+crossref:
+  custom:
+    - kind: float
+      key: suppfig
+      latex-env: suppfig
+      reference-prefix: Figure S
+      space-before-numbering: false
+      latex-list-of-description: Supplementary Figure
+---
+
+```{r}
+#| label: DoNotModify
+### Utilities for R. 
+# Do not modify unless you don't use R: then, delete this chunk.
+# Installation of R packages if necessary
+install_packages <- function(packages) {
+  invisible(
+    sapply(
+      packages, 
+      FUN = function(package) {
+        if (!package %in% installed.packages()[, 1]) {
+          install.packages(
+            package, 
+            repos = "https://cran.rstudio.com/", 
+            quiet = TRUE
+          )
+        }
+      }
+    )
+  )
+}
+
+# Basic packages
+install_packages(c("knitR", "formatR", "kableExtra"))
+
+# Chunk font size hook: allows size='small' 
+# or any valid Latex font size in chunk options
+def.chunk.hook <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(
+  chunk = function(x, options) {
+    x <- def.chunk.hook(x, options)
+    ifelse(
+      options$size == "normalsize", 
+      yes = x,
+      no = paste0("\n \\", options$size, "\n\n", x, "\n\n \\normalsize")
+    )
+  }
+)
+```
+
+```{r}
+#| label: Options
+### Customized R options for this document
+# Delete this chunk if you don't use R
+
+# Add necessary packages here
+packages <- c("tidyverse", "divent", "vegan", "untb", "sads")
+# Install them
+install_packages(packages)
+
+# knitr options (https://yihui.org/knitr/options/)
+knitr::opts_chunk$set(
+  # Code chunk automatic format if tidy is TRUE
+  tidy = FALSE, 
+  # Tidy code options: remove blank lines and cut lines after 50 characters
+  tidy.opts = list(blank = FALSE, width.cutoff = 50),
+  # Font size in PDF output
+  size = "scriptsize", 
+  # Select PDF figures in PDF output if PDF file exists beside PNG file
+  knitr.graphics.auto_pdf = TRUE
+)
+# Text width of R functions output
+options(width = 50)
+
+# ggplot style
+library("tidyverse")
+theme_set(theme_bw())
+theme_update(
+  panel.background = element_rect(fill = "transparent", colour = NA),
+  plot.background = element_rect(fill = "transparent", colour = NA)
+)
+knitr::opts_chunk$set(dev.args = list(bg = "transparent"))
+
+# Random seed
+set.seed(973)
+```
+
+
+# Estimating $\alpha$ with R {#sec-appendix1 .appendix}
+
+## Point estimation {.appendix}
+
+Most implementations of the calculation of $\alpha$ are limited to solving the equation
+
+$$S(n) = \alpha \ln \left( 1 + \frac{n}{\alpha} \right),$$
+
+where $S(n)$ is the number of species observed in a sample of size $n$.
+The only data required are the total number of species and the sample size.
+The fifty hectares of BCI are used in the examples below.
+
+```{r}
+library("tidyverse")
+library("vegan")
+data(BCI)
+BCI %>% 
+  colSums() ->
+  BCI_50ha
+```
+
+Functions are:
+
+-   `vegan::fisher.alpha()` that relies on `vegan::fisherfit()`. The numerical resolution uses `uniroot()`.
+
+```{r}
+#| echo: true
+library("vegan")
+fisher.alpha(BCI_50ha)
+fisherfit(BCI_50ha)
+```
+
+-   `untb::fishers.alpha()`, identical to `vegan::fisherfit()`
+
+```{r}
+#| echo: true
+library("untb")
+fishers.alpha(N = sum(BCI_50ha), S = sum(BCI_50ha > 0))
+```
+
+## Likelihood maximisation {.appendix}
+
+The alternative is to adjust the observed abundance distribution to the theoretical distribution of a log series, maximising its likelihood as a function of $\alpha$.
+
+This is done by `sads::fitls()` which uses `mle2()` to maximise the likelihood of `sads::dls()` (the probability density of the log-series).
+The default starting value is the point estimate.
+
+```{r}
+#| echo: true
+library("sads")
+fitls(BCI_50ha) %>% 
+  coef()
+```
+
+In the case of BCI, the result is the same: the likelihood calculation gives predominant weight to the most abundant species.
+
+## Goodness of fit {.appendix}
+
+The theoretical rank of a species $r_s$ can be calculated from its abundance $n_s$ [@May1975] with the following function `lseries_RAC`:
+
+$$r_s = \alpha \int_{n_s \ln(1 + \alpha / n)}^\infty{\frac{e^{-t}}{t} dt}$$
+
+It is a real value, not an integer.
+
+```{r}
+#| label: lseries_RAC
+#| echo: true
+
+#' Theoretical rank of abundances
+#'
+#' @param abd a vector of abundances
+#' @param alpha Fisher's alpha of the distribution
+#'
+#' @returns a vector of ranks
+lseries_RAC <- function(abd, alpha) {
+  n <- sum(abd)
+  rank <- vapply(
+    # Calculate the rank of each species
+    abd, 
+    FUN = function(n_s) {
+      # Calculate the integral
+      f <- stats::integrate(
+        function(t) {exp(-t) / t}, 
+        lower = n_s * log(1 + alpha / n), 
+        upper = Inf
+      )
+      # Multiply it by alpha
+      alpha * f[["value"]]
+    }, 
+    FUN.VALUE = 0
+  )
+  # Return the RAC as a tibble
+  tibble::tibble(rank, abundance = abd) |>
+    dplyr::arrange(rank)
+}
+```
+
+The best-fit value of $\alpha$ can be found by minimizing the sum of the absolute differences between theoretical and observed ranks.
+
+```{r}
+#| label: fit_alpha
+#| echo: true
+
+#' Fit alpha by minimizing the departure of species 
+#' ranks from their theoretical value in a log-series
+#' @param abd a vector of abundances
+#'
+#' @returns the best-fit value of of Fisher's alpha
+fit_alpha <- function(abd) {
+  abd_decr <- sort(abd[abd > 0], decreasing = TRUE)
+  optimized <- stats::optim(
+    par = vegan::fisher.alpha(abd),
+    fn = function(alpha) {
+      sum(abs(seq_along(abd_decr) 
+        - lseries_RAC(abd_decr, alpha)$rank))
+    }, 
+    method = "L-BFGS-B",
+    lower = 0
+  )
+  optimized$par
+}
+```
+
+Applied to BCI, the estimate of $\alpha$ is `r round(fit_alpha(BCI_50ha))`.
+
+```{r}
+#|label: bci_alpha_gof_code
+library("divent")
+BCI_50ha %>% 
+  as_abundances() %>% 
+  autoplot() +
+  geom_line(
+    data = lseries_RAC(BCI_50ha, alpha = fit_alpha(BCI_50ha)),
+    aes(x = rank, y = abundance)    
+  ) ->
+  fig_hubbell_alpha
+```
+
+::: {#suppfig-bci_alpha_gof}
+```{r}
+#| label: bci_alpha_gof
+fig_hubbell_alpha
+```
+
+Rank-Abundance Curve (RAC) of BCI (red points) and of the best-fit log-series (black line).
+:::
+
+# Estimating $\theta$ by the abundant species distribution {#sec-appendix2 .appendix}
+
+@Hubbell2001 [page 293] proposes estimating $\theta$ by adjusting the rank-abundance curve to the most frequent species in the community, arguing that these species are also the most abundant in the metacommunity.
+
+```{r}
+#| label: hubbell_alpha_code
+#| echo: true
+BCI_50ha %>% 
+  sort(decreasing = TRUE) %>% 
+  subset(. > median(.)) ->
+  BCI_abundant
+BCI_theta <- fit_alpha(BCI_abundant)
+library("divent")
+BCI_abundant %>% 
+  as_abundances() %>% 
+  autoplot() +
+  geom_line(
+    data = lseries_RAC(BCI_50ha, alpha = BCI_theta),
+    aes(x = rank, y = abundance)    
+  ) ->
+  fig_hubbell_alpha
+```
+
+::: {#suppfig-hubbell_alpha}
+```{r}
+#| label: hubbell_alpha
+fig_hubbell_alpha
+```
+
+Estimation of $\theta$ at BCI based on the best fit of $\alpha$, assuming the half most abundant species are distributed as a log-series.
+The rank-abundance curve of the data (red points) and of the inferred log-series (black line) are shown.
+:::
+
+The estimate using Hubbell's method is `r round(BCI_theta)`.
+The good fit of this estimation is shown on @suppfig-hubbell_alpha.
+
+# Full simulation {#sec-appendix3 .appendix}
+
+The objective is to close the loop: using the parameters obtained from the BCI data, simulate a metacommunity and then a community of the same size as BCI.
+To validate the approach, the simulated distribution should be similar to the actual one.
+
+BCI parameters $\theta$ and $m$ are estimated following @Etienne2005 with the untb package.
+
+```{r}
+#| label: bci_params
+#| echo: true
+library("untb")
+if (file.exists("data/BCI_logkda.RData")) {
+  # Use the saved result if available to save
+  # computation resources
+  load("data/BCI_logkda.RData")
+} else {
+  BCI_50ha %>% 
+  # name conflict with dplyr::count()
+  untb::count() %>% 
+  # requires pari/gp installed and in the search paths,
+  # or use gp_binary argument
+  logkda() ->
+  BCI_logkda
+  # Save the result
+  save(BCI_logkda, file = "data/BCI_logkda.RData")
+}
+BCI_50ha %>% 
+  # name conflict with dplyr::count()
+  untb::count() %>% 
+  # Estimate theta and m
+  optimal.params(log.kda = BCI_logkda) %>% 
+  print() ->
+  BCI_params
+```
+
+A metacommunity with $J_m = 10^6$ (arbitrary) and $\theta$ derived from BCI data is simulated.
+
+```{r}
+#| label: the_metacommunity
+#| echo: true
+J_m <- 1E6
+theta <- BCI_params[1]
+library("divent")
+the_metacommunity <- rcommunity(
+  1, 
+  size = J_m , 
+  distribution = "lseries", 
+  fisher_alpha = theta
+)
+```
+
+The distribution of the local community is derived.
+$J$ is that of BCI and $m$ was estimated previously, compared to an arbitrary value of $m$.
+
+```{r}
+#| label: bci_sim_code
+#| echo: true
+J <- sum(BCI)
+m <- BCI_params[2]
+library("sads")
+# Number of species in the local community
+Svolkov(theta, m, J) %>% 
+  # Must be integers for the simulation
+  round() %>% 
+  # Draw the species abundances
+  rvolkov(theta, m, J) %>% 
+  # Make it an abundances object top plot it
+  as_abundances() %>% 
+  # Whittaker plot
+  autoplot() ->
+  BCI_sim_neutral
+# BCI real distribution
+BCI_50ha %>% 
+  sort(decreasing = TRUE) %>% 
+  as_tibble() %>% 
+  mutate(rank = seq_len(n())) -> 
+  BCI_tbl_50ha
+# Compare with m = 1%
+m_arbitrary <- .01
+Svolkov(theta, m_arbitrary, J) %>% 
+  # Must be integers for the simulation
+  round() %>% 
+  # Draw the species abundances
+  rvolkov(theta, m, J) %>% 
+  sort(decreasing = TRUE) %>% 
+  as_tibble() %>% 
+  mutate(rank = seq_len(n())) -> 
+  BCI_tbl_m001
+# Plot altogether
+BCI_sim_neutral +
+  geom_line(
+    data = BCI_tbl_50ha,
+    aes(x = rank, y = value)
+  ) +
+  geom_point(
+    data = BCI_tbl_m001,
+    aes(x = rank, y = value),
+    color = "blue"
+  ) ->
+  fig_bci_sim
+```
+
+::: {#suppfig-bci_sim}
+```{r}
+#| label: bci_sim
+fig_bci_sim
+```
+
+RAC of BCI compared to two simulated distributions.
+The simulated zero-sum multinomial distribution (red dots) simulated with the $\theta$ and $m$ parameters derived from the data corresponds fairly well to the actual distribution of BCI (black line).
+The blue dots are a distribution simulated with BCI's $\theta$ but a migration parameter reduced to 0.01 to illustrate that the same values of $\theta$ correspond to very different communities.
+Both $\theta$ and $m$ must be considered to describe the diversity.
+:::
+
+@suppfig-bci_sim shows that the simulated community is very similar to the real one but that modifying the migration parameter results in a very different distribution: $\theta$ alone does not give much information on the local community.
+
+# Increasing regional sampling {#sec-appendix4 .appendix}
+
+An increasing number of GuyaDiv plots (one per site) is randomly selected to sample the metacommunity.
+The estimated $\alpha$ is plotted against the number of plots (@suppfig-guyadiv_alpha).
+It increases with the logarithm of the number of plots that is a proxy of the size of the sampled metacommunity.
+
+```{r}
+#| label: guyadiv_alpha_code
+#| echo: true
+# Read the data
+# Plots
+"data/plots.csv" %>% 
+  read_csv2() ->
+  guyadiv_plots
+# Abundances
+"data/abundances.csv" %>% 
+  read_csv2() ->
+  guyadiv_abd
+# Number of simulations
+simulations_n <- 20
+# Function to randomly select a plot in each of a
+# chosen number of sites (sample_size), 
+# merge the plots and return alpha.
+guyadiv_sub_alpha <- function(sample_size) {
+  # Select one plot per location...
+  guyadiv_plots %>% 
+    # Set a random value to each plot
+    mutate(random = runif(n())) %>% 
+    # Save the tibble
+    {. ->> plots_randomized} %>% 
+    # Select the plot with the max random value 
+    # in each location
+    group_by(Location) %>%
+    summarize(random_max = max(random)) %>% 
+    rename(random = random_max) %>% 
+    # Eliminate non-selected plots
+    inner_join(plots_randomized) %>% 
+    # Keep the plot number and the random number
+    dplyr::select(Plot, random) %>% 
+    # Get the abundances
+    inner_join(guyadiv_abd) %>% 
+    # Sort by random number
+    arrange(random) %>% 
+    # Keep the first rows
+    head(sample_size) %>% 
+    # Delete the random numbers
+    dplyr::select(-random) %>% 
+    # Make the table an abundance object (divent)
+    rename(site = Plot) %>% 
+    as_abundances() %>% 
+    # Give all plots equal weight
+    mutate(weight = 1) %>% 
+    # Merge the inventories
+    metacommunity() %>% 
+    # Extract a numeric vector
+    as.numeric() %>% 
+    # Compute alpha
+    fisher.alpha()
+}
+
+# Count the number of sites
+guyadiv_plots %>% 
+  group_by(Location) %>% 
+  summarize() %>% 
+  nrow() ->
+  sites_n
+# Choose sizes between 3 and the number of sites
+sizes <- seq_len(sites_n)[-(1:2)]
+# Calculate alpha of each sample
+alphas <- replicate(
+  simulations_n,
+  expr = sapply(sizes, FUN = guyadiv_sub_alpha)
+)
+tibble(NbPlots = sizes) %>%
+  bind_cols(alphas) %>% 
+  pivot_longer(cols = !NbPlots) %>% 
+  ggplot(aes(x = NbPlots, y = value)) +
+  geom_point() +
+  scale_x_log10() +
+  labs(x = "Number of Plots", y = "Fisher's alpha") +
+  stat_smooth(method = "lm", formula = y ~ poly(x, 2)) ->
+  fig_guyadiv_alpha
+```
+
+::: {#suppfig-guyadiv_alpha}
+```{r}
+#| label: guyadiv_alpha
+fig_guyadiv_alpha
+```
+
+Estimation of the metacommunity's $\alpha$ as a function of the number of GuyaDiv plots used to sample it.
+The line is the fit of the quadratic model relating $\alpha$ to the logarithm of the number of plots.
+:::
