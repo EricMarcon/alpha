@@ -123,7 +123,6 @@ knitr::opts_chunk$set(dev.args = list(bg = "transparent"))
 set.seed(973)
 ```
 
-
 # Estimating $\alpha$ with R {#sec-appendix1 .appendix}
 
 ## Point estimation {.appendix}
@@ -516,3 +515,220 @@ fig_guyadiv_alpha
 Estimation of the metacommunity's $\alpha$ as a function of the number of GuyaDiv plots used to sample it.
 The line is the fit of the quadratic model relating $\alpha$ to the logarithm of the number of plots.
 :::
+
+\pagebreak
+
+# Code to reproduce the main text
+
+## Figure 1
+
+```{r}
+#| label: BCI_accum_logx
+#| echo: true
+library("tidyverse")
+library("divent")
+library("vegan")
+data(BCI)
+BCI %>% 
+  # Sum all plots
+  colSums() %>% 
+  # Save the vector of abundances
+  {. ->> BCI_50ha} %>% 
+  # Calculate alpha
+  fisher.alpha() ->
+  BCI_alpha
+ BCI_50ha %>%
+  # Declare the object class (divent)
+  as_abundances() %>% 
+  # Site name
+  mutate(site = "BCI") %>% 
+  # Accumulation curve up to 2x sample size
+  accum_hill(levels = seq_len(2 * sum(BCI_50ha))) %>% 
+  # Save the SAC
+  {. ->> BCI_accum} %>% 
+  # Plot
+  autoplot() +
+  scale_x_log10() +
+  theme(legend.position = "none") +
+  labs(y = "Number of Species") +
+  # Accumulation curve of a log-series
+  geom_function(fun = \(n) {BCI_alpha * log(1 + n / BCI_alpha)}, col = "black")
+```
+
+Species Accumulation Curve (SAC) of a log-series distribution (black) with Fisher's $\alpha$ equal to `r round(BCI_alpha)` and of BCI (red).
+The intersection of the dotted lines corresponds to the number of trees and of species of BCI 50-ha inventory the value of $\alpha$ is derived from.
+
+## Figure 2
+
+```{r}
+#| label: BCI_RAC
+#| echo: true
+BCI_50ha %>%
+  fit_rac(distribution = "lseries") %>% 
+  pluck("rac") ->
+  BCI_ls_RAC
+BCI_50ha %>%
+  # Declare the object class (divent)
+  as_abundances() %>% 
+  autoplot() + 
+  geom_line(
+    data  = BCI_ls_RAC,
+    aes(x = rank, y = abundance)
+  )
+```
+
+Rank-Abundance Curve (RAC) of a log-series distribution (black) and of BCI (red dots).
+Species are ordered by decreasing abundance.
+The log-series is the best fit to BCI data ($\alpha =$ `r round(BCI_alpha)`).
+
+## Figure 3
+
+```{r}
+#| label: BCI_accum
+#| echo: true
+BCI_S_estimate <- div_richness(BCI_50ha, as_numeric = TRUE)
+BCI_density <- round(sum(BCI) / 50)
+BCI_S_1ha <- round(
+  div_richness(
+    BCI_50ha, 
+    level = BCI_density, 
+    as_numeric = TRUE
+  )
+)
+BCI_accum %>%
+  autoplot() +
+  labs(y = "Richness") +
+  theme(legend.position = "none") +
+  # Asymptotic estimator
+  geom_hline(
+    yintercept = BCI_S_estimate, 
+    linetype = 3
+  ) +
+  # Accumulation curve of a log-series
+  geom_function(fun = \(n) {BCI_alpha * log(1 + n / BCI_alpha)}, col = "black")
+```
+
+Species Accumulation Curve of BCI extrapolated up to twice the sample size.
+The dotted lines correspond to the 50-ha inventory.
+The horizontal, dotted line, is the estimated asymptotic number of species, calculated with the jackknife estimator of order 1.
+The black curve is the SAC of the log-series with $\alpha$ equal to `r round(BCI_alpha)`.
+
+## Figure 4
+
+```{r}
+#| label: BCI_size
+# Sample `sample_size` sites in an abundance table, group them and compute alpha
+alpha_sub <- function(sample_size, abd) {
+  # Draw the rows of to sample in the table
+  the_sample <- sample(seq_len(nrow(abd)), size = sample_size) 
+  # Sample them
+  abd[the_sample, ] %>% 
+    # Make an abundances object (package divent)
+    as_abundances() %>% 
+    # Equal weights
+    mutate(weight = 1) %>% 
+    # Merge the rows
+    metacommunity() %>% 
+    # Numeric vector
+    as.numeric() %>% 
+    # Return alpha
+    fisher.alpha()
+}
+
+# Sample from 4 to 50ha
+sizes <- seq_len(nrow(BCI))[-(1:3)]
+# Number of simulations
+simulations_n <- 20
+# Compute alpha
+alphas <- replicate(
+  simulations_n, 
+  # Caclulate alpha at all sample sizes
+  expr = sapply(sizes, FUN = alpha_sub, abd = BCI)
+)
+# alpha values
+tibble(Size = sizes) %>%
+  bind_cols(alphas) %>% 
+  pivot_longer(cols = !Size) %>% 
+  # Plot
+  ggplot(aes(x = Size, y = value)) +
+  geom_point() +
+  scale_x_log10() +
+  labs(x = "Sample size", y = "Fisher's alpha") +
+  geom_smooth(method = "lm")
+```
+
+Estimation of Fisher's $\alpha$ depending on the number of 1-ha plots of BCI.
+The dots are random draws of plot assemblages.
+The line is the fit of a linear model relating $\alpha$ to the logarithm of the number of plots.
+
+## Figure 5
+
+The `plot.csv` file was published in @Marcon2024 and is available on [Github](https://github.com/EricMarcon/JTE-22-105/blob/master/data/plots.csv).
+
+```{r}
+#| label: arrhenius_logx
+# Read the data
+# Plots
+"data/plots.csv" %>% 
+  read_csv2() ->
+  guyadiv_plots
+# Abundances
+"data/abundances.csv" %>% 
+  read_csv2() ->
+  guyadiv_abd
+# Estimate alpha
+guyadiv_abd %>% 
+  # Make an abundances object (package divent)
+  rename(site = Plot) %>% 
+  as_abundances() %>% 
+  # Equal weights
+  mutate(weight = 1) %>% 
+  # Merge the rows
+  metacommunity() %>% 
+  # Numeric vector
+  as.numeric() %>% 
+  # Return alpha
+  fisher.alpha() ->
+  gf_alpha_guyadiv
+# Marcon et al. (2024) results
+c <- 694
+z <- .104
+gf_density <- 627 * 100
+gf_area <- 8E4
+# Number of species according to Guyadiv alpha
+gf_ls_species <- gf_alpha_guyadiv * log(1 + gf_density * gf_area / gf_alpha_guyadiv)
+# alpha according to the power model
+library("untb")
+gf_alpha_arrhenius <- fishers.alpha(
+  N = gf_density * gf_area, 
+  S = c * gf_area^z
+)
+ggplot(data.frame(x = 10^(1:6)), aes(x)) +
+  geom_function(fun = \(A) c * A^z) +
+  scale_x_log10() +
+  geom_vline(
+    xintercept = gf_area, 
+    linetype = 2
+  ) +
+  geom_hline(
+    yintercept = c * gf_area^z, 
+    linetype = 2
+  ) +
+  # Accumulation curve of log-series
+  geom_function(
+    fun = \(A) {gf_alpha_guyadiv * log(1 + A * gf_density / gf_alpha_guyadiv)}, 
+    col = "blue"
+  ) +
+  geom_function(
+    fun = \(A) {gf_alpha_arrhenius * log(1 + A * gf_density / gf_alpha_arrhenius)}, 
+    col = "red"
+  ) +
+  labs(x = "Area", y = "Number of species")
+```
+
+Number of tree species depending on the area (in square km, with density `r gf_density/100` trees/ha) in French Guiana, according to the Arrhenius's power model estimated by @Marcon2024.
+The Y-axis is not in logarithm, so the relation is a convex curve instead of a straight line.
+The black dotted lines show the valid estimation of richness in the whole territory: around 2200 species for 80,000 km^2^.
+The blue line is the species accumulation curve of the log-series estimated from the GuyaDiv metacommunity assuming its area is that of French Guiana.
+It overestimates the regional biodiversity at all scales.
+The red curve is the SAC of the actual metacommunity of French Guiana, whose Fisher's $\alpha$ is twice smaller.
