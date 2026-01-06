@@ -33,7 +33,7 @@ keywords: [Fisher's alpha, biodiversity, tropical forests]
 # Bibliography
 reference-section-title: References
 bibliography: references.bib
-csl: ecology-letters
+csl: global-ecology-and-biogeography
 # Language
 lang: en-GB
 # Code options 
