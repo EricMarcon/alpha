@@ -582,3 +582,8 @@ In contrast, species richness can be unambiguously defined and estimated at all 
 At the local scale, given the number of individuals, it contains the same information as $\alpha$ without assuming any particular distribution.
 It can be completed with other diversity metrics, namely Hill numbers [@Marcon2014a].
 At the regional scale, with much more efforts, the number of species can be derived from Arrhenius's power model with appropriate sampling [@Marcon2024].
+
+# Data Availability Statement
+
+The data analysed during the current study are available elsewhere, as described in section "Example data".
+The code used to produce the results and figures can be found in Supporting Information section 5.
