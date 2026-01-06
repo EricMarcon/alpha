@@ -10,6 +10,8 @@ format:
   stylisharticle-html:
     # Color example, see "Text color"
     css: colors.css
+  docx:
+    number-sections: true
 # Authors (https://quarto.org/docs/journals/authors.html#author-schema)
 author:
   - name: Eric Marcon
@@ -25,6 +27,13 @@ author:
       corresponding: true
 # Abstract and Keywords
 abstract: |
+  *Aim*: 
+  Fisher’s alpha is a widely used metric of biodiversity in hyperdiverse ecosystems, namely tropical forests, but its suitability is rarely discussed.
+  
+  *Innovation*: 
+  The assumption of the model, i.e. the log-series distribution, is discussed in depth, as well as the empirical consequences of its violation.
+  
+  *Main conclusions*:
   Fisher's alpha should not be used to assess the diversity of tropical forest tree species at the local and regional scales.
   At the local scale, communities are not distributed in log-series: alpha is the parameter of a model that does not fit the data so it can neither be estimated nor interpreted unambiguously.
   At the regional scale, alpha correctly describes the distribution of a metacommunity whose extent is unknown when it is not the whole forest area.
