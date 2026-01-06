@@ -136,6 +136,7 @@ The only data required are the total number of species and the sample size.
 The fifty hectares of BCI are used in the examples below.
 
 ```{r}
+#| echo: true
 library("tidyverse")
 library("vegan")
 data(BCI)
@@ -250,6 +251,7 @@ Applied to BCI, the estimate of $\alpha$ is `r round(fit_alpha(BCI_50ha))`.
 
 ```{r}
 #|label: bci_alpha_gof_code
+#| echo: true
 library("divent")
 BCI_50ha %>% 
   as_abundances() %>% 
@@ -552,7 +554,10 @@ BCI %>%
   theme(legend.position = "none") +
   labs(y = "Number of Species") +
   # Accumulation curve of a log-series
-  geom_function(fun = \(n) {BCI_alpha * log(1 + n / BCI_alpha)}, col = "black")
+  geom_function(
+    fun = \(n) {BCI_alpha * log(1 + n / BCI_alpha)}, 
+    col = "black"
+  )
 ```
 
 Species Accumulation Curve (SAC) of a log-series distribution (black) with Fisher's $\alpha$ equal to `r round(BCI_alpha)` and of BCI (red).
@@ -605,7 +610,10 @@ BCI_accum %>%
     linetype = 3
   ) +
   # Accumulation curve of a log-series
-  geom_function(fun = \(n) {BCI_alpha * log(1 + n / BCI_alpha)}, col = "black")
+  geom_function(
+    fun = \(n) {BCI_alpha * log(1 + n / BCI_alpha)}, 
+    col = "black"
+  )
 ```
 
 Species Accumulation Curve of BCI extrapolated up to twice the sample size.
@@ -617,7 +625,9 @@ The black curve is the SAC of the log-series with $\alpha$ equal to `r round(BCI
 
 ```{r}
 #| label: BCI_size
-# Sample `sample_size` sites in an abundance table, group them and compute alpha
+#| echo: true
+# Sample `sample_size` sites in an abundance table, 
+# group them and compute alpha
 alpha_sub <- function(sample_size, abd) {
   # Draw the rows of to sample in the table
   the_sample <- sample(seq_len(nrow(abd)), size = sample_size) 
@@ -667,6 +677,7 @@ The `plot.csv` file was published in @Marcon2024 and is available on [Github](ht
 
 ```{r}
 #| label: arrhenius_logx
+#| echo: true
 # Read the data
 # Plots
 "data/plots.csv" %>% 
@@ -696,7 +707,8 @@ z <- .104
 gf_density <- 627 * 100
 gf_area <- 8E4
 # Number of species according to Guyadiv alpha
-gf_ls_species <- gf_alpha_guyadiv * log(1 + gf_density * gf_area / gf_alpha_guyadiv)
+gf_ls_species <- gf_alpha_guyadiv * 
+  log(1 + gf_density * gf_area / gf_alpha_guyadiv)
 # alpha according to the power model
 library("untb")
 gf_alpha_arrhenius <- fishers.alpha(
@@ -716,11 +728,15 @@ ggplot(data.frame(x = 10^(1:6)), aes(x)) +
   ) +
   # Accumulation curve of log-series
   geom_function(
-    fun = \(A) {gf_alpha_guyadiv * log(1 + A * gf_density / gf_alpha_guyadiv)}, 
+    fun = \(A) {
+      gf_alpha_guyadiv * log(1 + A * gf_density / gf_alpha_guyadiv)
+    }, 
     col = "blue"
   ) +
   geom_function(
-    fun = \(A) {gf_alpha_arrhenius * log(1 + A * gf_density / gf_alpha_arrhenius)}, 
+    fun = \(A) {
+      gf_alpha_arrhenius * log(1 + A * gf_density / gf_alpha_arrhenius)
+    }, 
     col = "red"
   ) +
   labs(x = "Area", y = "Number of species")
