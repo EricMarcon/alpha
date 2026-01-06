@@ -332,17 +332,17 @@ Historically, @Whittaker1960 named the average local diversity after Fisher's $\
 @TerSteege2023 revert the reference, declaring Fisher's $\alpha$ the standard measure of $\alpha$ diversity.
 This shortcut must be discussed in depth.
 
-Several R packages allow estimating $\alpha$ from a vector of abundances (see Appendix @sec-appendix1 for details).
+Several R packages allow estimating $\alpha$ from a vector of abundances (see Supporting Information section 1 for details).
 Most of them (such as `vegan::fisher.alpha`) just solve @eq-fisheralpha, i.e. they only rely on the total abundance and number of species, ignoring the distribution.
 This estimator will be denoted $\hat\alpha(n, S)$: it corresponds to the intersection between the SACs of a log-series and of the data (@fig-BCI_accum).
 Often, the sample size is an area $A$, so the estimator is rather $\hat\alpha(n(A), S)$ where the number of individuals depends on the area.
 More elaborate functions (such as `sads::fitls`) find the value of $\alpha$ that maximizes the likelihood of the distribution assuming it is a log-series.
 That estimator will be denoted $\hat\alpha_{MLE}(\{\mathbf{\hat{p}}\})$.
-A new estimator based on goodness of fit instead of likelihood maximization is proposed in Appendix @sec-appendix1: $\hat\alpha_{gof}(\{\mathbf{\hat{p}}\})$.
+A new estimator based on goodness of fit instead of likelihood maximization is proposed in Supporting Information\@sec-appendix1: $\hat\alpha_{gof}(\{\mathbf{\hat{p}}\})$.
 
 When applied to the BCI dataset, both $\hat\alpha(n, S)$ and $\hat\alpha_{MLE}(\{\mathbf{\hat{p}}\})$ return the same estimation: `r round(BCI_alpha)`.
 Its poor empirical fit is illustrated by @fig-BCI_accum and @fig-BCI_accum_logx.
-$\hat\alpha_{gof}(\{\mathbf{\hat{p}}\})$ better takes into account the rarer species (Appendix @fig-bci_alpha_gof).
+$\hat\alpha_{gof}(\{\mathbf{\hat{p}}\})$ better takes into account the rarer species (Supporting Information figure S1).
 It equals 42.
 
 ::: {#fig-BCI_size}
@@ -416,9 +416,12 @@ Then, the parameter to estimate is $\theta$, the fundamental number of biodivers
 Increasing the sample size does not lead to reach the asymptotic, local diversity but (because the modelling choice is different) makes the distribution converge to that of the metacommunity: $\hat\alpha(\{\mathbf{\hat{p}\}}) \to \hat\alpha(\{\mathbf{p}\}) = \theta$ when $n \to \infty$.
 This is an elegant solution both theoretically (all assumptions are valid) and empirically (the estimation of $\theta$ is unbiased).
 
-@Hubbell2001 \[page 293\] proposed estimating $\theta$ by adjusting the rank-abundance curve to the most frequent species in the community, arguing that these species are also the most abundant in the metacommunity. He found $\theta = 50$. The same algorithm is applied to the current BCI dataset in Appendix @sec-appendix2: its result is $\theta = 45$. More robustly, both $\theta$ and $m$ can be estimated by likelihood maximization of the local distribution [@Etienne2005] with the untb package [@Hankin2007].
+@Hubbell2001 [page 293] proposed estimating $\theta$ by adjusting the rank-abundance curve to the most frequent species in the community, arguing that these species are also the most abundant in the metacommunity.
+He found $\theta = 50$.
+The same algorithm is applied to the current BCI dataset in Supporting Information section 2: its result is $\theta = 45$.
+More robustly, both $\theta$ and $m$ can be estimated by likelihood maximization of the local distribution [@Etienne2005] with the untb package [@Hankin2007].
 The retained value of $\theta$ is 48.
-The consistency of this approach is shown in Appendix @sec-appendix3: $\theta$ and $m$ are estimated from the BCI distribution, then a community of the same size is drawn with these parameters: it is very close to the actual distribution.
+The consistency of this approach is shown in Supporting Information section 3: $\theta$ and $m$ are estimated from the BCI distribution, then a community of the same size is drawn with these parameters: it is very close to the actual distribution.
 
 This approach faces two limits.
 As far as we know, it is not applied in the literature: the metric of @TerSteege2023 is $\hat\alpha(n(1\ \mathrm{ha}), S)$, not $\theta$.
@@ -479,7 +482,7 @@ Again, a smaller metacommunity embedded in the first one does not contain all sp
 When the SAR is plotted on a log-log scale, it is linear (@eq-arrhenius_log).
 If the y-axis is not in logarithmic scale, it becomes convex.
 In this representation (@fig-arrhenius_logx), a log-series species accumulation curve is a straight line (the number of individuals is much greater than $\alpha$).
-This theoretical result can be verified empirically with the GuyaDiv network plots in French Guiana (Appendix @sec-appendix4): $\alpha$ increases with the number of sites included in the sample.
+This theoretical result can be verified empirically with the GuyaDiv network plots in French Guiana (Supporting Information section 4) $\alpha$ increases with the number of sites included in the sample.
 
 ::: {#fig-arrhenius_logx}
 ```{r}
